@@ -508,27 +508,48 @@ return `
 }
 
         // Flag strategy for review
-        function flagStrategy(strategyId) {
-            const strategy = allStrategies.find(s => s.id === strategyId);
-            const userNameValue = userName.value.trim();
-            
-            if (!userNameValue) {
-                alert('Please enter your name before flagging strategies');
-                userName.focus();
-                return;
-            }
-            
-            if (strategy) {
-                flaggedStrategies.set(strategyId, {
-                    strategy: strategy,
-                    note: '',
-                    timestamp: new Date().toISOString(),
-                    flaggedBy: userNameValue
-                });
-                updateFlaggedCount();
-                renderStrategies();
-            }
+// Flag strategy for review
+function flagStrategy(strategyId) {
+    const strategy = allStrategies.find(s => s.id === strategyId);
+    const userNameValue = userName.value.trim();
+    
+    if (!userNameValue) {
+        alert('Please enter your name before flagging strategies');
+        userName.focus();
+        return;
+    }
+    
+    if (strategy) {
+        // Capture current filter state when flagging
+        let activeFilterDescription = 'No filter applied';
+        if (currentFilter) {
+            const config = currentFilter.config;
+            const option = currentFilter.option;
+            activeFilterDescription = `${config.label}: ${option.pillLabel || option.label}`;
         }
+        
+        // Also capture primary filters
+        const situationText = situationFilter.value ? 
+            situationFilter.options[situationFilter.selectedIndex].text : 'All Situations';
+        const ipRightText = ipRightsFilter.value ? 
+            ipRightsFilter.options[ipRightsFilter.selectedIndex].text : 'All IP Rights';
+        
+        flaggedStrategies.set(strategyId, {
+            strategy: strategy,
+            note: '',
+            timestamp: new Date().toISOString(),
+            flaggedBy: userNameValue,
+            activeFilter: activeFilterDescription,
+            situationType: situationFilter.value || 'All',
+            ipRightType: ipRightsFilter.value || 'All',
+            situationText: situationText,
+            ipRightText: ipRightText,
+            calculatedScore: strategy.calculatedScore || 0
+        });
+        updateFlaggedCount();
+        renderStrategies();
+    }
+}
 
         // Unflag strategy
         function unflagStrategy(strategyId) {
@@ -553,50 +574,75 @@ return `
         }
 
         // Export flagged strategies (CSV only)
-        function exportFlaggedStrategies() {
-            if (flaggedStrategies.size === 0) {
-                alert('No strategies flagged for review');
-                return;
-            }
 
-            const userNameValue = userName.value.trim();
-            if (!userNameValue) {
-                alert('Please enter your name before exporting');
-                userName.focus();
-                return;
-            }
+        // Export flagged strategies (CSV only)
+function exportFlaggedStrategies() {
+    if (flaggedStrategies.size === 0) {
+        alert('No strategies flagged for review');
+        return;
+    }
 
-            const exportTimestamp = new Date().toISOString();
-            
-            // Create simplified CSV data with only required fields
-            const csvData = Array.from(flaggedStrategies.values()).map(flaggedData => ({
-                ID: flaggedData.strategy.id,
-                Name: flaggedData.flaggedBy,
-                flag_note: flaggedData.note,
-                flag_timestamp: flaggedData.timestamp,
-                export_timestamp: exportTimestamp,
-                exported_by: userNameValue
-            }));
+    const userNameValue = userName.value.trim();
+    if (!userNameValue) {
+        alert('Please enter your name before exporting');
+        userName.focus();
+        return;
+    }
 
-            // Convert to CSV
-            const csvContent = convertToCSV(csvData);
-            const csvBlob = new Blob([csvContent], { type: 'text/csv' });
-            const csvUrl = URL.createObjectURL(csvBlob);
-            
-            // Create filename with timestamp and user name
-            const dateStr = new Date().toISOString().split('T')[0];
-            const timeStr = new Date().toTimeString().split(' ')[0].replace(/:/g, '-');
-            const filename = `flagged_ip_strategies_${userNameValue.replace(/[^a-zA-Z0-9]/g, '_')}_${dateStr}_${timeStr}.csv`;
-            
-            // Download CSV file
-            downloadFile(csvUrl, filename);
+    const exportTimestamp = new Date().toISOString();
+    
+    // Create CSV data with filter information
+    const csvData = Array.from(flaggedStrategies.values()).map(flaggedData => ({
+        ID: flaggedData.strategy.id,
+        Strategy_Title: flaggedData.strategy.title,
+        Flagged_By: flaggedData.flaggedBy,
+        Flag_Note: flaggedData.note,
+        Flag_Timestamp: flaggedData.timestamp,
+        Active_Filter_When_Flagged: flaggedData.activeFilter,
+        Situation_Type: flaggedData.situationText,
+        IP_Right_Type: flaggedData.ipRightText,
+        Calculated_Score: flaggedData.calculatedScore,
+        Export_Timestamp: exportTimestamp,
+        Exported_By: userNameValue
+    }));
 
-            // Clean up URL
-            setTimeout(() => {
-                URL.revokeObjectURL(csvUrl);
-            }, 1000);
+    // Convert to CSV
+    const csvContent = convertToCSV(csvData);
+    const csvBlob = new Blob([csvContent], { type: 'text/csv' });
+    const csvUrl = URL.createObjectURL(csvBlob);
+    
+    // Create filename with timestamp and user name
+    const dateStr = new Date().toISOString().split('T')[0];
+    const timeStr = new Date().toTimeString().split(' ')[0].replace(/:/g, '-');
+    const filename = `flagged_ip_strategies_${userNameValue.replace(/[^a-zA-Z0-9]/g, '_')}_${dateStr}_${timeStr}.csv`;
+    
+    // Download CSV file
+    downloadFile(csvUrl, filename);
+
+    // Clean up URL
+    setTimeout(() => {
+        URL.revokeObjectURL(csvUrl);
+    }, 1000);
+}
+
+        // Update flag note and track filter changes
+function updateFlagNote(strategyId, note) {
+    if (flaggedStrategies.has(strategyId)) {
+        const flaggedData = flaggedStrategies.get(strategyId);
+        flaggedData.note = note;
+        
+        // Update filter information when note is changed
+        if (currentFilter) {
+            const config = currentFilter.config;
+            const option = currentFilter.option;
+            flaggedData.activeFilter = `${config.label}: ${option.pillLabel || option.label}`;
+            flaggedData.calculatedScore = flaggedData.strategy.calculatedScore || 0;
         }
-
+        
+        flaggedStrategies.set(strategyId, flaggedData);
+    }
+}
+        
         // Convert data to CSV format
         function convertToCSV(data) {
             if (data.length === 0) return '';

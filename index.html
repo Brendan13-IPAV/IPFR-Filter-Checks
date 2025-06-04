@@ -466,38 +466,21 @@ function createStrategyCard(strategy) {
     const isFlagged = flaggedStrategies.has(strategy.id);
     const flaggedData = flaggedStrategies.get(strategy.id);
 
-    // Create tags for response types and IP types
-    const responseTags = (strategy.responseType || []).map(type => 
-        `<span class="tag">${type}</span>`
-    ).join('');
-    
-    const ipTags = (strategy.ipTypeTags || []).map(type => 
-        `<span class="tag">${type}</span>`
-    ).join('');
+   // Show score at top (always show, even if 0 for consistency)
+const scoreDisplay = `
+    <div class="item-score">
+        Score: ${strategy.calculatedScore || 0}
+    </div>
+`;
 
-    // Show score if there's an active filter
-    const scoreDisplay = strategy.calculatedScore > 0 ? `
-        <div class="item-score">
-            Score: ${strategy.calculatedScore}
+return `
+    <div class="item-card ${isFlagged ? 'flagged' : ''}">
+        ${scoreDisplay}
+        <div class="item-header">
+            ${strategy.overtitle ? `<div class="item-overtitle">${strategy.overtitle}</div>` : ''}
+            <div class="item-title">${strategy.title}</div>
+            <div class="item-description">${strategy.description}</div>
         </div>
-    ` : '';
-
-    return `
-        <div class="item-card ${isFlagged ? 'flagged' : ''}">
-            <div class="item-header">
-                ${strategy.overtitle ? `<div class="item-overtitle">${strategy.overtitle}</div>` : ''}
-                <div class="item-title">${strategy.title}</div>
-                <div class="item-description">${strategy.description}</div>
-            </div>
-            
-            ${scoreDisplay}
-            
-            ${(responseTags || ipTags) ? `
-                <div class="item-tags">
-                    ${responseTags}
-                    ${ipTags}
-                </div>
-            ` : ''}
 
             <div class="flag-section">
                 ${isFlagged ? `

@@ -280,13 +280,15 @@ select:focus {
 }
 
 .btn-primary {
-    background: linear-gradient(135deg, #667eea, #764ba2);
+    background: #6b7280;
     color: white;
+    border: 1px solid #6b7280;
 }
 
 .btn-primary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+    background: #4b5563;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(107, 114, 128, 0.2);
 }
 
 .btn-secondary {
@@ -301,14 +303,15 @@ select:focus {
 }
 
 .btn-danger {
-    background: #dc3545;
+    background: #9ca3af;
     color: white;
+    border: 1px solid #9ca3af;
 }
 
 .btn-danger:hover {
-    background: #c82333;
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(220, 53, 69, 0.3);
+    background: #6b7280;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(156, 163, 175, 0.2);
 }
 
 /* GRID LAYOUT - This is the key part */
@@ -562,13 +565,13 @@ select:focus {
 }
 
 .item-score {
-    background: linear-gradient(135deg, #10b981, #059669);
-    color: white;
-    padding: 8px 12px;
-    border-radius: 8px;
-    font-size: 14px;
-    font-weight: 700;
+    background: #f3f4f6;
+    color: #374151;
+    border: 1px solid #d1d5db;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 600;
     margin-bottom: 12px;
     text-align: center;
-    box-shadow: 0 2px 4px rgba(16, 185, 129, 0.2);
 }

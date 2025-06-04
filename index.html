@@ -310,6 +310,12 @@ function applyFilters() {
 
     // Filter strategies
     filteredStrategies = allStrategies.filter(strategy => {
+        // Remove any strategy with "Not Assigned" in title or overtitle
+        if (strategy.title === "Not Assigned" || 
+            strategy.overtitle === "Not Assigned" ||
+            strategy.description === "Not Assigned") {
+            return false;
+        }
         // Search filter
         if (searchTerm) {
             const searchableText = [

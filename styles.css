@@ -532,3 +532,31 @@ select:focus {
         min-width: 100%;
     }
 }
+.header-controls {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 24px;
+    align-items: end;
+    margin-top: 20px;
+}
+
+.primary-filters {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+/* Update responsive behavior */
+@media (max-width: 1024px) {
+    .header-controls {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+}
+
+@media (max-width: 768px) {
+    .primary-filters {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+}

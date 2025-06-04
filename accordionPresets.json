@@ -1,0 +1,71 @@
+{
+  "default": {
+    "topFilters": [ "preferredApproach", "BusinessIssue", "howCommon"],
+    "accordions": {
+      "Your IP": ["Jurisdiction", "YourTMStatus", "YourPatStatus"],
+      "Details": ["Where", "onlineIssues", "domainName", "importingGoods"],
+      "Other party details": ["theirIPRights", "identifyParty"],
+      "Resolution Preferences": ["businessRelationship", "openToNegotiate"]
+    }
+  },
+  
+  "Patent-Enforcement": {
+    "topFilters": ["preferredApproach", "BusinessIssue", "howCommon"],
+    "accordions": {
+      "Your patent details": ["Jurisdiction", "YourPatStatus"],
+      "Suspected infringment details": ["Where"],
+      "Other party details": ["identifyParty"],
+      "Commerical considerations": ["businessRelationship", "openToNegotiate"]
+    }
+  },
+
+   "Trademark-Enforcement": {
+    "topFilters": ["preferredApproach", "BusinessIssue", "howCommon"],
+    "accordions": {
+      "About your trade mark": ["Jurisdiction", "YourTMStatus"],
+      "Suspected infringment details": ["Where", "onlineIssues", "domainName", "importingGoods"],
+      "Other Party": ["theirTMRights", "identifyParty"],
+      "Commerical considerations": ["businessRelationship", "openToNegotiate"]
+    }
+  },
+  
+  "Trademark-Accused": {
+    "topFilters": ["preferredApproach", "BusinessIssue", "howCommon"],
+    "accordions": {
+      "Accusation details": ["theirTMRights", "Where", "domainName", "onlineIssues"],
+       "About your IP right (if any)": ["Jurisdiction", "YourTMStatus"],
+           "Commerical considerations": ["openToNegotiate", "businessRelationship"]
+    }
+  },
+    
+  "Design-Enforcement": { 
+          "topFilters": ["preferredApproach", "BusinessIssue", "howCommon"],
+    "accordions": {
+      "Incomplete": ["Where"]
+    }
+  },
+    
+  "PBR-Enforcement": {      
+    "topFilters": ["preferredApproach", "BusinessIssue", "howCommon"],
+    "accordions": {
+      "Incomplete": ["Where"] 
+    }
+  },
+    
+  "Copyright-Enforcement": {
+          "topFilters": [ "preferredApproach", "BusinessIssue", "howCommon"],
+    "accordions": {
+      "Incomplete": ["Where"]
+    }
+  },
+
+    
+  "Any-Enforcement": {
+          "topFilters": ["preferredApproach", "BusinessIssue", "howCommon"],
+    "accordions": {
+      "Incomplete": ["Where"]
+    }
+  }
+
+}
+

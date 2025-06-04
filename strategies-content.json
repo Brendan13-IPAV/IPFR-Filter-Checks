@@ -1,0 +1,938 @@
+[
+  {
+    "id": 1,
+    "overtitle": "Patent opposition",
+    "title": "Challenge a new or amended patent",
+    "description": "Initiate a challenge to the validity of a new patent with IP Australia.",
+    "costText": "Cost varies based on complexity",
+    "effortText": "Time requirement varies",
+    "resolutionText": "Success rate varies by case"
+  },
+  {
+    "id": 2,
+    "overtitle": "Contact intermediaries",
+    "title": "",
+    "description": "",
+    "costText": "Cost varies based on complexity",
+    "effortText": "Time requirement varies",
+    "resolutionText": "Success rate varies by case"
+  },
+  {
+    "id": 3,
+    "overtitle": "Letter of demand",
+    "title": "Understanding a letter of demand  ",
+    "description": "",
+    "costText": "Cost varies based on complexity",
+    "effortText": "Time requirement varies",
+    "resolutionText": "Success rate varies by case"
+  },
+  {
+    "id": 4,
+    "overtitle": "Evaluate the situation",
+    "title": "Choose not to respond immediately",
+    "description": "When to delay responding to groundless IP infringement claims and how to gather evidence for future defence.",
+    "costText": "Cost varies based on complexity",
+    "effortText": "Time requirement varies",
+    "resolutionText": "Success rate varies by case"
+  },
+  {
+    "id": 5,
+    "overtitle": "Develop new IP",
+    "title": "Create new products or services which do not use contested IP",
+    "description": "",
+    "costText": "Cost varies based on complexity",
+    "effortText": "Time requirement varies",
+    "resolutionText": "Success rate varies by case"
+  },
+  {
+    "id": 6,
+    "overtitle": "Consider the other party's demand",
+    "title": "De-escalate disputes by ceasing use of contested IP",
+    "description": "",
+    "costText": "Cost varies based on complexity",
+    "effortText": "Time requirement varies",
+    "resolutionText": "Success rate varies by case"
+  },
+  {
+    "id": 7,
+    "overtitle": "Obtain legal advice",
+    "title": "Obtain legal advice to respond to allegations of IP infringement ",
+    "description": "",
+    "costText": "Cost varies based on complexity",
+    "effortText": "Time requirement varies",
+    "resolutionText": "Success rate varies by case"
+  },
+  {
+    "id": 8,
+    "overtitle": "Apply for a registered trade mark ",
+    "title": "Register your trade mark to reinforce your defence",
+    "description": "Apply to IP Australia for a registered trade mark to secure exclusive rights to your brand. ",
+    "costText": "Cost varies based on complexity",
+    "effortText": "Time requirement varies",
+    "resolutionText": "Success rate varies by case"
+  },
+  {
+    "id": 9,
+    "overtitle": "Patent re-examination",
+    "title": "Challenge a granted patent",
+    "description": "Request a re-examination with IP Australia, to revoke or amend a granted patent.",
+    "costText": "Cost varies based on complexity",
+    "effortText": "Time requirement varies",
+    "resolutionText": "Success rate varies by case"
+  },
+  {
+    "id": 10,
+    "overtitle": "Respond to a trade mark opposition at IP Australia",
+    "title": "Defend your trade mark from opposition ",
+    "description": "Steps to defend your trade mark application when another party claims it encroaches on their rights during IP Australia’s opposition or hearing process",
+    "costText": "Cost varies based on complexity",
+    "effortText": "Time requirement varies",
+    "resolutionText": "Success rate varies by case"
+  },
+  {
+    "id": 11,
+    "overtitle": "Respond to a patent opposition at IP Australia",
+    "title": "Respond to O&H (Pat)",
+    "description": "",
+    "costText": "Cost varies based on complexity",
+    "effortText": "Time requirement varies",
+    "resolutionText": "Success rate varies by case"
+  },
+  {
+    "id": 12,
+    "overtitle": "IP Australia Oppositions & Hearings",
+    "title": "Challenge their Australian trade mark registration",
+    "description": "Ask IP Australia to refuse, cancel or narrow a trade mark that is effecting you",
+    "costText": "Cost varies based on complexity",
+    "effortText": "Time requirement varies",
+    "resolutionText": "Success rate varies by case"
+  },
+  {
+    "id": 13,
+    "overtitle": "Patent Re-Examination",
+    "title": "Challenge a granted patent",
+    "description": "Request a re-examination with IP Australia, to revoke or amend a granted patent",
+    "costText": "Cost varies based on complexity",
+    "effortText": "Time requirement varies",
+    "resolutionText": "Success rate varies by case"
+  },
+  {
+    "id": 14,
+    "overtitle": "Report criminal activities",
+    "title": "Report a scam, fraud or other risk to public interest ",
+    "description": "How to recognise and report scams or crimes that misuse intellectual property (IP) infringement claims to intimidate or extort.",
+    "costText": "Cost varies based on complexity",
+    "effortText": "Time requirement varies",
+    "resolutionText": "Success rate varies by case"
+  },
+  {
+    "id": 15,
+    "overtitle": "Negotiate and de-escalate",
+    "title": "Engage in a conversation to resolve IP disputes",
+    "description": "",
+    "costText": "Cost varies based on complexity",
+    "effortText": "Time requirement varies",
+    "resolutionText": "Success rate varies by case"
+  },
+  {
+    "id": 16,
+    "overtitle": "Court",
+    "title": "Respond to an unjustified threat",
+    "description": "Options to take if you receive an unjustified threat for your intellectual property",
+    "costText": "Cost varies based on complexity",
+    "effortText": "Time requirement varies",
+    "resolutionText": "Success rate varies by case"
+  },
+  {
+    "id": 17,
+    "overtitle": "Court - Patent",
+    "title": "Seek binding, authoritative decisions",
+    "description": "Escalate a wide range of patent matters to court.",
+    "costText": "Cost varies based on complexity",
+    "effortText": "Time requirement varies",
+    "resolutionText": "Success rate varies by case"
+  },
+  {
+    "id": 18,
+    "overtitle": "Trade mark opposition",
+    "title": "Challenge the registration of a trade mark",
+    "description": "Initiate a trade mark opposition process against a new trademark with IP Australia.",
+    "costText": "Cost varies based on complexity",
+    "effortText": "Time requirement varies",
+    "resolutionText": "Success rate varies by case"
+  },
+  {
+    "id": 19,
+    "overtitle": "Monitor",
+    "title": "Regularly scan for breaches",
+    "description": "",
+    "costText": "Cost varies based on complexity",
+    "effortText": "Time requirement varies",
+    "resolutionText": "Success rate varies by case"
+  },
+  {
+    "id": 20,
+    "overtitle": "Monitor",
+    "title": "Pay for a market Scanning Tool",
+    "description": "",
+    "costText": "Cost varies based on complexity",
+    "effortText": "Time requirement varies",
+    "resolutionText": "Success rate varies by case"
+  },
+  {
+    "id": 21,
+    "overtitle": "Monitor",
+    "title": "Monitor supply chain",
+    "description": "",
+    "costText": "Cost varies based on complexity",
+    "effortText": "Time requirement varies",
+    "resolutionText": "Success rate varies by case"
+  },
+  {
+    "id": 22,
+    "overtitle": "Monitor",
+    "title": "Monitoring competitors' IP",
+    "description": "",
+    "costText": "Cost varies based on complexity",
+    "effortText": "Time requirement varies",
+    "resolutionText": "Success rate varies by case"
+  },
+  {
+    "id": 23,
+    "overtitle": "",
+    "title": "Use your IP well to strengthen your position",
+    "description": "",
+    "costText": "Cost varies based on complexity",
+    "effortText": "Time requirement varies",
+    "resolutionText": "Success rate varies by case"
+  },
+  {
+    "id": 24,
+    "overtitle": "",
+    "title": "Extend your IP",
+    "description": "",
+    "costText": "Cost varies based on complexity",
+    "effortText": "Time requirement varies",
+    "resolutionText": "Success rate varies by case"
+  },
+  {
+    "id": 25,
+    "overtitle": "Trade mark registration revocation",
+    "title": "Remove a trade mark from the register",
+    "description": "Let IP Australia know A recently registered trade mark should not be registered",
+    "costText": "Cost varies based on complexity",
+    "effortText": "Time requirement varies",
+    "resolutionText": "Success rate varies by case"
+  },
+  {
+    "id": 26,
+    "overtitle": "",
+    "title": "Educate your customers about your brand",
+    "description": "",
+    "costText": "Cost varies based on complexity",
+    "effortText": "Time requirement varies",
+    "resolutionText": "Success rate varies by case"
+  },
+  {
+    "id": 27,
+    "overtitle": "",
+    "title": "Investigate licensing",
+    "description": "",
+    "costText": "Cost varies based on complexity",
+    "effortText": "Time requirement varies",
+    "resolutionText": "Success rate varies by case"
+  },
+  {
+    "id": 28,
+    "overtitle": "",
+    "title": "Set up TM alert on TM registers",
+    "description": "",
+    "costText": "Cost varies based on complexity",
+    "effortText": "Time requirement varies",
+    "resolutionText": "Success rate varies by case"
+  },
+  {
+    "id": 29,
+    "overtitle": "Pre-plan IP conflicts",
+    "title": "WIPO Contract Clause Builder",
+    "description": "",
+    "costText": "Cost varies based on complexity",
+    "effortText": "Time requirement varies",
+    "resolutionText": "Success rate varies by case"
+  },
+  {
+    "id": 30,
+    "overtitle": "Third Party Notification of Prior Art ",
+    "title": "Prevent a patent under examination from being granted",
+    "description": "",
+    "costText": "Cost varies based on complexity",
+    "effortText": "Time requirement varies",
+    "resolutionText": "Success rate varies by case"
+  },
+  {
+    "id": 31,
+    "overtitle": "Overlapping IP infringement claims",
+    "title": "Enforcing your own IP as a response to IP infringement accusations",
+    "description": "Consider taking enforcement action if someone accusing you of infringement has actually been infringing your rights",
+    "costText": "Cost varies based on complexity",
+    "effortText": "Time requirement varies",
+    "resolutionText": "Success rate varies by case"
+  },
+  {
+    "id": 32,
+    "overtitle": "Trade mark non-use action",
+    "title": "Remove a trade mark from the register",
+    "description": "Request IP Australia removes a trade mark from REGISTER FOR NON-USE ",
+    "costText": "Cost varies based on complexity",
+    "effortText": "Time requirement varies",
+    "resolutionText": "Success rate varies by case"
+  },
+  {
+    "id": 33,
+    "overtitle": "Court - Trade Mark",
+    "title": "Seek binding, authoritative decisions",
+    "description": "Escalate a wide range of trade mark matters to court.",
+    "costText": "Cost varies based on complexity",
+    "effortText": "Time requirement varies",
+    "resolutionText": "Success rate varies by case"
+  },
+  {
+    "id": 34,
+    "overtitle": "Court - Generic",
+    "title": "Not yet written",
+    "description": "Not yet written",
+    "costText": "Cost varies based on complexity",
+    "effortText": "Time requirement varies",
+    "resolutionText": "Success rate varies by case"
+  },
+  {
+    "id": 35,
+    "overtitle": "Interim court injuction order",
+    "title": "Stop infringing activity immediately",
+    "description": "Lodge an interim injunction order through court",
+    "costText": "Cost varies based on complexity",
+    "effortText": "Time requirement varies",
+    "resolutionText": "Success rate varies by case"
+  },
+  {
+    "id": 36,
+    "overtitle": "Not Assigned",
+    "title": "Not Assigned",
+    "description": "Not Assigned",
+    "costText": "Cost varies based on complexity",
+    "effortText": "Time requirement varies",
+    "resolutionText": "Success rate varies by case"
+  },
+  {
+    "id": 37,
+    "overtitle": "World IP Organisation (WIPO)",
+    "title": "Resolve international disputes",
+    "description": "Seek dispute resolution through the WIPO Arbitration and Mediation Center",
+    "costText": "Cost varies based on complexity",
+    "effortText": "Time requirement varies",
+    "resolutionText": "Success rate varies by case"
+  },
+  {
+    "id": 38,
+    "overtitle": "Not Assigned",
+    "title": "Not Assigned",
+    "description": "Not Assigned",
+    "costText": "Cost varies based on complexity",
+    "effortText": "Time requirement varies",
+    "resolutionText": "Success rate varies by case"
+  },
+  {
+    "id": 39,
+    "overtitle": "Not Assigned",
+    "title": "Not Assigned",
+    "description": "Not Assigned",
+    "costText": "Cost varies based on complexity",
+    "effortText": "Time requirement varies",
+    "resolutionText": "Success rate varies by case"
+  },
+  {
+    "id": 40,
+    "overtitle": "Not Assigned",
+    "title": "Not Assigned",
+    "description": "Not Assigned",
+    "costText": "Cost varies based on complexity",
+    "effortText": "Time requirement varies",
+    "resolutionText": "Success rate varies by case"
+  },
+  {
+    "id": 41,
+    "overtitle": "Alternative dispute resolution (ADR) ",
+    "title": "resolve conflicts with the help of experienced facilitators  ",
+    "description": "Understand more about the options in the ADR space.",
+    "costText": "Cost varies based on complexity",
+    "effortText": "Time requirement varies",
+    "resolutionText": "Success rate varies by case"
+  },
+  {
+    "id": 42,
+    "overtitle": "ASBFEO",
+    "title": "Access help tailored to resolve business disputes ",
+    "description": "Australia Small Business & Family Enterprise Ombudsman (ASBFEO).",
+    "costText": "Cost varies based on complexity",
+    "effortText": "Time requirement varies",
+    "resolutionText": "Success rate varies by case"
+  },
+  {
+    "id": 43,
+    "overtitle": "Mediation ",
+    "title": "Resolve IP issues with the help of a third party",
+    "description": "Invite the other party to enter into mediation to agree to mutually acceptable agreement.",
+    "costText": "Cost varies based on complexity",
+    "effortText": "Time requirement varies",
+    "resolutionText": "Success rate varies by case"
+  },
+  {
+    "id": 44,
+    "overtitle": "Arbitration ",
+    "title": "Resolve IP issues with the help of a third party",
+    "description": "Agree to be bound by the decision of a highly qualified third party assessment.",
+    "costText": "Cost varies based on complexity",
+    "effortText": "Time requirement varies",
+    "resolutionText": "Success rate varies by case"
+  },
+  {
+    "id": 45,
+    "overtitle": "Letter of demand",
+    "title": "Demand the other party stops infringing ",
+    "description": "Send a letter to the infringing party notifying them of potential infringement.",
+    "costText": "Cost varies based on complexity",
+    "effortText": "Time requirement varies",
+    "resolutionText": "Success rate varies by case"
+  },
+  {
+    "id": 46,
+    "overtitle": "Informal contact",
+    "title": "Provide an opportunity to stop infringement",
+    "description": "Alert the alleged infringer of your registered rights to allow them to stop infringing.",
+    "costText": "Cost varies based on complexity",
+    "effortText": "Time requirement varies",
+    "resolutionText": "Success rate varies by case"
+  },
+  {
+    "id": 47,
+    "overtitle": "Not Assigned",
+    "title": "Not Assigned",
+    "description": "Not Assigned",
+    "costText": "Cost varies based on complexity",
+    "effortText": "Time requirement varies",
+    "resolutionText": "Success rate varies by case"
+  },
+  {
+    "id": 48,
+    "overtitle": "Negotiation",
+    "title": "Agree to a commercial arrangement (reach a )",
+    "description": "Work with an IP professional to come to an agreement with another party.",
+    "costText": "Cost varies based on complexity",
+    "effortText": "Time requirement varies",
+    "resolutionText": "Success rate varies by case"
+  },
+  {
+    "id": 49,
+    "overtitle": "Takedown request",
+    "title": "Stop infringement facilitated online",
+    "description": "Request infringing material is removed from onl;ine marketplaces and platforms.",
+    "costText": "Cost varies based on complexity",
+    "effortText": "Time requirement varies",
+    "resolutionText": "Success rate varies by case"
+  },
+  {
+    "id": 50,
+    "overtitle": "Not Assigned",
+    "title": "Not Assigned",
+    "description": "Not Assigned",
+    "costText": "Cost varies based on complexity",
+    "effortText": "Time requirement varies",
+    "resolutionText": "Success rate varies by case"
+  },
+  {
+    "id": 51,
+    "overtitle": "Not Assigned",
+    "title": "Not Assigned",
+    "description": "Not Assigned",
+    "costText": "Cost varies based on complexity",
+    "effortText": "Time requirement varies",
+    "resolutionText": "Success rate varies by case"
+  },
+  {
+    "id": 52,
+    "overtitle": "Not Assigned",
+    "title": "Not Assigned",
+    "description": "Not Assigned",
+    "costText": "Cost varies based on complexity",
+    "effortText": "Time requirement varies",
+    "resolutionText": "Success rate varies by case"
+  },
+  {
+    "id": 53,
+    "overtitle": "Not Assigned",
+    "title": "Not Assigned",
+    "description": "Not Assigned",
+    "costText": "Cost varies based on complexity",
+    "effortText": "Time requirement varies",
+    "resolutionText": "Success rate varies by case"
+  },
+  {
+    "id": 54,
+    "overtitle": "Not Assigned",
+    "title": "Not Assigned",
+    "description": "Not Assigned",
+    "costText": "Cost varies based on complexity",
+    "effortText": "Time requirement varies",
+    "resolutionText": "Success rate varies by case"
+  },
+  {
+    "id": 55,
+    "overtitle": "Not Assigned",
+    "title": "Not Assigned",
+    "description": "Not Assigned",
+    "costText": "Cost varies based on complexity",
+    "effortText": "Time requirement varies",
+    "resolutionText": "Success rate varies by case"
+  },
+  {
+    "id": 56,
+    "overtitle": "Not Assigned",
+    "title": "Not Assigned",
+    "description": "Not Assigned",
+    "costText": "Cost varies based on complexity",
+    "effortText": "Time requirement varies",
+    "resolutionText": "Success rate varies by case"
+  },
+  {
+    "id": 57,
+    "overtitle": "Report IP crime or safety concerns",
+    "title": "Prevent risks to public interest",
+    "description": "Inform Government about risks to public health, crime, counterfeiting, frauds & scams.",
+    "costText": "Cost varies based on complexity",
+    "effortText": "Time requirement varies",
+    "resolutionText": "Success rate varies by case"
+  },
+  {
+    "id": 58,
+    "overtitle": "Notice of Objection",
+    "title": "Stop infringing goods entering the country",
+    "description": "Lodge a notice of objection with the Australian Border Force.",
+    "costText": "Cost varies based on complexity",
+    "effortText": "Time requirement varies",
+    "resolutionText": "Success rate varies by case"
+  },
+  {
+    "id": 59,
+    "overtitle": "Not Assigned",
+    "title": "Not Assigned",
+    "description": "Not Assigned",
+    "costText": "Cost varies based on complexity",
+    "effortText": "Time requirement varies",
+    "resolutionText": "Success rate varies by case"
+  },
+  {
+    "id": 60,
+    "overtitle": "IP attorney or lawyer",
+    "title": "Obtain legal advice on enforcement options",
+    "description": "Seek a qualified & experienced professional to provide specific, tailored advice.",
+    "costText": "Cost varies based on complexity",
+    "effortText": "Time requirement varies",
+    "resolutionText": "Success rate varies by case"
+  },
+  {
+    "id": 61,
+    "overtitle": "International options",
+    "title": "Enforce your IP overseas",
+    "description": "Understand options relating to enforcing your IP overseas. ",
+    "costText": "Cost varies based on complexity",
+    "effortText": "Time requirement varies",
+    "resolutionText": "Success rate varies by case"
+  },
+  {
+    "id": 62,
+    "overtitle": "Monitor the situation (Take no action)",
+    "title": "Take no immediate action",
+    "description": "Strategically enforce your IP only when worthwhile.",
+    "costText": "Cost varies based on complexity",
+    "effortText": "Time requirement varies",
+    "resolutionText": "Success rate varies by case"
+  },
+  {
+    "id": 63,
+    "overtitle": "Rebrand your business  ",
+    "title": "Avoid potential IP conflicts",
+    "description": "Strategically rebrand your business to avoid disputes.",
+    "costText": "Cost varies based on complexity",
+    "effortText": "Time requirement varies",
+    "resolutionText": "Success rate varies by case"
+  },
+  {
+    "id": 64,
+    "overtitle": "Not Assigned",
+    "title": "Not Assigned",
+    "description": "Not Assigned",
+    "costText": "Cost varies based on complexity",
+    "effortText": "Time requirement varies",
+    "resolutionText": "Success rate varies by case"
+  },
+  {
+    "id": 65,
+    "overtitle": "IP insurance",
+    "title": "Coverage against potential future infringement",
+    "description": "Protect yourself from certain cost invovled in IP disputes",
+    "costText": "Cost varies based on complexity",
+    "effortText": "Time requirement varies",
+    "resolutionText": "Success rate varies by case"
+  },
+  {
+    "id": 66,
+    "overtitle": "Sorry, Registered Designs",
+    "title": "DESIGN rights ",
+    "description": "We cannot provide information on this right just yet ",
+    "costText": "Cost varies based on complexity",
+    "effortText": "Time requirement varies",
+      "resolutionText": "Success rate varies by case"
+  },
+  {
+    "id": 67,
+    "overtitle": "Sorry, PBR",
+    "title": "Plant BREEDER'S rights ",
+    "description": "We cannot provide information on this right just yet ",
+    "costText": "Cost varies based on complexity",
+    "effortText": "Time requirement varies",
+    "resolutionText": "Success rate varies by case"
+  },
+  {
+    "id": 68,
+    "overtitle": "Sorry, Copyright",
+    "title": "Copyright ",
+    "description": "We cannot provide information on this right just yet ",
+    "costText": "Cost varies based on complexity",
+    "effortText": "Time requirement varies",
+    "resolutionText": "Success rate varies by case"
+  },
+  {
+    "id": 69,
+    "overtitle": "Other IP Types",
+    "title": "Other types of international IP",
+    "description": "We cannot provide information on these rights just yet",
+    "costText": "Cost varies based on complexity",
+    "effortText": "Time requirement varies",
+    "resolutionText": "Success rate varies by case"
+  },
+  {
+    "id": 70,
+    "overtitle": "Domain Name Dispute (auDRP)",
+    "title": "Dispute a domain name that infringes your trae mark",
+    "description": "Dispute an .au domain name that may infringe an IP right",
+    "costText": "Cost varies based on complexity",
+    "effortText": "Time requirement varies",
+    "resolutionText": "Success rate varies by case"
+  },
+  {
+    "id": 71,
+    "overtitle": "Domain Name Dispute (UDRP)",
+    "title": "Challenge the use of international domain name",
+    "description": "Dispute an international domain name that may infringe an IP right",
+    "costText": "Cost varies based on complexity",
+    "effortText": "Time requirement varies",
+    "resolutionText": "Success rate varies by case"
+  },
+  {
+    "id": 72,
+    "overtitle": "Apply for an IP right",
+    "title": "Register your IP right",
+    "description": "Strengthen your position as the legal OWNER OF an IP right with IP australia   ",
+    "costText": "Cost varies based on complexity",
+    "effortText": "Time requirement varies",
+    "resolutionText": "Success rate varies by case"
+  },
+  {
+    "id": 73,
+    "overtitle": "Apply for a trade mark ",
+    "title": "Register your trade mark  ",
+    "description": "Strengthen your position as the registered owner of your trade mark in Australia",
+    "costText": "Cost varies based on complexity",
+    "effortText": "Time requirement varies",
+    "resolutionText": "Success rate varies by case"
+  },
+  {
+    "id": 74,
+    "overtitle": "Not Assigned",
+    "title": "Not Assigned",
+    "description": "Not Assigned",
+    "costText": "Cost varies based on complexity",
+    "effortText": "Time requirement varies",
+    "resolutionText": "Success rate varies by case"
+  },
+  {
+    "id": 75,
+    "overtitle": "Not Assigned",
+    "title": "Not Assigned",
+    "description": "Not Assigned",
+    "costText": "Cost varies based on complexity",
+    "effortText": "Time requirement varies",
+    "resolutionText": "Success rate varies by case"
+  },
+  {
+    "id": 76,
+    "overtitle": "Not Assigned",
+    "title": "Not Assigned",
+    "description": "Not Assigned",
+    "costText": "Cost varies based on complexity",
+    "effortText": "Time requirement varies",
+    "resolutionText": "Success rate varies by case"
+  },
+  {
+    "id": 77,
+    "overtitle": "Not Assigned",
+    "title": "Not Assigned",
+    "description": "Not Assigned",
+    "costText": "Cost varies based on complexity",
+    "effortText": "Time requirement varies",
+    "resolutionText": "Success rate varies by case"
+  },
+  {
+    "id": 78,
+    "overtitle": "Not Assigned",
+    "title": "Not Assigned",
+    "description": "Not Assigned",
+    "costText": "Cost varies based on complexity",
+    "effortText": "Time requirement varies",
+    "resolutionText": "Success rate varies by case"
+  },
+  {
+    "id": 79,
+    "overtitle": "Not Assigned",
+    "title": "Not Assigned",
+    "description": "Not Assigned",
+    "costText": "Cost varies based on complexity",
+    "effortText": "Time requirement varies",
+    "resolutionText": "Success rate varies by case"
+  },
+  {
+    "id": 80,
+    "overtitle": "Not Assigned",
+    "title": "Not Assigned",
+    "description": "Not Assigned",
+    "costText": "Cost varies based on complexity",
+    "effortText": "Time requirement varies",
+    "resolutionText": "Success rate varies by case"
+  },
+  {
+    "id": 81,
+    "overtitle": "Not Assigned",
+    "title": "Not Assigned",
+    "description": "Not Assigned",
+    "costText": "Cost varies based on complexity",
+    "effortText": "Time requirement varies",
+    "resolutionText": "Success rate varies by case"
+  },
+  {
+    "id": 82,
+    "overtitle": "Not Assigned",
+    "title": "Not Assigned",
+    "description": "Not Assigned",
+    "costText": "Cost varies based on complexity",
+    "effortText": "Time requirement varies",
+    "resolutionText": "Success rate varies by case"
+  },
+  {
+    "id": 83,
+    "overtitle": "Not Assigned",
+    "title": "Not Assigned",
+    "description": "Not Assigned",
+    "costText": "Cost varies based on complexity",
+    "effortText": "Time requirement varies",
+    "resolutionText": "Success rate varies by case"
+  },
+  {
+    "id": 84,
+    "overtitle": "Not Assigned",
+    "title": "Not Assigned",
+    "description": "Not Assigned",
+    "costText": "Cost varies based on complexity",
+    "effortText": "Time requirement varies",
+    "resolutionText": "Success rate varies by case"
+  },
+  {
+    "id": 85,
+    "overtitle": "Not Assigned",
+    "title": "Not Assigned",
+    "description": "Not Assigned",
+    "costText": "Cost varies based on complexity",
+    "effortText": "Time requirement varies",
+    "resolutionText": "Success rate varies by case"
+  },
+  {
+    "id": 86,
+    "overtitle": "Not Assigned",
+    "title": "Not Assigned",
+    "description": "Not Assigned",
+    "costText": "Cost varies based on complexity",
+    "effortText": "Time requirement varies",
+    "resolutionText": "Success rate varies by case"
+  },
+  {
+    "id": 87,
+    "overtitle": "Not Assigned",
+    "title": "Not Assigned",
+    "description": "Not Assigned",
+    "costText": "Cost varies based on complexity",
+    "effortText": "Time requirement varies",
+    "resolutionText": "Success rate varies by case"
+  },
+  {
+    "id": 88,
+    "overtitle": "Not Assigned",
+    "title": "Not Assigned",
+    "description": "Not Assigned",
+    "costText": "Cost varies based on complexity",
+    "effortText": "Time requirement varies",
+    "resolutionText": "Success rate varies by case"
+  },
+  {
+    "id": 89,
+    "overtitle": "Not Assigned",
+    "title": "Not Assigned",
+    "description": "Not Assigned",
+    "costText": "Cost varies based on complexity",
+    "effortText": "Time requirement varies",
+    "resolutionText": "Success rate varies by case"
+  },
+  {
+    "id": 90,
+    "overtitle": "Not Assigned",
+    "title": "Not Assigned",
+    "description": "Not Assigned",
+    "costText": "Cost varies based on complexity",
+    "effortText": "Time requirement varies",
+    "resolutionText": "Success rate varies by case"
+  },
+  {
+    "id": 91,
+    "overtitle": "Not Assigned",
+    "title": "Not Assigned",
+    "description": "Not Assigned",
+    "costText": "Cost varies based on complexity",
+    "effortText": "Time requirement varies",
+    "resolutionText": "Success rate varies by case"
+  },
+  {
+    "id": 92,
+    "overtitle": "Not Assigned",
+    "title": "Not Assigned",
+    "description": "Not Assigned",
+    "costText": "Cost varies based on complexity",
+    "effortText": "Time requirement varies",
+    "resolutionText": "Success rate varies by case"
+  },
+  {
+    "id": 93,
+    "overtitle": "Not Assigned",
+    "title": "Not Assigned",
+    "description": "Not Assigned",
+    "costText": "Cost varies based on complexity",
+    "effortText": "Time requirement varies",
+    "resolutionText": "Success rate varies by case"
+  },
+  {
+    "id": 94,
+    "overtitle": "Not Assigned",
+    "title": "Not Assigned",
+    "description": "Not Assigned",
+    "costText": "Cost varies based on complexity",
+    "effortText": "Time requirement varies",
+    "resolutionText": "Success rate varies by case"
+  },
+  {
+    "id": 95,
+    "overtitle": "Not Assigned",
+    "title": "Not Assigned",
+    "description": "Not Assigned",
+    "costText": "Cost varies based on complexity",
+    "effortText": "Time requirement varies",
+    "resolutionText": "Success rate varies by case"
+  },
+  {
+    "id": 96,
+    "overtitle": "Not Assigned",
+    "title": "Not Assigned",
+    "description": "Not Assigned",
+    "costText": "Cost varies based on complexity",
+    "effortText": "Time requirement varies",
+    "resolutionText": "Success rate varies by case"
+  },
+  {
+    "id": 97,
+    "overtitle": "Not Assigned",
+    "title": "Not Assigned",
+    "description": "Not Assigned",
+    "costText": "Cost varies based on complexity",
+    "effortText": "Time requirement varies",
+    "resolutionText": "Success rate varies by case"
+  },
+  {
+    "id": 98,
+    "overtitle": "Not Assigned",
+    "title": "Not Assigned",
+    "description": "Not Assigned",
+    "costText": "Cost varies based on complexity",
+    "effortText": "Time requirement varies",
+    "resolutionText": "Success rate varies by case"
+  },
+  {
+    "id": 99,
+    "overtitle": "Not Assigned",
+    "title": "Not Assigned",
+    "description": "Not Assigned",
+    "costText": "Cost varies based on complexity",
+    "effortText": "Time requirement varies",
+    "resolutionText": "Success rate varies by case"
+  },
+  {
+    "id": 100,
+    "overtitle": "Not Assigned",
+    "title": "Not Assigned",
+    "description": "Not Assigned",
+    "costText": "Cost varies based on complexity",
+    "effortText": "Time requirement varies",
+    "resolutionText": "Success rate varies by case"
+  },
+  {
+    "id": 101,
+    "overtitle": "Not Assigned",
+    "title": "Not Assigned",
+    "description": "Not Assigned",
+    "costText": "Cost varies based on complexity",
+    "effortText": "Time requirement varies",
+    "resolutionText": "Success rate varies by case"
+  },
+  {
+    "id": 102,
+    "overtitle": "Not Assigned",
+    "title": "Not Assigned",
+    "description": "Not Assigned",
+    "costText": "Cost varies based on complexity",
+    "effortText": "Time requirement varies",
+    "resolutionText": "Success rate varies by case"
+  },
+  {
+    "id": 103,
+    "overtitle": "Not Assigned",
+    "title": "Not Assigned",
+    "description": "Not Assigned",
+    "costText": "Cost varies based on complexity",
+    "effortText": "Time requirement varies",
+    "resolutionText": "Success rate varies by case"
+  },
+  {
+    "id": 104,
+    "overtitle": "Not Assigned",
+    "title": "Not Assigned",
+    "description": "Not Assigned",
+    "costText": "Cost varies based on complexity",
+    "effortText": "Time requirement varies",
+    "resolutionText": "Success rate varies by case"
+  }
+] 

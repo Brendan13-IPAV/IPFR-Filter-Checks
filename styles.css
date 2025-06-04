@@ -560,3 +560,15 @@ select:focus {
         gap: 12px;
     }
 }
+
+.item-score {
+    background: linear-gradient(135deg, #10b981, #059669);
+    color: white;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(16, 185, 129, 0.2);
+}

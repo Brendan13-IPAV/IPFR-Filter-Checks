@@ -302,50 +302,74 @@
         }
 
         // Apply all filters
-        function applyFilters() {
-            const searchTerm = searchInput.value.toLowerCase();
-            const selectedSituation = situationFilter.value;
-            const selectedIPRight = ipRightsFilter.value;
+      // Apply all filters and calculate scores
+function applyFilters() {
+    const searchTerm = searchInput.value.toLowerCase();
+    const selectedSituation = situationFilter.value;
+    const selectedIPRight = ipRightsFilter.value;
 
-            // Filter strategies
-            filteredStrategies = allStrategies.filter(strategy => {
-                // Search filter
-                if (searchTerm) {
-                    const searchableText = [
-                        strategy.title,
-                        strategy.description,
-                        strategy.overtitle,
-                        ...(strategy.responseType || []),
-                        ...(strategy.ipTypeTags || [])
-                    ].join(' ').toLowerCase();
-                    
-                    if (!searchableText.includes(searchTerm)) {
-                        return false;
-                    }
-                }
-
-                // Situation filter
-                if (selectedSituation && strategy.responseType) {
-                    if (!strategy.responseType.includes(selectedSituation)) {
-                        return false;
-                    }
-                }
-
-                // IP Rights filter
-                if (selectedIPRight && strategy.ipTypeTags) {
-                    if (!strategy.ipTypeTags.includes(selectedIPRight) && 
-                        !strategy.ipTypeTags.includes('Any dispute')) {
-                        return false;
-                    }
-                }
-
-                return true;
-            });
-
-            updateActiveFilterDisplay();
-            updateResultsCount();
-            renderStrategies();
+    // Filter strategies
+    filteredStrategies = allStrategies.filter(strategy => {
+        // Search filter
+        if (searchTerm) {
+            const searchableText = [
+                strategy.title,
+                strategy.description,
+                strategy.overtitle,
+                ...(strategy.responseType || []),
+                ...(strategy.ipTypeTags || [])
+            ].join(' ').toLowerCase();
+            
+            if (!searchableText.includes(searchTerm)) {
+                return false;
+            }
         }
+
+        // Situation filter
+        if (selectedSituation && strategy.responseType) {
+            if (!strategy.responseType.includes(selectedSituation)) {
+                return false;
+            }
+        }
+
+        // IP Rights filter
+        if (selectedIPRight && strategy.ipTypeTags) {
+            if (!strategy.ipTypeTags.includes(selectedIPRight) && 
+                !strategy.ipTypeTags.includes('Any dispute')) {
+                return false;
+            }
+        }
+
+        return true;
+    });
+
+    // Calculate scores for each strategy
+    filteredStrategies = filteredStrategies.map(strategy => {
+        let score = 0;
+        
+        if (currentFilter && filterOptions[currentFilter.key]) {
+            const filterConfig = filterOptions[currentFilter.key];
+            const option = filterConfig.options[currentFilter.optionIndex];
+            
+            if (option && option.scoringValues && strategy.id <= option.scoringValues.length) {
+                // Get score for this strategy ID (array is 0-indexed, IDs start at 1)
+                score = option.scoringValues[strategy.id - 1] || 0;
+            }
+        }
+        
+        return {
+            ...strategy,
+            calculatedScore: score
+        };
+    });
+
+    // Sort by score (highest to lowest)
+    filteredStrategies.sort((a, b) => b.calculatedScore - a.calculatedScore);
+
+    updateActiveFilterDisplay();
+    updateResultsCount();
+    renderStrategies();
+}
 
         // Update active filter display (single prominent pill)
         function updateActiveFilterDisplay() {
@@ -437,52 +461,62 @@
         }
 
         // Create strategy card HTML
-        function createStrategyCard(strategy) {
-            const isFlagged = flaggedStrategies.has(strategy.id);
-            const flaggedData = flaggedStrategies.get(strategy.id);
+       // Create strategy card HTML
+function createStrategyCard(strategy) {
+    const isFlagged = flaggedStrategies.has(strategy.id);
+    const flaggedData = flaggedStrategies.get(strategy.id);
 
-            // Create tags for response types and IP types
-            const responseTags = (strategy.responseType || []).map(type => 
-                `<span class="tag">${type}</span>`
-            ).join('');
+    // Create tags for response types and IP types
+    const responseTags = (strategy.responseType || []).map(type => 
+        `<span class="tag">${type}</span>`
+    ).join('');
+    
+    const ipTags = (strategy.ipTypeTags || []).map(type => 
+        `<span class="tag">${type}</span>`
+    ).join('');
+
+    // Show score if there's an active filter
+    const scoreDisplay = strategy.calculatedScore > 0 ? `
+        <div class="item-score">
+            Score: ${strategy.calculatedScore}
+        </div>
+    ` : '';
+
+    return `
+        <div class="item-card ${isFlagged ? 'flagged' : ''}">
+            <div class="item-header">
+                ${strategy.overtitle ? `<div class="item-overtitle">${strategy.overtitle}</div>` : ''}
+                <div class="item-title">${strategy.title}</div>
+                <div class="item-description">${strategy.description}</div>
+            </div>
             
-            const ipTags = (strategy.ipTypeTags || []).map(type => 
-                `<span class="tag">${type}</span>`
-            ).join('');
-
-            return `
-                <div class="item-card ${isFlagged ? 'flagged' : ''}">
-                    <div class="item-header">
-                        ${strategy.overtitle ? `<div class="item-overtitle">${strategy.overtitle}</div>` : ''}
-                        <div class="item-title">${strategy.title}</div>
-                        <div class="item-description">${strategy.description}</div>
-                    </div>
-                    
-                    ${(responseTags || ipTags) ? `
-                        <div class="item-tags">
-                            ${responseTags}
-                            ${ipTags}
-                        </div>
-                    ` : ''}
-
-                    <div class="flag-section">
-                        ${isFlagged ? `
-                            <div class="flagged-indicator">
-                                🚩 Flagged for Review
-                            </div>
-                            <textarea class="flag-note" placeholder="Add review notes..." onchange="updateFlagNote(${strategy.id}, this.value)">${flaggedData?.note || ''}</textarea>
-                            <button class="btn btn-danger flag-button" onclick="unflagStrategy(${strategy.id})">
-                                Remove Flag
-                            </button>
-                        ` : `
-                            <button class="btn btn-primary flag-button" onclick="flagStrategy(${strategy.id})">
-                                🚩 Flag for Review
-                            </button>
-                        `}
-                    </div>
+            ${scoreDisplay}
+            
+            ${(responseTags || ipTags) ? `
+                <div class="item-tags">
+                    ${responseTags}
+                    ${ipTags}
                 </div>
-            `;
-        }
+            ` : ''}
+
+            <div class="flag-section">
+                ${isFlagged ? `
+                    <div class="flagged-indicator">
+                        🚩 Flagged for Review
+                    </div>
+                    <textarea class="flag-note" placeholder="Add review notes..." onchange="updateFlagNote(${strategy.id}, this.value)">${flaggedData?.note || ''}</textarea>
+                    <button class="btn btn-danger flag-button" onclick="unflagStrategy(${strategy.id})">
+                        Remove Flag
+                    </button>
+                ` : `
+                    <button class="btn btn-primary flag-button" onclick="flagStrategy(${strategy.id})">
+                        🚩 Flag for Review
+                    </button>
+                `}
+            </div>
+        </div>
+    `;
+}
 
         // Flag strategy for review
         function flagStrategy(strategyId) {

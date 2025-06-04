@@ -47,6 +47,29 @@
             font-size: 1.1rem;
         }
 
+        .main-layout {
+            display: grid;
+            grid-template-columns: 350px 1fr;
+            gap: 24px;
+            align-items: start;
+        }
+
+        .sidebar {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 20px;
+            max-height: calc(100vh - 40px);
+            overflow-y: auto;
+        }
+
+        .content-area {
+            min-width: 0;
+        }
+
         .controls {
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
@@ -140,24 +163,65 @@
         }
 
         .radio-button {
-            padding: 10px 14px;
+            padding: 12px 16px;
             border: 2px solid #e1e5e9;
-            border-radius: 6px;
+            border-radius: 8px;
             cursor: pointer;
             transition: all 0.3s ease;
             background: white;
             font-size: 14px;
+            font-weight: 500;
+            user-select: none;
         }
 
         .radio-button:hover {
             background: #f8f9fa;
             border-color: #667eea;
+            transform: translateY(-1px);
         }
 
         .radio-button.radio-selected {
             background: linear-gradient(135deg, #667eea, #764ba2);
             color: white;
             border-color: #667eea;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+
+        .active-filter-pill {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+            animation: slideIn 0.3s ease;
+        }
+
+        .active-filter-pill button {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-size: 18px;
+            padding: 4px 8px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            width: 24px;
+            height: 24px;
+        }
+
+        .active-filter-pill button:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.1);
         }
 
         .active-filters {
@@ -428,6 +492,18 @@
             }
         }
 
+        @media (max-width: 1024px) {
+            .main-layout {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+            
+            .sidebar {
+                position: static;
+                max-height: none;
+            }
+        }
+
         @media (max-width: 768px) {
             .container {
                 padding: 12px;
@@ -436,6 +512,24 @@
             .header h1 {
                 font-size: 1.8rem;
             }
+
+            .primary-filters {
+                grid-template-columns: 1fr;
+            }
+
+            .items-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .action-bar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .action-buttons {
+                justify-content: center;
+            }
+        }
 
             .primary-filters {
                 grid-template-columns: 1fr;
@@ -463,50 +557,56 @@
             <p>Filter, explore, and flag IP strategies for detailed review</p>
         </div>
 
-        <div class="controls">
-            <input type="text" class="search-bar" id="searchInput" placeholder="🔍 Search strategies by title, description, or approach...">
-            
-            <div class="primary-filters">
-                <div class="filter-group">
-                    <label class="filter-label">Situation Type</label>
-                    <select id="situationFilter">
-                        <option value="">All Situations</option>
-                        <option value="Enforcement">I believe my IP has been infringed</option>
-                        <option value="Accused">I've been accused of infringement</option>
-                        <option value="Disagree">I want help on IP processes</option>
-                        <option value="Proactive">I want to prevent future IP headaches</option>
-                    </select>
+        <div class="main-layout">
+            <div class="sidebar">
+                <div class="primary-filters">
+                    <div class="filter-group">
+                        <label class="filter-label">Situation Type</label>
+                        <select id="situationFilter">
+                            <option value="">All Situations</option>
+                            <option value="Enforcement">I believe my IP has been infringed</option>
+                            <option value="Accused">I've been accused of infringement</option>
+                            <option value="Disagree">I want help on IP processes</option>
+                            <option value="Proactive">I want to prevent future IP headaches</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-group">
+                        <label class="filter-label">IP Rights Type</label>
+                        <select id="ipRightsFilter">
+                            <option value="">All IP Rights</option>
+                            <option value="Patent">Patents</option>
+                            <option value="Trade mark">Trade marks</option>
+                            <option value="Design">Design rights</option>
+                            <option value="PBR">Plant breeder's rights</option>
+                            <option value="Copyright">Copyright</option>
+                            <option value="Any dispute">Any IP right</option>
+                        </select>
+                    </div>
                 </div>
 
-                <div class="filter-group">
-                    <label class="filter-label">IP Rights Type</label>
-                    <select id="ipRightsFilter">
-                        <option value="">All IP Rights</option>
-                        <option value="Patent">Patents</option>
-                        <option value="Trade mark">Trade marks</option>
-                        <option value="Design">Design rights</option>
-                        <option value="PBR">Plant breeder's rights</option>
-                        <option value="Copyright">Copyright</option>
-                        <option value="Any dispute">Any IP right</option>
-                    </select>
-                </div>
+                <div id="accordionContainer"></div>
             </div>
 
-            <div id="accordionContainer"></div>
+            <div class="content-area">
+                <div class="controls">
+                    <input type="text" class="search-bar" id="searchInput" placeholder="🔍 Search strategies by title, description, or approach...">
+                    
+                    <div id="activeFilterPill"></div>
 
-            <div class="active-filters" id="activeFilters"></div>
+                    <div class="action-bar">
+                        <div class="results-count" id="resultsCount">Loading...</div>
+                        <div class="action-buttons">
+                            <button class="btn btn-secondary" id="clearFilters">🗑️ Clear All Filters</button>
+                            <button class="btn btn-primary" id="exportBtn">📥 Export Flagged Strategies (<span id="flaggedCount">0</span>)</button>
+                        </div>
+                    </div>
+                </div>
 
-            <div class="action-bar">
-                <div class="results-count" id="resultsCount">Loading...</div>
-                <div class="action-buttons">
-                    <button class="btn btn-secondary" id="clearFilters">🗑️ Clear All Filters</button>
-                    <button class="btn btn-primary" id="exportBtn">📥 Export Flagged Strategies (<span id="flaggedCount">0</span>)</button>
+                <div class="items-grid" id="itemsContainer">
+                    <div class="loading">Loading strategy data...</div>
                 </div>
             </div>
-        </div>
-
-        <div class="items-grid" id="itemsContainer">
-            <div class="loading">Loading strategy data...</div>
         </div>
     </div>
 
@@ -515,7 +615,7 @@
         let allStrategies = [];
         let filteredStrategies = [];
         let flaggedStrategies = new Map(); // id -> {strategy, note, timestamp}
-        let activeFilters = {};
+        let currentFilter = null; // Only one filter at a time
         let accordionState = {};
         let filterOptions = {};
         let accordionPresets = {};
@@ -525,7 +625,7 @@
         const situationFilter = document.getElementById('situationFilter');
         const ipRightsFilter = document.getElementById('ipRightsFilter');
         const accordionContainer = document.getElementById('accordionContainer');
-        const activeFiltersContainer = document.getElementById('activeFilters');
+        const activeFilterPill = document.getElementById('activeFilterPill');
         const resultsCount = document.getElementById('resultsCount');
         const itemsContainer = document.getElementById('itemsContainer');
         const clearFiltersBtn = document.getElementById('clearFilters');
@@ -590,16 +690,20 @@
             Object.entries(accordions).forEach(([accordionTitle, filterKeys]) => {
                 const accordionKey = accordionTitle.toLowerCase().replace(/\s+/g, '');
                 
+                // Check if any filter in this accordion is currently active
+                const hasActiveFilter = filterKeys.some(key => 
+                    currentFilter && currentFilter.key === key
+                );
+                
                 // Create accordion header
                 const header = document.createElement('div');
                 header.className = 'accordion-header';
                 
-                const selectionCount = filterKeys.filter(key => activeFilters[key] !== undefined).length;
-                const selectionText = selectionCount > 0 ? ` (${selectionCount} selected)` : '';
+                const activeText = hasActiveFilter ? ' ✓' : '';
                 
                 header.innerHTML = `
                     <span style="display:inline-block; transition: transform 0.3s ease; transform: ${accordionState[accordionKey] ? 'rotate(90deg)' : 'rotate(0deg)'};">▶</span>
-                    ${accordionTitle}${selectionText}
+                    ${accordionTitle}${activeText}
                 `;
                 
                 header.onclick = () => {
@@ -632,17 +736,28 @@
                         filterConfig.options.forEach((option, index) => {
                             const radio = document.createElement('div');
                             radio.className = 'radio-button';
-                            if (activeFilters[filterKey] === index) {
+                            
+                            // Check if this specific option is currently active
+                            if (currentFilter && currentFilter.key === filterKey && currentFilter.optionIndex === index) {
                                 radio.classList.add('radio-selected');
                             }
+                            
                             radio.textContent = option.label;
                             radio.onclick = () => {
-                                if (activeFilters[filterKey] === index) {
-                                    delete activeFilters[filterKey];
+                                // If clicking the same filter, clear it
+                                if (currentFilter && currentFilter.key === filterKey && currentFilter.optionIndex === index) {
+                                    currentFilter = null;
                                 } else {
-                                    activeFilters[filterKey] = index;
+                                    // Set new filter (only one at a time)
+                                    currentFilter = {
+                                        key: filterKey,
+                                        optionIndex: index,
+                                        config: filterConfig,
+                                        option: option
+                                    };
                                 }
                                 applyFilters();
+                                renderAccordions();
                             };
                             radioGroup.appendChild(radio);
                         });
@@ -676,11 +791,6 @@
             const searchTerm = searchInput.value.toLowerCase();
             const selectedSituation = situationFilter.value;
             const selectedIPRight = ipRightsFilter.value;
-
-            // Update active filters object
-            activeFilters.search = searchTerm;
-            activeFilters.situation = selectedSituation;
-            activeFilters.ipRight = selectedIPRight;
 
             // Filter strategies
             filteredStrategies = allStrategies.filter(strategy => {
@@ -717,70 +827,35 @@
                 return true;
             });
 
-            updateActiveFiltersDisplay();
+            updateActiveFilterDisplay();
             updateResultsCount();
             renderStrategies();
         }
 
-        // Update active filters display
-        function updateActiveFiltersDisplay() {
-            activeFiltersContainer.innerHTML = '';
+        // Update active filter display (single prominent pill)
+        function updateActiveFilterDisplay() {
+            activeFilterPill.innerHTML = '';
 
-            if (activeFilters.search) {
-                addFilterChip('Search', `"${activeFilters.search}"`, 'search');
-            }
-
-            if (activeFilters.situation) {
-                const situationText = situationFilter.options[situationFilter.selectedIndex].text;
-                addFilterChip('Situation', situationText, 'situation');
-            }
-
-            if (activeFilters.ipRight) {
-                const ipRightText = ipRightsFilter.options[ipRightsFilter.selectedIndex].text;
-                addFilterChip('IP Right', ipRightText, 'ipRight');
-            }
-
-            // Add accordion filter chips
-            Object.entries(activeFilters).forEach(([filterKey, optionIndex]) => {
-                if (['search', 'situation', 'ipRight'].includes(filterKey)) return;
+            if (currentFilter) {
+                const config = currentFilter.config;
+                const option = currentFilter.option;
                 
-                const filterConfig = filterOptions[filterKey];
-                if (filterConfig && filterConfig.options[optionIndex]) {
-                    const option = filterConfig.options[optionIndex];
-                    let pillText = filterConfig.pillTemplate || `${filterConfig.label}: ${option.label}`;
-                    pillText = pillText.replace('{optionLabel}', option.pillLabel || option.label);
-                    addFilterChip('Filter', pillText, filterKey);
-                }
-            });
-        }
+                let pillText = config.pillTemplate || `${config.label}: ${option.label}`;
+                pillText = pillText.replace('{optionLabel}', option.pillLabel || option.label);
 
-        // Add filter chip
-        function addFilterChip(label, value, type) {
-            const chip = document.createElement('div');
-            chip.className = 'filter-chip';
-            chip.innerHTML = `
-                <span>${value}</span>
-                <button onclick="removeFilter('${type}')">×</button>
-            `;
-            activeFiltersContainer.appendChild(chip);
-        }
-
-        // Remove specific filter
-        function removeFilter(type) {
-            switch (type) {
-                case 'search':
-                    searchInput.value = '';
-                    break;
-                case 'situation':
-                    situationFilter.value = '';
-                    break;
-                case 'ipRight':
-                    ipRightsFilter.value = '';
-                    break;
-                default:
-                    delete activeFilters[type];
-                    break;
+                const pill = document.createElement('div');
+                pill.className = 'active-filter-pill';
+                pill.innerHTML = `
+                    <span>${pillText}</span>
+                    <button onclick="clearCurrentFilter()">×</button>
+                `;
+                activeFilterPill.appendChild(pill);
             }
+        }
+
+        // Clear current filter
+        function clearCurrentFilter() {
+            currentFilter = null;
             applyFilters();
             renderAccordions();
         }
@@ -790,7 +865,7 @@
             searchInput.value = '';
             situationFilter.value = '';
             ipRightsFilter.value = '';
-            activeFilters = {};
+            currentFilter = null;
             accordionState = {};
             applyFilters();
             renderAccordions();
@@ -902,54 +977,31 @@
             exportBtn.disabled = flaggedStrategies.size === 0;
         }
 
-        // Export flagged strategies
+        // Export flagged strategies (CSV only)
         function exportFlaggedStrategies() {
             if (flaggedStrategies.size === 0) {
                 alert('No strategies flagged for review');
                 return;
             }
 
-            const exportData = {
-                export_timestamp: new Date().toISOString(),
-                total_flagged_strategies: flaggedStrategies.size,
-                applied_filters: {
-                    search: activeFilters.search,
-                    situation: situationFilter.value,
-                    ipRight: ipRightsFilter.value,
-                    additional_filters: Object.fromEntries(
-                        Object.entries(activeFilters).filter(([key]) => 
-                            !['search', 'situation', 'ipRight'].includes(key)
-                        )
-                    )
-                },
-                flagged_strategies: Array.from(flaggedStrategies.values()).map(flaggedData => ({
-                    ...flaggedData.strategy,
-                    flag_note: flaggedData.note,
-                    flag_timestamp: flaggedData.timestamp
-                }))
-            };
+            // Create simplified CSV data with only required fields
+            const csvData = Array.from(flaggedStrategies.values()).map(flaggedData => ({
+                ID: flaggedData.strategy.id,
+                Name: flaggedData.strategy.title,
+                flag_note: flaggedData.note,
+                flag_timestamp: flaggedData.timestamp
+            }));
 
-            // Create and download JSON file
-            const jsonBlob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
-            const jsonUrl = URL.createObjectURL(jsonBlob);
-            
-            // Create and download CSV file
-            const csvData = convertToCSV(exportData.flagged_strategies);
-            const csvBlob = new Blob([csvData], { type: 'text/csv' });
+            // Convert to CSV
+            const csvContent = convertToCSV(csvData);
+            const csvBlob = new Blob([csvContent], { type: 'text/csv' });
             const csvUrl = URL.createObjectURL(csvBlob);
             
-            // Show export options
-            const exportChoice = confirm('Export complete!\n\nClick OK to download JSON format\nClick Cancel to download CSV format');
-            
-            if (exportChoice) {
-                downloadFile(jsonUrl, `flagged_ip_strategies_${new Date().toISOString().split('T')[0]}.json`);
-            } else {
-                downloadFile(csvUrl, `flagged_ip_strategies_${new Date().toISOString().split('T')[0]}.csv`);
-            }
+            // Download CSV file
+            downloadFile(csvUrl, `flagged_ip_strategies_${new Date().toISOString().split('T')[0]}.csv`);
 
-            // Clean up URLs
+            // Clean up URL
             setTimeout(() => {
-                URL.revokeObjectURL(jsonUrl);
                 URL.revokeObjectURL(csvUrl);
             }, 1000);
         }
@@ -1030,7 +1082,7 @@
         window.flagStrategy = flagStrategy;
         window.unflagStrategy = unflagStrategy;
         window.updateFlagNote = updateFlagNote;
-        window.removeFilter = removeFilter;
+        window.clearCurrentFilter = clearCurrentFilter;
 
         // Initialize when page loads
         document.addEventListener('DOMContentLoaded', init);

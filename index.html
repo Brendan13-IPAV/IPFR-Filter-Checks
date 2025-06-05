@@ -400,7 +400,7 @@
             justify-content: space-between;
         }
 
-        .score-display {
+        .score-input {
             background: #f3f4f6;
             color: #374151;
             border: 1px solid #d1d5db;
@@ -408,6 +408,14 @@
             border-radius: 4px;
             font-size: 13px;
             font-weight: 600;
+            width: 50px;
+            text-align: center;
+        }
+
+        .score-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.1);
         }
 
         .score-buttons {
@@ -720,42 +728,9 @@
                 changesIndicator.classList.remove('visible');
             }
         }
-// Get current accordion layout based on selections
-function getAccordionLayout() {
-    const selectedSituation = situationFilter.value;
-    const selectedIPRight = ipRightsFilter.value;
-
-    // Map IP rights to preset keys (matching your accordionPresets.json)
-    const ipRightMap = {
-        'Patent': 'Patent',
-        'Trade mark': 'Trademark',
-        'Design': 'Design',
-        'PBR': 'PBR',
-        'Copyright': 'Copyright',
-        'Any dispute': 'Any'
-    };
-
-    const rightKey = ipRightMap[selectedIPRight] || '';
-    const situationKey = selectedSituation || '';
-    
-    // Build preset key like "Patent-Enforcement" or "Trademark-Accused"
-    let presetKey = '';
-    if (rightKey && situationKey) {
-        presetKey = `${rightKey}-${situationKey}`;
-    }
-
-    console.log('Selected situation:', selectedSituation);
-    console.log('Selected IP right:', selectedIPRight);
-    console.log('Mapped preset key:', presetKey);
-    console.log('Available presets:', Object.keys(accordionPresets));
-
-    // Try to find the specific preset, fallback to default
-    const layout = accordionPresets[presetKey] || accordionPresets.default;
-    
-    console.log('Using layout:', layout);
-    
-    return layout;
-}
+        function getAccordionLayout() {
+            return accordionPresets.default;
+        }
 
         // Render accordion filters
         function renderAccordions() {
@@ -1082,7 +1057,14 @@ function getAccordionLayout() {
                     <div class="card-description">${strategy.description}</div>
                 </div>
                 <div class="card-controls">
-                    <div class="score-display">${isNA ? 'N/A' : strategy.calculatedScore}</div>
+                    <input type="number" 
+                           class="score-input" 
+                           value="${isNA ? '0' : strategy.calculatedScore}" 
+                           min="0" 
+                           max="3" 
+                           step="0.1" 
+                           onchange="setScore(${strategy.id}, this.value)"
+                           title="Enter score (0-3.0)">
                     <div class="score-buttons">
                         <button class="score-btn" onclick="adjustScore(${strategy.id}, 0.1)" title="Increase score" ${isNA ? 'disabled' : ''}>▲</button>
                         <button class="score-btn" onclick="adjustScore(${strategy.id}, -0.1)" title="Decrease score" ${isNA ? 'disabled' : ''}>▼</button>
@@ -1108,7 +1090,23 @@ function getAccordionLayout() {
             applyFilters(); // Re-render with new scores
         }
 
-        // Toggle N/A status
+        // Set specific score value
+        function setScore(strategyId, value) {
+            const strategy = filteredStrategies.find(s => s.id === strategyId);
+            if (!strategy) return;
+
+            let newScore = parseFloat(value);
+            if (isNaN(newScore)) newScore = 1.0;
+            
+            // Clamp between 0 and 3.0
+            newScore = Math.max(0, Math.min(3.0, newScore));
+            const roundedScore = Math.round(newScore * 10) / 10;
+            
+            customScores[strategyId] = roundedScore;
+            hasUnsavedChanges = true;
+            updateChangesIndicator();
+            applyFilters(); // Re-render with new scores
+        }
         function toggleNA(strategyId) {
             const strategy = filteredStrategies.find(s => s.id === strategyId);
             if (!strategy) return;
@@ -1265,9 +1263,8 @@ function getAccordionLayout() {
             const csvBlob = new Blob([csvContent], { type: 'text/csv' });
             const csvUrl = URL.createObjectURL(csvBlob);
             
-            const dateStr = new Date().toISOString().split('T')[0];
-            const timeStr = new Date().toTimeString().split(' ')[0].replace(/:/g, '-');
-            const filename = `ip_strategy_scores_${userNameValue.replace(/[^a-zA-Z0-9]/g, '_')}_${dateStr}_${timeStr}.csv`;
+            const dateStr = new Date().toISOString().split('T')[0].replace(/-/g, '');
+            const filename = `${currentFilter ? currentFilter.key : 'NoFilter'}_${ipRightsFilter.value || 'AllRights'}_${situationFilter.value || 'AllSituations'}_${userNameValue.replace(/[^a-zA-Z0-9]/g, '_')}_${dateStr}.csv`;
             
             downloadFile(csvUrl, filename);
             
@@ -1323,6 +1320,7 @@ function getAccordionLayout() {
 
         // Make functions globally available
         window.adjustScore = adjustScore;
+        window.setScore = setScore;
         window.toggleNA = toggleNA;
         window.clearCurrentFilter = clearCurrentFilter;
         window.closeWarningModal = closeWarningModal;

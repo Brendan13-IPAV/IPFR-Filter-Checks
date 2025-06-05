@@ -4,71 +4,507 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IP Strategy Explorer - Flag & Filter Interface</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>IP Strategy Score Editor</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .header h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 1.1rem;
+            margin-bottom: 16px;
+        }
+
+        .header-controls {
+            display: grid;
+            grid-template-columns: 200px 1fr 200px;
+            gap: 24px;
+            align-items: end;
+            margin-top: 20px;
+        }
+
+        .user-info {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .user-info label {
+            font-weight: 600;
+            color: #374151;
+            font-size: 14px;
+        }
+
+        .user-info input {
+            padding: 8px 12px;
+            border: 2px solid #e1e5e9;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .user-info input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .primary-filters {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .filter-label {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #374151;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        select {
+            padding: 12px 16px;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .top-controls {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 8px;
+        }
+
+        .results-count {
+            font-weight: 600;
+            color: #374151;
+            font-size: 14px;
+        }
+
+        .control-buttons {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 13px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-secondary {
+            background: #f8f9fa;
+            color: #495057;
+            border: 2px solid #e9ecef;
+        }
+
+        .btn-secondary:hover {
+            background: #e9ecef;
+            transform: translateY(-1px);
+        }
+
+        .btn-primary {
+            background: #667eea;
+            color: white;
+            border: 1px solid #667eea;
+        }
+
+        .btn-primary:hover {
+            background: #5a6fd8;
+            transform: translateY(-1px);
+        }
+
+        .main-layout {
+            display: grid;
+            grid-template-columns: 350px 1fr;
+            gap: 24px;
+            align-items: start;
+        }
+
+        .sidebar {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 20px;
+            max-height: calc(100vh - 40px);
+            overflow-y: auto;
+        }
+
+        .content-area {
+            min-width: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .active-filter-pill {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .active-filter-pill button {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-size: 18px;
+            padding: 4px 8px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            width: 24px;
+            height: 24px;
+        }
+
+        .active-filter-pill button:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.1);
+        }
+
+        .accordion-header {
+            background: #f8f9fa;
+            padding: 12px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-bottom: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .accordion-header:hover {
+            background: #e9ecef;
+            border-color: #667eea;
+        }
+
+        .accordion-content {
+            background: white;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 16px;
+            border: 1px solid #e1e5e9;
+        }
+
+        .radio-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .radio-button {
+            padding: 12px 16px;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: white;
+            font-size: 14px;
+            font-weight: 500;
+            user-select: none;
+        }
+
+        .radio-button:hover {
+            background: #f8f9fa;
+            border-color: #667eea;
+            transform: translateY(-1px);
+        }
+
+        .radio-button.radio-selected {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border-color: #667eea;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+
+        /* SCORE-BASED GRID LAYOUT */
+        .score-group {
+            margin-bottom: 32px;
+        }
+
+        .score-header {
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            padding: 12px 20px;
+            margin-bottom: 16px;
+            font-weight: 700;
+            font-size: 16px;
+            color: #374151;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .score-badge {
+            background: #667eea;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .strategies-row {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 16px;
+        }
+
+        .strategy-card {
+            background: white;
+            border: 2px solid #e1e5e9;
+            border-radius: 12px;
+            padding: 16px;
+            transition: all 0.3s ease;
+            position: relative;
+            min-height: 280px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .strategy-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            border-color: #667eea;
+        }
+
+        .strategy-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+        }
+
+        .card-header {
+            margin-bottom: 12px;
+            flex: 1;
+        }
+
+        .card-overtitle {
+            font-size: 11px;
+            color: #667eea;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .card-title {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 8px;
+            line-height: 1.3;
+        }
+
+        .card-description {
+            color: #6b7280;
+            line-height: 1.4;
+            font-size: 13px;
+        }
+
+        .card-controls {
+            border-top: 1px solid #e5e7eb;
+            padding-top: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .score-display {
+            background: #f3f4f6;
+            color: #374151;
+            border: 1px solid #d1d5db;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .score-buttons {
+            display: flex;
+            gap: 4px;
+        }
+
+        .score-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            transition: all 0.2s ease;
+        }
+
+        .score-btn:hover {
+            background: #5a6fd8;
+            transform: scale(1.1);
+        }
+
+        .score-btn:disabled {
+            background: #d1d5db;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 60px 40px;
+            color: #666;
+        }
+
+        .no-results h3 {
+            font-size: 1.5rem;
+            margin-bottom: 12px;
+            color: #374151;
+        }
+    </style>
 </head>
     
 <body>
     <div class="container">
-
         <div class="header">
-    <h1>IP Strategy Explorer</h1>
-    <p>Filter, explore, and flag IP strategies for detailed review</p>
-    
-    <div class="header-controls">
-        <div class="user-info">
-            <label for="userName">Your Name:</label>
-            <input type="text" id="userName" placeholder="Enter your name for flagging" />
-        </div>
-        
-        <div class="primary-filters">
-            <div class="filter-group">
-                <label class="filter-label">Situation Type</label>
-                <select id="situationFilter">
-                    <option value="">All Situations</option>
-                    <option value="Enforcement">I believe my IP has been infringed</option>
-                    <option value="Accused">I've been accused of infringement</option>
-                    <option value="Disagree">I want help on IP processes</option>
-                    <option value="Proactive">I want to prevent future IP headaches</option>
-                </select>
-            </div>
-            <div class="filter-group">
-                <label class="filter-label">IP Rights Type</label>
-                <select id="ipRightsFilter">
-                    <option value="">All IP Rights</option>
-                    <option value="Patent">Patents</option>
-                    <option value="Trade mark">Trade marks</option>
-                    <option value="Design">Design rights</option>
-                    <option value="PBR">Plant breeder's rights</option>
-                    <option value="Copyright">Copyright</option>
-                    <option value="Any dispute">Any IP right</option>
-                </select>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="main-layout">
-    <div class="sidebar">
-        <div id="accordionContainer"></div>
-    </div>
-
-            <div class="content-area">
-                <div class="controls">
-                    <input type="text" class="search-bar" id="searchInput" placeholder="🔍 Search strategies by title, description, or approach...">
-                    
-                    <div id="activeFilterPill"></div>
-
-                    <div class="action-bar">
-                        <div class="results-count" id="resultsCount">Loading...</div>
-                        <div class="action-buttons">
-                            <button class="btn btn-secondary" id="clearFilters">🗑️ Clear All Filters</button>
-                            <button class="btn btn-primary" id="exportBtn">📥 Export Flagged Strategies (<span id="flaggedCount">0</span>)</button>
-                        </div>
+            <h1>IP Strategy Score Editor</h1>
+            <p>Filter strategies, adjust scores, and export your custom rankings</p>
+            
+            <div class="header-controls">
+                <div class="user-info">
+                    <label for="userName">Your Name:</label>
+                    <input type="text" id="userName" placeholder="Enter your name" />
+                </div>
+                
+                <div class="primary-filters">
+                    <div class="filter-group">
+                        <label class="filter-label">Situation Type</label>
+                        <select id="situationFilter">
+                            <option value="">All Situations</option>
+                            <option value="Enforcement">I believe my IP has been infringed</option>
+                            <option value="Accused">I've been accused of infringement</option>
+                            <option value="Disagree">I want help on IP processes</option>
+                            <option value="Proactive">I want to prevent future IP headaches</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label class="filter-label">IP Rights Type</label>
+                        <select id="ipRightsFilter">
+                            <option value="">All IP Rights</option>
+                            <option value="Patent">Patents</option>
+                            <option value="Trade mark">Trade marks</option>
+                            <option value="Design">Design rights</option>
+                            <option value="PBR">Plant breeder's rights</option>
+                            <option value="Copyright">Copyright</option>
+                            <option value="Any dispute">Any IP right</option>
+                        </select>
                     </div>
                 </div>
 
-                <div class="items-grid" id="itemsContainer">
+                <div class="top-controls">
+                    <div class="results-count" id="resultsCount">Loading...</div>
+                    <div class="control-buttons">
+                        <button class="btn btn-secondary" id="clearFilters">🗑️ Clear</button>
+                        <button class="btn btn-primary" id="exportBtn">📤 Export CSV</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="main-layout">
+            <div class="sidebar">
+                <div id="accordionContainer"></div>
+            </div>
+
+            <div class="content-area">
+                <div id="activeFilterPill"></div>
+                <div id="strategiesContainer">
                     <div class="loading">Loading strategy data...</div>
                 </div>
             </div>
@@ -79,305 +515,190 @@
         // Application state
         let allStrategies = [];
         let filteredStrategies = [];
-        let flaggedStrategies = new Map(); // id -> {strategy, note, timestamp}
-        let currentFilter = null; // Only one filter at a time
+        let currentFilter = null;
         let accordionState = {};
         let filterOptions = {};
         let accordionPresets = {};
+        let customScores = {}; // Store custom score adjustments
 
         // DOM elements
-        const searchInput = document.getElementById('searchInput');
+        const userName = document.getElementById('userName');
         const situationFilter = document.getElementById('situationFilter');
         const ipRightsFilter = document.getElementById('ipRightsFilter');
+        const clearFilters = document.getElementById('clearFilters');
+        const exportBtn = document.getElementById('exportBtn');
+        const resultsCount = document.getElementById('resultsCount');
         const accordionContainer = document.getElementById('accordionContainer');
         const activeFilterPill = document.getElementById('activeFilterPill');
-        const resultsCount = document.getElementById('resultsCount');
-        const itemsContainer = document.getElementById('itemsContainer');
-        const clearFiltersBtn = document.getElementById('clearFilters');
-        const exportBtn = document.getElementById('exportBtn');
-        const flaggedCount = document.getElementById('flaggedCount');
-        const userName = document.getElementById('userName');
+        const strategiesContainer = document.getElementById('strategiesContainer');
 
-        // Load all data files
-        async function loadData() {
-            try {
-                const [strategiesContent, strategiesMetadata, filterOptionsData, accordionPresetsData] = await Promise.all([
-                    fetch('strategies-content.json').then(res => res.json()),
-                    fetch('strategies-metadata.json').then(res => res.json()),
-                    fetch('filterOptions.json').then(res => res.json()),
-                    fetch('accordionPresets.json').then(res => res.json())
-                ]);
+        // Sample data for demo
+        const sampleStrategies = [
+            { id: 1, overtitle: "Patent opposition", title: "Challenge a new or amended patent", description: "Initiate a challenge to the validity of a new patent with IP Australia.", responseType: ["Enforcement","Proactive"], ipTypeTags: ["Patent"] },
+            { id: 2, overtitle: "Contact intermediaries", title: "Contact platform providers", description: "Work with online platforms to address IP infringement.", responseType: ["Enforcement","Proactive"], ipTypeTags: ["Any dispute"] },
+            { id: 3, overtitle: "Letter of demand", title: "Understanding a letter of demand", description: "Learn how to respond to formal IP infringement claims.", responseType: ["Accused"], ipTypeTags: ["Any dispute"] },
+            { id: 4, overtitle: "Evaluate situation", title: "Choose not to respond immediately", description: "When to delay responding to groundless IP infringement claims.", responseType: ["Accused"], ipTypeTags: ["Any dispute"] },
+            { id: 5, overtitle: "Develop new IP", title: "Create alternative products", description: "Develop products that don't use contested IP.", responseType: ["Accused","Proactive"], ipTypeTags: ["Trade mark","Patent"] },
+            { id: 6, overtitle: "Consider demand", title: "De-escalate by ceasing use", description: "Stop using contested IP to resolve disputes.", responseType: ["Accused"], ipTypeTags: ["Any dispute"] },
+            { id: 7, overtitle: "Legal advice", title: "Obtain professional legal advice", description: "Get expert guidance on IP infringement matters.", responseType: ["Enforcement","Accused"], ipTypeTags: ["Any dispute"] },
+            { id: 8, overtitle: "Trade mark registration", title: "Register your trade mark", description: "Apply to IP Australia for trademark protection.", responseType: ["Proactive"], ipTypeTags: ["Trade mark"] }
+        ];
 
-                // Merge content and metadata
-                allStrategies = strategiesContent.map(content => {
-                    const metadata = strategiesMetadata.find(meta => meta.id === content.id);
-                    return { ...content, ...metadata };
-                });
-
-                filterOptions = filterOptionsData.filters;
-                accordionPresets = accordionPresetsData;
-
-                return true;
-            } catch (error) {
-                console.error('Error loading data:', error);
-                return false;
+        const sampleFilterOptions = {
+            "preferredApproach": {
+                "label": "Type of approach",
+                "pillTemplate": "Prioritising {optionLabel}",
+                "options": [
+                    { "label": "Challenge", "pillLabel": "adversarial approaches", "scoringValues": [1.2, 0.8, 0.8, 1.0, 0.9, 0.7, 1.1, 0.8] },
+                    { "label": "Assess", "pillLabel": "information gathering approaches", "scoringValues": [0.9, 0.8, 1.2, 1.3, 0.8, 0.9, 1.0, 0.9] },
+                    { "label": "Negotiate", "pillLabel": "negotiated approaches", "scoringValues": [0.8, 0.8, 0.8, 0.7, 1.1, 1.2, 1.3, 0.9] }
+                ]
+            },
+            "BusinessIssue": {
+                "label": "Options relevant to:",
+                "pillTemplate": "Involving {optionLabel}",
+                "options": [
+                    { "label": "Physical goods/products", "pillLabel": "goods or products", "scoringValues": [1.1, 1.1, 0.7, 0.8, 1.3, 0.9, 0.8, 1.0] },
+                    { "label": "Services", "pillLabel": "services", "scoringValues": [0.8, 0.8, 0.8, 0.9, 0.7, 1.0, 1.1, 1.2] },
+                    { "label": "Know-how or methods", "pillLabel": "know-how, methods", "scoringValues": [1.3, 0.7, 0.8, 1.1, 1.2, 0.8, 1.0, 0.9] }
+                ]
             }
+        };
+
+        const sampleAccordionPresets = {
+            "default": {
+                "topFilters": ["preferredApproach", "BusinessIssue"],
+                "accordions": {}
+            }
+        };
+
+        // Load sample data
+        function loadData() {
+            allStrategies = sampleStrategies;
+            filterOptions = sampleFilterOptions;
+            accordionPresets = sampleAccordionPresets;
+            return Promise.resolve(true);
         }
 
-        // Get current accordion layout based on selections
+        // Get current accordion layout
         function getAccordionLayout() {
-            const selectedSituation = situationFilter.value;
-            const selectedIPRight = ipRightsFilter.value;
-
-            // Map IP rights to preset keys
-            const ipRightMap = {
-                'Patent': 'Patent',
-                'Trade mark': 'Trademark',
-                'Design': 'Design',
-                'PBR': 'PBR',
-                'Copyright': 'Copyright',
-                'Any dispute': 'Any'
-            };
-
-            const rightKey = ipRightMap[selectedIPRight] || '';
-            const situationKey = selectedSituation || '';
-            const presetKey = rightKey && situationKey ? `${rightKey}-${situationKey}` : '';
-
-            return accordionPresets[presetKey] || accordionPresets.default;
+            return accordionPresets.default;
         }
 
         // Render accordion filters
         function renderAccordions() {
-    accordionContainer.innerHTML = '';
-    
-    const layout = getAccordionLayout();
-    const accordions = layout.accordions || {};
-    const topFilters = layout.topFilters || [];
+            accordionContainer.innerHTML = '';
+            
+            const layout = getAccordionLayout();
+            const topFilters = layout.topFilters || [];
 
-    // Render top filters (outside accordions)
-    if (topFilters.length > 0) {
-        const topFiltersSection = document.createElement('div');
-        topFiltersSection.innerHTML = '<h3 style="margin-bottom: 16px; color: #374151; font-size: 16px;">Additional Filters</h3>';
-        
-        topFilters.forEach(filterKey => {
-            const filterConfig = filterOptions[filterKey];
-            if (!filterConfig) return;
-
-            const group = document.createElement('div');
-            group.style.marginBottom = '20px';
-
-            const label = document.createElement('div');
-            label.className = 'filter-label';
-            label.textContent = filterConfig.label;
-            group.appendChild(label);
-
-            const radioGroup = document.createElement('div');
-            radioGroup.className = 'radio-group';
-
-            filterConfig.options.forEach((option, index) => {
-                const radio = document.createElement('div');
-                radio.className = 'radio-button';
+            if (topFilters.length > 0) {
+                const topFiltersSection = document.createElement('div');
+                topFiltersSection.innerHTML = '<h3 style="margin-bottom: 16px; color: #374151; font-size: 16px;">Filters</h3>';
                 
-                if (currentFilter && currentFilter.key === filterKey && currentFilter.optionIndex === index) {
-                    radio.classList.add('radio-selected');
+                topFilters.forEach(filterKey => {
+                    const filterConfig = filterOptions[filterKey];
+                    if (!filterConfig) return;
+
+                    const group = document.createElement('div');
+                    group.style.marginBottom = '20px';
+
+                    const label = document.createElement('div');
+                    label.className = 'filter-label';
+                    label.textContent = filterConfig.label;
+                    group.appendChild(label);
+
+                    const radioGroup = document.createElement('div');
+                    radioGroup.className = 'radio-group';
+
+                    filterConfig.options.forEach((option, index) => {
+                        const radio = document.createElement('div');
+                        radio.className = 'radio-button';
+                        
+                        if (currentFilter && currentFilter.key === filterKey && currentFilter.optionIndex === index) {
+                            radio.classList.add('radio-selected');
+                        }
+                        
+                        radio.textContent = option.label;
+                        radio.onclick = () => {
+                            if (currentFilter && currentFilter.key === filterKey && currentFilter.optionIndex === index) {
+                                currentFilter = null;
+                            } else {
+                                currentFilter = {
+                                    key: filterKey,
+                                    optionIndex: index,
+                                    config: filterConfig,
+                                    option: option
+                                };
+                            }
+                            applyFilters();
+                            renderAccordions();
+                        };
+                        radioGroup.appendChild(radio);
+                    });
+
+                    group.appendChild(radioGroup);
+                    topFiltersSection.appendChild(group);
+                });
+                
+                accordionContainer.appendChild(topFiltersSection);
+            }
+        }
+
+        // Apply filters and calculate scores
+        function applyFilters() {
+            const selectedSituation = situationFilter.value;
+            const selectedIPRight = ipRightsFilter.value;
+
+            // Filter strategies
+            filteredStrategies = allStrategies.filter(strategy => {
+                // Situation filter
+                if (selectedSituation && strategy.responseType) {
+                    if (!strategy.responseType.includes(selectedSituation)) {
+                        return false;
+                    }
+                }
+
+                // IP Rights filter
+                if (selectedIPRight && strategy.ipTypeTags) {
+                    if (!strategy.ipTypeTags.includes(selectedIPRight) && 
+                        !strategy.ipTypeTags.includes('Any dispute')) {
+                        return false;
+                    }
+                }
+
+                return true;
+            });
+
+            // Calculate scores
+            filteredStrategies = filteredStrategies.map(strategy => {
+                let score = 1.0; // default score
+                
+                if (currentFilter && filterOptions[currentFilter.key]) {
+                    const option = currentFilter.option;
+                    if (option && option.scoringValues && strategy.id <= option.scoringValues.length) {
+                        score = option.scoringValues[strategy.id - 1] || 1.0;
+                    }
+                }
+
+                // Apply custom score adjustments
+                const customScore = customScores[strategy.id];
+                if (customScore !== undefined) {
+                    score = customScore;
                 }
                 
-                radio.textContent = option.label;
-                radio.onclick = () => {
-                    if (currentFilter && currentFilter.key === filterKey && currentFilter.optionIndex === index) {
-                        currentFilter = null;
-                    } else {
-                        currentFilter = {
-                            key: filterKey,
-                            optionIndex: index,
-                            config: filterConfig,
-                            option: option
-                        };
-                    }
-                    applyFilters();
-                    renderAccordions();
+                return {
+                    ...strategy,
+                    calculatedScore: Math.round(score * 10) / 10 // Round to 1 decimal
                 };
-                radioGroup.appendChild(radio);
             });
 
-            group.appendChild(radioGroup);
-            topFiltersSection.appendChild(group);
-        });
-        
-        accordionContainer.appendChild(topFiltersSection);
-    }
-
-    // Render accordion filters
-    Object.entries(accordions).forEach(([accordionTitle, filterKeys]) => {
-        const accordionKey = accordionTitle.toLowerCase().replace(/\s+/g, '');
-        
-        const hasActiveFilter = filterKeys.some(key => 
-            currentFilter && currentFilter.key === key
-        );
-        
-        const header = document.createElement('div');
-        header.className = 'accordion-header';
-        
-        const activeText = hasActiveFilter ? ' ✓' : '';
-        
-        header.innerHTML = `
-            <span style="display:inline-block; transition: transform 0.3s ease; transform: ${accordionState[accordionKey] ? 'rotate(90deg)' : 'rotate(0deg)'};">▶</span>
-            ${accordionTitle}${activeText}
-        `;
-        
-        header.onclick = () => {
-            accordionState[accordionKey] = !accordionState[accordionKey];
-            renderAccordions();
-        };
-        
-        accordionContainer.appendChild(header);
-
-        if (accordionState[accordionKey]) {
-            const content = document.createElement('div');
-            content.className = 'accordion-content';
-
-            filterKeys.forEach(filterKey => {
-                const filterConfig = filterOptions[filterKey];
-                if (!filterConfig) return;
-
-                const group = document.createElement('div');
-                group.style.marginBottom = '16px';
-
-                const label = document.createElement('div');
-                label.className = 'filter-label';
-                label.textContent = filterConfig.label;
-                group.appendChild(label);
-
-                const radioGroup = document.createElement('div');
-                radioGroup.className = 'radio-group';
-
-                filterConfig.options.forEach((option, index) => {
-                    const radio = document.createElement('div');
-                    radio.className = 'radio-button';
-                    
-                    if (currentFilter && currentFilter.key === filterKey && currentFilter.optionIndex === index) {
-                        radio.classList.add('radio-selected');
-                    }
-                    
-                    radio.textContent = option.label;
-                    radio.onclick = () => {
-                        if (currentFilter && currentFilter.key === filterKey && currentFilter.optionIndex === index) {
-                            currentFilter = null;
-                        } else {
-                            currentFilter = {
-                                key: filterKey,
-                                optionIndex: index,
-                                config: filterConfig,
-                                option: option
-                            };
-                        }
-                        applyFilters();
-                        renderAccordions();
-                    };
-                    radioGroup.appendChild(radio);
-                });
-
-                group.appendChild(radioGroup);
-                content.appendChild(group);
-            });
-
-            accordionContainer.appendChild(content);
-        }
-    });
-}
-
-        // Setup event listeners
-        function setupEventListeners() {
-            searchInput.addEventListener('input', debounce(applyFilters, 300));
-            situationFilter.addEventListener('change', () => {
-                applyFilters();
-                renderAccordions();
-            });
-            ipRightsFilter.addEventListener('change', () => {
-                applyFilters();
-                renderAccordions();
-            });
-            clearFiltersBtn.addEventListener('click', clearAllFilters);
-            exportBtn.addEventListener('click', exportFlaggedStrategies);
+            updateActiveFilterDisplay();
+            updateResultsCount();
+            renderStrategiesByScore();
         }
 
-        // Apply all filters
-      // Apply all filters and calculate scores
-function applyFilters() {
-    const searchTerm = searchInput.value.toLowerCase();
-    const selectedSituation = situationFilter.value;
-    const selectedIPRight = ipRightsFilter.value;
-
-    // Filter strategies
-    filteredStrategies = allStrategies.filter(strategy => {
-        // Remove any strategy with "Not Assigned" in title or overtitle
-        if (strategy.title === "Not Assigned" || 
-            strategy.overtitle === "Not Assigned" ||
-            strategy.description === "Not Assigned") {
-            return false;
-        }
-        // Search filter
-        if (searchTerm) {
-            const searchableText = [
-                strategy.title,
-                strategy.description,
-                strategy.overtitle,
-                ...(strategy.responseType || []),
-                ...(strategy.ipTypeTags || [])
-            ].join(' ').toLowerCase();
-            
-            if (!searchableText.includes(searchTerm)) {
-                return false;
-            }
-        }
-
-        // Situation filter
-        if (selectedSituation && strategy.responseType) {
-            if (!strategy.responseType.includes(selectedSituation)) {
-                return false;
-            }
-        }
-
-        // IP Rights filter
-        if (selectedIPRight && strategy.ipTypeTags) {
-            if (!strategy.ipTypeTags.includes(selectedIPRight) && 
-                !strategy.ipTypeTags.includes('Any dispute')) {
-                return false;
-            }
-        }
-
-        return true;
-    });
-
-    // Calculate scores for each strategy
-    filteredStrategies = filteredStrategies.map(strategy => {
-        let score = 0;
-        
-        if (currentFilter && filterOptions[currentFilter.key]) {
-            const filterConfig = filterOptions[currentFilter.key];
-            const option = filterConfig.options[currentFilter.optionIndex];
-            
-            if (option && option.scoringValues && strategy.id <= option.scoringValues.length) {
-                // Get score for this strategy ID (array is 0-indexed, IDs start at 1)
-                score = option.scoringValues[strategy.id - 1] || 0;
-            }
-        }
-        
-        return {
-            ...strategy,
-            calculatedScore: score
-        };
-    });
-
-    // Sort by score (highest to lowest)
-    filteredStrategies.sort((a, b) => b.calculatedScore - a.calculatedScore);
-
-    updateActiveFilterDisplay();
-    updateResultsCount();
-    renderStrategies();
-}
-
-        // Update active filter display (single prominent pill)
+        // Update active filter display
         function updateActiveFilterDisplay() {
             activeFilterPill.innerHTML = '';
 
@@ -398,6 +719,95 @@ function applyFilters() {
             }
         }
 
+        // Render strategies grouped by score
+        function renderStrategiesByScore() {
+            if (filteredStrategies.length === 0) {
+                strategiesContainer.innerHTML = `
+                    <div class="no-results">
+                        <h3>No strategies found</h3>
+                        <p>Try adjusting your filters</p>
+                    </div>
+                `;
+                return;
+            }
+
+            // Group strategies by score
+            const scoreGroups = {};
+            filteredStrategies.forEach(strategy => {
+                const score = strategy.calculatedScore;
+                if (!scoreGroups[score]) {
+                    scoreGroups[score] = [];
+                }
+                scoreGroups[score].push(strategy);
+            });
+
+            // Sort scores descending
+            const sortedScores = Object.keys(scoreGroups).map(s => parseFloat(s)).sort((a, b) => b - a);
+
+            strategiesContainer.innerHTML = '';
+
+            sortedScores.forEach(score => {
+                const strategies = scoreGroups[score];
+                
+                const scoreGroup = document.createElement('div');
+                scoreGroup.className = 'score-group';
+
+                const scoreHeader = document.createElement('div');
+                scoreHeader.className = 'score-header';
+                scoreHeader.innerHTML = `
+                    <span class="score-badge">Score ${score}</span>
+                    <span>${strategies.length} strateg${strategies.length === 1 ? 'y' : 'ies'}</span>
+                `;
+                scoreGroup.appendChild(scoreHeader);
+
+                const strategiesRow = document.createElement('div');
+                strategiesRow.className = 'strategies-row';
+
+                strategies.forEach(strategy => {
+                    const card = createStrategyCard(strategy);
+                    strategiesRow.appendChild(card);
+                });
+
+                scoreGroup.appendChild(strategiesRow);
+                strategiesContainer.appendChild(scoreGroup);
+            });
+        }
+
+        // Create strategy card
+        function createStrategyCard(strategy) {
+            const card = document.createElement('div');
+            card.className = 'strategy-card';
+
+            card.innerHTML = `
+                <div class="card-header">
+                    ${strategy.overtitle ? `<div class="card-overtitle">${strategy.overtitle}</div>` : ''}
+                    <div class="card-title">${strategy.title}</div>
+                    <div class="card-description">${strategy.description}</div>
+                </div>
+                <div class="card-controls">
+                    <div class="score-display">${strategy.calculatedScore}</div>
+                    <div class="score-buttons">
+                        <button class="score-btn" onclick="adjustScore(${strategy.id}, 0.1)" title="Increase score">▲</button>
+                        <button class="score-btn" onclick="adjustScore(${strategy.id}, -0.1)" title="Decrease score">▼</button>
+                    </div>
+                </div>
+            `;
+
+            return card;
+        }
+
+        // Adjust strategy score
+        function adjustScore(strategyId, adjustment) {
+            const strategy = filteredStrategies.find(s => s.id === strategyId);
+            if (!strategy) return;
+
+            const newScore = Math.max(0, Math.min(3.0, strategy.calculatedScore + adjustment));
+            const roundedScore = Math.round(newScore * 10) / 10;
+            
+            customScores[strategyId] = roundedScore;
+            applyFilters(); // Re-render with new scores
+        }
+
         // Clear current filter
         function clearCurrentFilter() {
             currentFilter = null;
@@ -407,322 +817,22 @@ function applyFilters() {
 
         // Clear all filters
         function clearAllFilters() {
-            searchInput.value = '';
             situationFilter.value = '';
             ipRightsFilter.value = '';
             currentFilter = null;
+            customScores = {};
             accordionState = {};
             applyFilters();
             renderAccordions();
         }
 
-        // Update results count (based on primary filters only)
+        // Update results count
         function updateResultsCount() {
-            const selectedSituation = situationFilter.value;
-            const selectedIPRight = ipRightsFilter.value;
-            
-            // Calculate base total (filtered by situation and IP rights only)
-            const baseFiltered = allStrategies.filter(strategy => {
-                // Situation filter
-                if (selectedSituation && strategy.responseType) {
-                    if (!strategy.responseType.includes(selectedSituation)) {
-                        return false;
-                    }
-                }
-
-                // IP Rights filter
-                if (selectedIPRight && strategy.ipTypeTags) {
-                    if (!strategy.ipTypeTags.includes(selectedIPRight) && 
-                        !strategy.ipTypeTags.includes('Any dispute')) {
-                        return false;
-                    }
-                }
-
-                return true;
-            });
-
-            const baseTotal = baseFiltered.length;
-            const current = filteredStrategies.length;
-            
-            if (baseTotal === current) {
-                resultsCount.textContent = `Showing all ${current} strategies`;
-            } else {
-                resultsCount.textContent = `Showing ${current} of ${baseTotal} strategies`;
-            }
+            resultsCount.textContent = `${filteredStrategies.length} strategies`;
         }
 
-        // Render strategies
-        function renderStrategies() {
-            if (filteredStrategies.length === 0) {
-                itemsContainer.innerHTML = `
-                    <div class="no-results">
-                        <h3>No strategies found</h3>
-                        <p>Try adjusting your filters or search terms</p>
-                    </div>
-                `;
-                return;
-            }
-
-            itemsContainer.innerHTML = filteredStrategies.map(strategy => createStrategyCard(strategy)).join('');
-        }
-
-        // Create strategy card HTML
-       // Create strategy card HTML
-function createStrategyCard(strategy) {
-    const isFlagged = flaggedStrategies.has(strategy.id);
-    const flaggedData = flaggedStrategies.get(strategy.id);
-
-   // Show score at top (always show, even if 0 for consistency)
-const scoreDisplay = `
-    <div class="item-score">
-        Score: ${strategy.calculatedScore || 0}
-    </div>
-`;
-
-return `
-    <div class="item-card ${isFlagged ? 'flagged' : ''}">
-        ${scoreDisplay}
-        <div class="item-header">
-            ${strategy.overtitle ? `<div class="item-overtitle">${strategy.overtitle}</div>` : ''}
-            <div class="item-title">${strategy.title}</div>
-            <div class="item-description">${strategy.description}</div>
-        </div>
-
-            <div class="flag-section">
-                ${isFlagged ? `
-                    <div class="flagged-indicator">
-                        🚩 Flagged for Review
-                    </div>
-                    <textarea class="flag-note" placeholder="Add review notes..." onchange="updateFlagNote(${strategy.id}, this.value)">${flaggedData?.note || ''}</textarea>
-                    <button class="btn btn-danger flag-button" onclick="unflagStrategy(${strategy.id})">
-                        Remove Flag
-                    </button>
-                ` : `
-                    <button class="btn btn-primary flag-button" onclick="flagStrategy(${strategy.id})">
-                        🚩 Flag for Review
-                    </button>
-                `}
-            </div>
-        </div>
-    `;
-}
-
-        // Flag strategy for review
-// Flag strategy for review
-function flagStrategy(strategyId) {
-    const strategy = allStrategies.find(s => s.id === strategyId);
-    const userNameValue = userName.value.trim();
-    
-    if (!userNameValue) {
-        alert('Please enter your name before flagging strategies');
-        userName.focus();
-        return;
-    }
-    
-    if (strategy) {
-        // Capture current filter state when flagging
-        let activeFilterDescription = 'No filter applied';
-        if (currentFilter) {
-            const config = currentFilter.config;
-            const option = currentFilter.option;
-            activeFilterDescription = `${config.label}: ${option.pillLabel || option.label}`;
-        }
-        
-        // Also capture primary filters
-        const situationText = situationFilter.value ? 
-            situationFilter.options[situationFilter.selectedIndex].text : 'All Situations';
-        const ipRightText = ipRightsFilter.value ? 
-            ipRightsFilter.options[ipRightsFilter.selectedIndex].text : 'All IP Rights';
-        
-        flaggedStrategies.set(strategyId, {
-            strategy: strategy,
-            note: '',
-            timestamp: new Date().toISOString(),
-            flaggedBy: userNameValue,
-            activeFilter: activeFilterDescription,
-            situationType: situationFilter.value || 'All',
-            ipRightType: ipRightsFilter.value || 'All',
-            situationText: situationText,
-            ipRightText: ipRightText,
-            calculatedScore: strategy.calculatedScore || 0
-        });
-        updateFlaggedCount();
-        renderStrategies();
-    }
-}
-
-        // Unflag strategy
-        function unflagStrategy(strategyId) {
-            flaggedStrategies.delete(strategyId);
-            updateFlaggedCount();
-            renderStrategies();
-        }
-
-        // Update flag note
-        function updateFlagNote(strategyId, note) {
-            if (flaggedStrategies.has(strategyId)) {
-                const flaggedData = flaggedStrategies.get(strategyId);
-                flaggedData.note = note;
-                flaggedStrategies.set(strategyId, flaggedData);
-            }
-        }
-
-        // Update flagged count display
-        function updateFlaggedCount() {
-            flaggedCount.textContent = flaggedStrategies.size;
-            exportBtn.disabled = flaggedStrategies.size === 0;
-        }
-
-        // Export flagged strategies (CSV only)
-
-        // Export flagged strategies (CSV only)
-function exportFlaggedStrategies() {
-    if (flaggedStrategies.size === 0) {
-        alert('No strategies flagged for review');
-        return;
-    }
-
-    const userNameValue = userName.value.trim();
-    if (!userNameValue) {
-        alert('Please enter your name before exporting');
-        userName.focus();
-        return;
-    }
-
-    const exportTimestamp = new Date().toISOString();
-    
-    // Create CSV data with filter information
-    const csvData = Array.from(flaggedStrategies.values()).map(flaggedData => ({
-        ID: flaggedData.strategy.id,
-        Strategy_Title: flaggedData.strategy.title,
-        Flagged_By: flaggedData.flaggedBy,
-        Flag_Note: flaggedData.note,
-        Flag_Timestamp: flaggedData.timestamp,
-        Active_Filter_When_Flagged: flaggedData.activeFilter,
-        Situation_Type: flaggedData.situationText,
-        IP_Right_Type: flaggedData.ipRightText,
-        Calculated_Score: flaggedData.calculatedScore,
-        Export_Timestamp: exportTimestamp,
-        Exported_By: userNameValue
-    }));
-
-    // Convert to CSV
-    const csvContent = convertToCSV(csvData);
-    const csvBlob = new Blob([csvContent], { type: 'text/csv' });
-    const csvUrl = URL.createObjectURL(csvBlob);
-    
-    // Create filename with timestamp and user name
-    const dateStr = new Date().toISOString().split('T')[0];
-    const timeStr = new Date().toTimeString().split(' ')[0].replace(/:/g, '-');
-    const filename = `flagged_ip_strategies_${userNameValue.replace(/[^a-zA-Z0-9]/g, '_')}_${dateStr}_${timeStr}.csv`;
-    
-    // Download CSV file
-    downloadFile(csvUrl, filename);
-
-    // Clean up URL
-    setTimeout(() => {
-        URL.revokeObjectURL(csvUrl);
-    }, 1000);
-}
-
-        // Update flag note and track filter changes
-function updateFlagNote(strategyId, note) {
-    if (flaggedStrategies.has(strategyId)) {
-        const flaggedData = flaggedStrategies.get(strategyId);
-        flaggedData.note = note;
-        
-        // Update filter information when note is changed
-        if (currentFilter) {
-            const config = currentFilter.config;
-            const option = currentFilter.option;
-            flaggedData.activeFilter = `${config.label}: ${option.pillLabel || option.label}`;
-            flaggedData.calculatedScore = flaggedData.strategy.calculatedScore || 0;
-        }
-        
-        flaggedStrategies.set(strategyId, flaggedData);
-    }
-}
-        
-        // Convert data to CSV format
-        function convertToCSV(data) {
-            if (data.length === 0) return '';
-
-            const headers = Object.keys(data[0]);
-            const csvContent = [
-                headers.join(','),
-                ...data.map(row => 
-                    headers.map(header => {
-                        const value = row[header];
-                        // Handle arrays and objects
-                        let cellValue = value;
-                        if (Array.isArray(value)) {
-                            cellValue = value.join('; ');
-                        } else if (typeof value === 'object' && value !== null) {
-                            cellValue = JSON.stringify(value);
-                        }
-                        // Escape quotes and wrap in quotes if contains comma or quote
-                        if (typeof cellValue === 'string' && (cellValue.includes(',') || cellValue.includes('"') || cellValue.includes('\n'))) {
-                            return `"${cellValue.replace(/"/g, '""')}"`;
-                        }
-                        return cellValue;
-                    }).join(',')
-                )
-            ].join('\n');
-
-            return csvContent;
-        }
-
-        // Download file helper
-        function downloadFile(url, filename) {
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = filename;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-        }
-
-        // Debounce function for search input
-        function debounce(func, wait) {
-            let timeout;
-            return function executedFunction(...args) {
-                const later = () => {
-                    clearTimeout(timeout);
-                    func(...args);
-                };
-                clearTimeout(timeout);
-                timeout = setTimeout(later, wait);
-            };
-        }
-
-        // Initialize the application
-        async function init() {
-            const dataLoaded = await loadData();
-            
-            if (!dataLoaded) {
-                itemsContainer.innerHTML = `
-                    <div class="no-results">
-                        <h3>Failed to load data</h3>
-                        <p>Please check that all JSON files are available</p>
-                    </div>
-                `;
-                return;
-            }
-
-            setupEventListeners();
-            renderAccordions();
-            applyFilters();
-            updateFlaggedCount();
-        }
-
-        // Make functions globally available
-        window.flagStrategy = flagStrategy;
-        window.unflagStrategy = unflagStrategy;
-        window.updateFlagNote = updateFlagNote;
-        window.clearCurrentFilter = clearCurrentFilter;
-
-        // Initialize when page loads
-        document.addEventListener('DOMContentLoaded', init);
-    </script>
-</body>
-</html>
+        // Export scores as CSV
+        function exportScores() {
+            const userNameValue = userName.value.trim();
+            if (!userNameValue) {
+                alert('Please enter your name before exporting');

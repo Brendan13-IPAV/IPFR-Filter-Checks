@@ -51,7 +51,7 @@
 
         .header-controls {
             display: grid;
-            grid-template-columns: 200px 1fr;
+            grid-template-columns: 200px 1fr 200px;
             gap: 24px;
             align-items: end;
             margin-top: 20px;
@@ -544,12 +544,35 @@
                 </div>
                 
                 <div class="primary-filters">
-                    <div class="top-controls">
-                        <div class="results-count" id="resultsCount">Loading...</div>
-                        <div class="control-buttons">
-                            <button class="btn btn-secondary" id="clearFilters">🗑️ Clear</button>
-                            <button class="btn btn-primary" id="exportBtn">📤 Export CSV</button>
-                        </div>
+                    <div class="filter-group">
+                        <label class="filter-label">Situation Type</label>
+                        <select id="situationFilter">
+                            <option value="">All Situations</option>
+                            <option value="Enforcement">I believe my IP has been infringed</option>
+                            <option value="Accused">I've been accused of infringement</option>
+                            <option value="Disagree">I want help on IP processes</option>
+                            <option value="Proactive">I want to prevent future IP headaches</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label class="filter-label">IP Rights Type</label>
+                        <select id="ipRightsFilter">
+                            <option value="">All IP Rights</option>
+                            <option value="Patent">Patents</option>
+                            <option value="Trade mark">Trade marks</option>
+                            <option value="Design">Design rights</option>
+                            <option value="PBR">Plant breeder's rights</option>
+                            <option value="Copyright">Copyright</option>
+                            <option value="Any dispute">Any IP right</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="top-controls">
+                    <div class="results-count" id="resultsCount">Loading...</div>
+                    <div class="control-buttons">
+                        <button class="btn btn-secondary" id="clearFilters">🗑️ Clear</button>
+                        <button class="btn btn-primary" id="exportBtn">📤 Export CSV</button>
                     </div>
                 </div>
             </div>
@@ -709,141 +732,88 @@
             const accordions = layout.accordions || {};
             const topFilters = layout.topFilters || [];
 
-            // Render primary filters as accordion
-            const primaryAccordion = document.createElement('div');
-            const primaryKey = 'primary';
-            
-            const primaryHeader = document.createElement('div');
-            primaryHeader.className = 'accordion-header';
-            
-            // Check if any primary filters are selected
-            const hasPrimarySelection = situationFilter.value || ipRightsFilter.value;
-            const activeText = hasPrimarySelection ? ' ✓' : '';
-            
-            primaryHeader.innerHTML = `
-                <span style="display:inline-block; transition: transform 0.3s ease; transform: ${accordionState[primaryKey] ? 'rotate(90deg)' : 'rotate(0deg)'};">▶</span>
-                Primary Filters${activeText}
-            `;
-            
-            primaryHeader.onclick = () => {
-                accordionState[primaryKey] = !accordionState[primaryKey];
-                renderAccordions();
-            };
-            
-            accordionContainer.appendChild(primaryHeader);
-
-            if (accordionState[primaryKey]) {
-                const primaryContent = document.createElement('div');
-                primaryContent.className = 'accordion-content';
-                primaryContent.innerHTML = `
-                    <div style="margin-bottom: 16px;">
-                        <div class="filter-label">Situation Type</div>
-                        <select id="situationFilterSidebar" style="width: 100%;">
-                            <option value="">All Situations</option>
-                            <option value="Enforcement">I believe my IP has been infringed</option>
-                            <option value="Accused">I've been accused of infringement</option>
-                            <option value="Disagree">I want help on IP processes</option>
-                            <option value="Proactive">I want to prevent future IP headaches</option>
-                        </select>
-                    </div>
-                    <div>
-                        <div class="filter-label">IP Rights Type</div>
-                        <select id="ipRightsFilterSidebar" style="width: 100%;">
-                            <option value="">All IP Rights</option>
-                            <option value="Patent">Patents</option>
-                            <option value="Trade mark">Trade marks</option>
-                            <option value="Design">Design rights</option>
-                            <option value="PBR">Plant breeder's rights</option>
-                            <option value="Copyright">Copyright</option>
-                            <option value="Any dispute">Any IP right</option>
-                        </select>
-                    </div>
-                `;
-                accordionContainer.appendChild(primaryContent);
-                
-                // Set values and add event listeners for sidebar selects
-                const situationSidebar = document.getElementById('situationFilterSidebar');
-                const ipRightsSidebar = document.getElementById('ipRightsFilterSidebar');
-                
-                situationSidebar.value = situationFilter.value;
-                ipRightsSidebar.value = ipRightsFilter.value;
-                
-                situationSidebar.addEventListener('change', (e) => {
-                    const applyChange = () => {
-                        situationFilter.value = e.target.value;
-                        applyFilters();
-                        renderAccordions();
-                    };
-                    checkUnsavedChanges(applyChange);
-                });
-                
-                ipRightsSidebar.addEventListener('change', (e) => {
-                    const applyChange = () => {
-                        ipRightsFilter.value = e.target.value;
-                        applyFilters();
-                        renderAccordions();
-                    };
-                    checkUnsavedChanges(applyChange);
-                });
-            }
-
-            // Render top filters section
+            // Render top filters in an accordion to save space
             if (topFilters.length > 0) {
-                const topFiltersSection = document.createElement('div');
-                topFiltersSection.style.marginTop = '16px';
+                const topFiltersKey = 'topfilters';
                 
-                topFilters.forEach(filterKey => {
-                    const filterConfig = filterOptions[filterKey];
-                    if (!filterConfig) return;
+                const hasActiveTopFilter = topFilters.some(key => 
+                    currentFilter && currentFilter.key === key
+                );
+                
+                const topHeader = document.createElement('div');
+                topHeader.className = 'accordion-header';
+                
+                const activeText = hasActiveTopFilter ? ' ✓' : '';
+                
+                topHeader.innerHTML = `
+                    <span style="display:inline-block; transition: transform 0.3s ease; transform: ${accordionState[topFiltersKey] ? 'rotate(90deg)' : 'rotate(0deg)'};">▶</span>
+                    Additional Filters${activeText}
+                `;
+                
+                topHeader.onclick = () => {
+                    accordionState[topFiltersKey] = !accordionState[topFiltersKey];
+                    renderAccordions();
+                };
+                
+                accordionContainer.appendChild(topHeader);
 
-                    const group = document.createElement('div');
-                    group.style.marginBottom = '20px';
+                if (accordionState[topFiltersKey]) {
+                    const topContent = document.createElement('div');
+                    topContent.className = 'accordion-content';
+                    
+                    topFilters.forEach(filterKey => {
+                        const filterConfig = filterOptions[filterKey];
+                        if (!filterConfig) return;
 
-                    const label = document.createElement('div');
-                    label.className = 'filter-label';
-                    label.textContent = filterConfig.label;
-                    group.appendChild(label);
+                        const group = document.createElement('div');
+                        group.style.marginBottom = '20px';
 
-                    const radioGroup = document.createElement('div');
-                    radioGroup.className = 'radio-group';
+                        const label = document.createElement('div');
+                        label.className = 'filter-label';
+                        label.textContent = filterConfig.label;
+                        group.appendChild(label);
 
-                    filterConfig.options.forEach((option, index) => {
-                        const radio = document.createElement('div');
-                        radio.className = 'radio-button';
-                        
-                        if (currentFilter && currentFilter.key === filterKey && currentFilter.optionIndex === index) {
-                            radio.classList.add('radio-selected');
-                        }
-                        
-                        radio.textContent = option.label;
-                        radio.onclick = () => {
-                            const newFilter = {
-                                key: filterKey,
-                                optionIndex: index,
-                                config: filterConfig,
-                                option: option
-                            };
+                        const radioGroup = document.createElement('div');
+                        radioGroup.className = 'radio-group';
+
+                        filterConfig.options.forEach((option, index) => {
+                            const radio = document.createElement('div');
+                            radio.className = 'radio-button';
                             
-                            const changeFilter = () => {
-                                if (currentFilter && currentFilter.key === filterKey && currentFilter.optionIndex === index) {
-                                    currentFilter = null;
-                                } else {
-                                    currentFilter = newFilter;
-                                }
-                                applyFilters();
-                                renderAccordions();
-                            };
+                            if (currentFilter && currentFilter.key === filterKey && currentFilter.optionIndex === index) {
+                                radio.classList.add('radio-selected');
+                            }
                             
-                            checkUnsavedChanges(changeFilter);
-                        };
-                        radioGroup.appendChild(radio);
+                            radio.textContent = option.label;
+                            radio.onclick = () => {
+                                const newFilter = {
+                                    key: filterKey,
+                                    optionIndex: index,
+                                    config: filterConfig,
+                                    option: option
+                                };
+                                
+                                const changeFilter = () => {
+                                    if (currentFilter && currentFilter.key === filterKey && currentFilter.optionIndex === index) {
+                                        currentFilter = null;
+                                    } else {
+                                        currentFilter = newFilter;
+                                    }
+                                    applyFilters();
+                                    renderAccordions();
+                                };
+                                
+                                checkUnsavedChanges(changeFilter);
+                            };
+                            radioGroup.appendChild(radio);
+                        });
+
+                        group.appendChild(radioGroup);
+                        topContent.appendChild(group);
                     });
-
-                    group.appendChild(radioGroup);
-                    topFiltersSection.appendChild(group);
-                });
-                
-                accordionContainer.appendChild(topFiltersSection);
+                    
+                    accordionContainer.appendChild(topContent);
+                }
             }
 
             // Render accordion sections

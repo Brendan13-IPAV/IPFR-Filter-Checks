@@ -586,11 +586,13 @@
             accordionContainer.innerHTML = '';
             
             const layout = getAccordionLayout();
+            const accordions = layout.accordions || {};
             const topFilters = layout.topFilters || [];
 
+            // Render top filters (outside accordions)
             if (topFilters.length > 0) {
                 const topFiltersSection = document.createElement('div');
-                topFiltersSection.innerHTML = '<h3 style="margin-bottom: 16px; color: #374151; font-size: 16px;">Filters</h3>';
+                topFiltersSection.innerHTML = '<h3 style="margin-bottom: 16px; color: #374151; font-size: 16px;">Primary Filters</h3>';
                 
                 topFilters.forEach(filterKey => {
                     const filterConfig = filterOptions[filterKey];
@@ -639,6 +641,84 @@
                 
                 accordionContainer.appendChild(topFiltersSection);
             }
+
+            // Render accordion sections
+            Object.entries(accordions).forEach(([accordionTitle, filterKeys]) => {
+                const accordionKey = accordionTitle.toLowerCase().replace(/\s+/g, '');
+                
+                const hasActiveFilter = filterKeys.some(key => 
+                    currentFilter && currentFilter.key === key
+                );
+                
+                const header = document.createElement('div');
+                header.className = 'accordion-header';
+                
+                const activeText = hasActiveFilter ? ' ✓' : '';
+                
+                header.innerHTML = `
+                    <span style="display:inline-block; transition: transform 0.3s ease; transform: ${accordionState[accordionKey] ? 'rotate(90deg)' : 'rotate(0deg)'};">▶</span>
+                    ${accordionTitle}${activeText}
+                `;
+                
+                header.onclick = () => {
+                    accordionState[accordionKey] = !accordionState[accordionKey];
+                    renderAccordions();
+                };
+                
+                accordionContainer.appendChild(header);
+
+                if (accordionState[accordionKey]) {
+                    const content = document.createElement('div');
+                    content.className = 'accordion-content';
+
+                    filterKeys.forEach(filterKey => {
+                        const filterConfig = filterOptions[filterKey];
+                        if (!filterConfig) return;
+
+                        const group = document.createElement('div');
+                        group.style.marginBottom = '16px';
+
+                        const label = document.createElement('div');
+                        label.className = 'filter-label';
+                        label.textContent = filterConfig.label;
+                        group.appendChild(label);
+
+                        const radioGroup = document.createElement('div');
+                        radioGroup.className = 'radio-group';
+
+                        filterConfig.options.forEach((option, index) => {
+                            const radio = document.createElement('div');
+                            radio.className = 'radio-button';
+                            
+                            if (currentFilter && currentFilter.key === filterKey && currentFilter.optionIndex === index) {
+                                radio.classList.add('radio-selected');
+                            }
+                            
+                            radio.textContent = option.label;
+                            radio.onclick = () => {
+                                if (currentFilter && currentFilter.key === filterKey && currentFilter.optionIndex === index) {
+                                    currentFilter = null;
+                                } else {
+                                    currentFilter = {
+                                        key: filterKey,
+                                        optionIndex: index,
+                                        config: filterConfig,
+                                        option: option
+                                    };
+                                }
+                                applyFilters();
+                                renderAccordions();
+                            };
+                            radioGroup.appendChild(radio);
+                        });
+
+                        group.appendChild(radioGroup);
+                        content.appendChild(group);
+                    });
+
+                    accordionContainer.appendChild(content);
+                }
+            });
         }
 
         // Apply filters and calculate scores

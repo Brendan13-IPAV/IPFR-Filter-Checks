@@ -311,7 +311,6 @@
         }
 
         .score-badge {
-            background: #667eea;
             color: white;
             padding: 4px 12px;
             border-radius: 20px;
@@ -319,9 +318,21 @@
             font-weight: 600;
         }
 
+        .score-badge.high {
+            background: #10b981; /* Green for scores > 1.0 */
+        }
+
+        .score-badge.neutral {
+            background: #6b7280; /* Grey for score = 1.0 */
+        }
+
+        .score-badge.low {
+            background: #f59e0b; /* Orange for scores < 1.0 */
+        }
+
         .strategies-row {
             display: grid;
-            grid-template-columns: repeat(7, 1fr);
+            grid-template-columns: repeat(5, 1fr);
             gap: 16px;
         }
 
@@ -754,8 +765,14 @@
 
                 const scoreHeader = document.createElement('div');
                 scoreHeader.className = 'score-header';
+                
+                // Determine score badge class
+                let badgeClass = 'neutral';
+                if (score > 1.0) badgeClass = 'high';
+                else if (score < 1.0) badgeClass = 'low';
+                
                 scoreHeader.innerHTML = `
-                    <span class="score-badge">Score ${score}</span>
+                    <span class="score-badge ${badgeClass}">Score ${score}</span>
                     <span>${strategies.length} strateg${strategies.length === 1 ? 'y' : 'ies'}</span>
                 `;
                 scoreGroup.appendChild(scoreHeader);

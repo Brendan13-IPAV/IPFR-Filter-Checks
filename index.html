@@ -475,10 +475,58 @@
             color: #666;
         }
 
-        .no-results h3 {
-            font-size: 1.5rem;
+        .warning-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .warning-content {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            max-width: 500px;
+            margin: 20px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+        }
+
+        .warning-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #dc2626;
             margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .warning-message {
             color: #374151;
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+
+        .warning-buttons {
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+        }
+
+        .btn-warning {
+            background: #dc2626;
+            color: white;
+            border: 1px solid #dc2626;
+        }
+
+        .btn-warning:hover {
+            background: #b91c1c;
         }
     </style>
 </head>
@@ -537,6 +585,9 @@
 
             <div class="content-area">
                 <div id="activeFilterPill"></div>
+                <div class="changes-indicator" id="changesIndicator">
+                    ⚠️ You have unsaved changes. Export CSV to save, or changes will be lost when switching filters.
+                </div>
                 <div id="strategiesContainer">
                     <div class="loading">Loading strategy data...</div>
                 </div>
@@ -553,6 +604,7 @@
         let filterOptions = {};
         let accordionPresets = {};
         let customScores = {}; // Store custom score adjustments
+        let hasUnsavedChanges = false; // Track if user has made changes
 
         // DOM elements
         const userName = document.getElementById('userName');
@@ -564,6 +616,7 @@
         const accordionContainer = document.getElementById('accordionContainer');
         const activeFilterPill = document.getElementById('activeFilterPill');
         const strategiesContainer = document.getElementById('strategiesContainer');
+        const changesIndicator = document.getElementById('changesIndicator');
 
         // Load all data files
         async function loadData() {
@@ -598,7 +651,75 @@
             }
         }
 
-        // Get current accordion layout
+        // Check for unsaved changes before filter change
+        function checkUnsavedChanges(callback) {
+            if (hasUnsavedChanges) {
+                showWarningModal(
+                    'Unsaved Changes',
+                    'You have unsaved score changes that will be lost if you switch filters. Do you want to continue?',
+                    () => {
+                        // User confirmed - clear changes and proceed
+                        customScores = {};
+                        hasUnsavedChanges = false;
+                        updateChangesIndicator();
+                        callback();
+                    }
+                );
+            } else {
+                callback();
+            }
+        }
+
+        // Show warning modal
+        function showWarningModal(title, message, onConfirm) {
+            const modal = document.createElement('div');
+            modal.className = 'warning-modal';
+            modal.innerHTML = `
+                <div class="warning-content">
+                    <div class="warning-title">
+                        ⚠️ ${title}
+                    </div>
+                    <div class="warning-message">
+                        ${message}
+                    </div>
+                    <div class="warning-buttons">
+                        <button class="btn btn-secondary" onclick="closeWarningModal()">Cancel</button>
+                        <button class="btn btn-warning" onclick="confirmWarning()">Continue & Lose Changes</button>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+            
+            // Store the callback for the confirm button
+            window.currentWarningCallback = onConfirm;
+        }
+
+        // Close warning modal
+        function closeWarningModal() {
+            const modal = document.querySelector('.warning-modal');
+            if (modal) {
+                modal.remove();
+            }
+            window.currentWarningCallback = null;
+        }
+
+        // Confirm warning and execute callback
+        function confirmWarning() {
+            if (window.currentWarningCallback) {
+                window.currentWarningCallback();
+            }
+            closeWarningModal();
+        }
+
+        // Update changes indicator visibility
+        function updateChangesIndicator() {
+            if (hasUnsavedChanges) {
+                changesIndicator.classList.add('visible');
+            } else {
+                changesIndicator.classList.remove('visible');
+            }
+        }
         function getAccordionLayout() {
             return accordionPresets.default;
         }
@@ -641,18 +762,24 @@
                         
                         radio.textContent = option.label;
                         radio.onclick = () => {
-                            if (currentFilter && currentFilter.key === filterKey && currentFilter.optionIndex === index) {
-                                currentFilter = null;
-                            } else {
-                                currentFilter = {
-                                    key: filterKey,
-                                    optionIndex: index,
-                                    config: filterConfig,
-                                    option: option
-                                };
-                            }
-                            applyFilters();
-                            renderAccordions();
+                            const newFilter = {
+                                key: filterKey,
+                                optionIndex: index,
+                                config: filterConfig,
+                                option: option
+                            };
+                            
+                            const changeFilter = () => {
+                                if (currentFilter && currentFilter.key === filterKey && currentFilter.optionIndex === index) {
+                                    currentFilter = null;
+                                } else {
+                                    currentFilter = newFilter;
+                                }
+                                applyFilters();
+                                renderAccordions();
+                            };
+                            
+                            checkUnsavedChanges(changeFilter);
                         };
                         radioGroup.appendChild(radio);
                     });
@@ -718,18 +845,24 @@
                             
                             radio.textContent = option.label;
                             radio.onclick = () => {
-                                if (currentFilter && currentFilter.key === filterKey && currentFilter.optionIndex === index) {
-                                    currentFilter = null;
-                                } else {
-                                    currentFilter = {
-                                        key: filterKey,
-                                        optionIndex: index,
-                                        config: filterConfig,
-                                        option: option
-                                    };
-                                }
-                                applyFilters();
-                                renderAccordions();
+                                const newFilter = {
+                                    key: filterKey,
+                                    optionIndex: index,
+                                    config: filterConfig,
+                                    option: option
+                                };
+                                
+                                const changeFilter = () => {
+                                    if (currentFilter && currentFilter.key === filterKey && currentFilter.optionIndex === index) {
+                                        currentFilter = null;
+                                    } else {
+                                        currentFilter = newFilter;
+                                    }
+                                    applyFilters();
+                                    renderAccordions();
+                                };
+                                
+                                checkUnsavedChanges(changeFilter);
                             };
                             radioGroup.appendChild(radio);
                         });
@@ -912,6 +1045,8 @@
             const roundedScore = Math.round(newScore * 10) / 10;
             
             customScores[strategyId] = roundedScore;
+            hasUnsavedChanges = true;
+            updateChangesIndicator();
             applyFilters(); // Re-render with new scores
         }
 
@@ -932,25 +1067,37 @@
                 customScores[strategyId] = 0;
             }
             
+            hasUnsavedChanges = true;
+            updateChangesIndicator();
             applyFilters(); // Re-render with new scores
         }
 
         // Clear current filter
         function clearCurrentFilter() {
-            currentFilter = null;
-            applyFilters();
-            renderAccordions();
+            const clearFilter = () => {
+                currentFilter = null;
+                applyFilters();
+                renderAccordions();
+            };
+            
+            checkUnsavedChanges(clearFilter);
         }
 
         // Clear all filters
         function clearAllFilters() {
-            situationFilter.value = '';
-            ipRightsFilter.value = '';
-            currentFilter = null;
-            customScores = {};
-            accordionState = {};
-            applyFilters();
-            renderAccordions();
+            const clearAll = () => {
+                situationFilter.value = '';
+                ipRightsFilter.value = '';
+                currentFilter = null;
+                customScores = {};
+                hasUnsavedChanges = false;
+                accordionState = {};
+                updateChangesIndicator();
+                applyFilters();
+                renderAccordions();
+            };
+            
+            checkUnsavedChanges(clearAll);
         }
 
         // Update results count
@@ -1065,6 +1212,11 @@
             const filename = `ip_strategy_scores_${userNameValue.replace(/[^a-zA-Z0-9]/g, '_')}_${dateStr}_${timeStr}.csv`;
             
             downloadFile(csvUrl, filename);
+            
+            // Clear unsaved changes flag after successful export
+            hasUnsavedChanges = false;
+            updateChangesIndicator();
+            
             setTimeout(() => URL.revokeObjectURL(csvUrl), 1000);
         }
 
@@ -1094,12 +1246,18 @@
         // Setup event listeners
         function setupEventListeners() {
             situationFilter.addEventListener('change', () => {
-                applyFilters();
-                renderAccordions();
+                const applyChange = () => {
+                    applyFilters();
+                    renderAccordions();
+                };
+                checkUnsavedChanges(applyChange);
             });
             ipRightsFilter.addEventListener('change', () => {
-                applyFilters();
-                renderAccordions();
+                const applyChange = () => {
+                    applyFilters();
+                    renderAccordions();
+                };
+                checkUnsavedChanges(applyChange);
             });
             clearFilters.addEventListener('click', clearAllFilters);
             exportBtn.addEventListener('click', exportScores);
@@ -1109,6 +1267,8 @@
         window.adjustScore = adjustScore;
         window.toggleNA = toggleNA;
         window.clearCurrentFilter = clearCurrentFilter;
+        window.closeWarningModal = closeWarningModal;
+        window.confirmWarning = confirmWarning;
 
         // Initialize the application
         async function init() {

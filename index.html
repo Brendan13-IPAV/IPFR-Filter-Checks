@@ -413,6 +413,7 @@
         .score-buttons {
             display: flex;
             gap: 4px;
+            align-items: center;
         }
 
         .score-btn {
@@ -439,6 +440,27 @@
             background: #d1d5db;
             cursor: not-allowed;
             transform: none;
+        }
+
+        .na-btn {
+            background: #9ca3af;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 2px 6px;
+            cursor: pointer;
+            font-size: 10px;
+            font-weight: 600;
+            margin-left: 4px;
+            transition: all 0.2s ease;
+        }
+
+        .na-btn:hover {
+            background: #6b7280;
+        }
+
+        .na-btn.active {
+            background: #ef4444;
         }
 
         .loading {
@@ -860,6 +882,8 @@
             const card = document.createElement('div');
             card.className = 'strategy-card';
 
+            const isNA = strategy.calculatedScore === 0;
+
             card.innerHTML = `
                 <div class="card-header">
                     ${strategy.overtitle ? `<div class="card-overtitle">${strategy.overtitle}</div>` : ''}
@@ -867,10 +891,11 @@
                     <div class="card-description">${strategy.description}</div>
                 </div>
                 <div class="card-controls">
-                    <div class="score-display">${strategy.calculatedScore}</div>
+                    <div class="score-display">${isNA ? 'N/A' : strategy.calculatedScore}</div>
                     <div class="score-buttons">
-                        <button class="score-btn" onclick="adjustScore(${strategy.id}, 0.1)" title="Increase score">▲</button>
-                        <button class="score-btn" onclick="adjustScore(${strategy.id}, -0.1)" title="Decrease score">▼</button>
+                        <button class="score-btn" onclick="adjustScore(${strategy.id}, 0.1)" title="Increase score" ${isNA ? 'disabled' : ''}>▲</button>
+                        <button class="score-btn" onclick="adjustScore(${strategy.id}, -0.1)" title="Decrease score" ${isNA ? 'disabled' : ''}>▼</button>
+                        <button class="na-btn ${isNA ? 'active' : ''}" onclick="toggleNA(${strategy.id})" title="Mark as Not Applicable">N/A</button>
                     </div>
                 </div>
             `;
@@ -887,6 +912,26 @@
             const roundedScore = Math.round(newScore * 10) / 10;
             
             customScores[strategyId] = roundedScore;
+            applyFilters(); // Re-render with new scores
+        }
+
+        // Toggle N/A status
+        function toggleNA(strategyId) {
+            const strategy = filteredStrategies.find(s => s.id === strategyId);
+            if (!strategy) return;
+
+            if (strategy.calculatedScore === 0) {
+                // Currently N/A, restore to original or 1.0
+                let originalScore = 1.0;
+                if (currentFilter && currentFilter.option.scoringValues) {
+                    originalScore = currentFilter.option.scoringValues[strategyId - 1] || 1.0;
+                }
+                customScores[strategyId] = originalScore;
+            } else {
+                // Set to N/A (score = 0)
+                customScores[strategyId] = 0;
+            }
+            
             applyFilters(); // Re-render with new scores
         }
 
@@ -1062,6 +1107,7 @@
 
         // Make functions globally available
         window.adjustScore = adjustScore;
+        window.toggleNA = toggleNA;
         window.clearCurrentFilter = clearCurrentFilter;
 
         // Initialize the application

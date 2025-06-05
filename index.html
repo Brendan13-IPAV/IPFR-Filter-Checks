@@ -836,3 +836,136 @@
             const userNameValue = userName.value.trim();
             if (!userNameValue) {
                 alert('Please enter your name before exporting');
+                userName.focus();
+                return;
+            }
+
+            // Create CSV data
+            const csvData = [];
+            
+            // Header row
+            csvData.push([
+                'Strategy_ID',
+                'Strategy_Title',
+                'Original_Score',
+                'Adjusted_Score',
+                'Score_Change',
+                'Exported_By',
+                'Export_Timestamp',
+                'Active_Filter',
+                'Situation_Type',
+                'IP_Rights_Type'
+            ]);
+
+            // Get current filter info
+            let activeFilterText = 'None';
+            if (currentFilter) {
+                activeFilterText = `${currentFilter.config.label}: ${currentFilter.option.label}`;
+            }
+
+            const situationText = situationFilter.value || 'All';
+            const ipRightsText = ipRightsFilter.value || 'All';
+            const timestamp = new Date().toISOString();
+
+            // Add data for all strategies (including filtered ones)
+            filteredStrategies.forEach(strategy => {
+                let originalScore = 1.0;
+                if (currentFilter && currentFilter.option.scoringValues) {
+                    originalScore = currentFilter.option.scoringValues[strategy.id - 1] || 1.0;
+                }
+
+                const adjustedScore = strategy.calculatedScore;
+                const scoreChange = Math.round((adjustedScore - originalScore) * 10) / 10;
+
+                csvData.push([
+                    strategy.id,
+                    strategy.title,
+                    originalScore,
+                    adjustedScore,
+                    scoreChange,
+                    userNameValue,
+                    timestamp,
+                    activeFilterText,
+                    situationText,
+                    ipRightsText
+                ]);
+            });
+
+            // Convert to CSV and download
+            const csvContent = convertToCSV(csvData);
+            const csvBlob = new Blob([csvContent], { type: 'text/csv' });
+            const csvUrl = URL.createObjectURL(csvBlob);
+            
+            const dateStr = new Date().toISOString().split('T')[0];
+            const timeStr = new Date().toTimeString().split(' ')[0].replace(/:/g, '-');
+            const filename = `ip_strategy_scores_${userNameValue.replace(/[^a-zA-Z0-9]/g, '_')}_${dateStr}_${timeStr}.csv`;
+            
+            downloadFile(csvUrl, filename);
+            setTimeout(() => URL.revokeObjectURL(csvUrl), 1000);
+        }
+
+        // Convert data to CSV format
+        function convertToCSV(data) {
+            return data.map(row => 
+                row.map(cell => {
+                    // Handle strings with commas, quotes, or newlines
+                    if (typeof cell === 'string' && (cell.includes(',') || cell.includes('"') || cell.includes('\n'))) {
+                        return `"${cell.replace(/"/g, '""')}"`;
+                    }
+                    return cell;
+                }).join(',')
+            ).join('\n');
+        }
+
+        // Download file helper
+        function downloadFile(url, filename) {
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        }
+
+        // Setup event listeners
+        function setupEventListeners() {
+            situationFilter.addEventListener('change', () => {
+                applyFilters();
+                renderAccordions();
+            });
+            ipRightsFilter.addEventListener('change', () => {
+                applyFilters();
+                renderAccordions();
+            });
+            clearFilters.addEventListener('click', clearAllFilters);
+            exportBtn.addEventListener('click', exportScores);
+        }
+
+        // Make functions globally available
+        window.adjustScore = adjustScore;
+        window.clearCurrentFilter = clearCurrentFilter;
+
+        // Initialize the application
+        async function init() {
+            const dataLoaded = await loadData();
+            
+            if (!dataLoaded) {
+                strategiesContainer.innerHTML = `
+                    <div class="no-results">
+                        <h3>Failed to load data</h3>
+                        <p>Please check that all data is available</p>
+                    </div>
+                `;
+                return;
+            }
+
+            setupEventListeners();
+            renderAccordions();
+            applyFilters();
+        }
+
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>

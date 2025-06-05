@@ -720,9 +720,42 @@
                 changesIndicator.classList.remove('visible');
             }
         }
-        function getAccordionLayout() {
-            return accordionPresets.default;
-        }
+// Get current accordion layout based on selections
+function getAccordionLayout() {
+    const selectedSituation = situationFilter.value;
+    const selectedIPRight = ipRightsFilter.value;
+
+    // Map IP rights to preset keys (matching your accordionPresets.json)
+    const ipRightMap = {
+        'Patent': 'Patent',
+        'Trade mark': 'Trademark',
+        'Design': 'Design',
+        'PBR': 'PBR',
+        'Copyright': 'Copyright',
+        'Any dispute': 'Any'
+    };
+
+    const rightKey = ipRightMap[selectedIPRight] || '';
+    const situationKey = selectedSituation || '';
+    
+    // Build preset key like "Patent-Enforcement" or "Trademark-Accused"
+    let presetKey = '';
+    if (rightKey && situationKey) {
+        presetKey = `${rightKey}-${situationKey}`;
+    }
+
+    console.log('Selected situation:', selectedSituation);
+    console.log('Selected IP right:', selectedIPRight);
+    console.log('Mapped preset key:', presetKey);
+    console.log('Available presets:', Object.keys(accordionPresets));
+
+    // Try to find the specific preset, fallback to default
+    const layout = accordionPresets[presetKey] || accordionPresets.default;
+    
+    console.log('Using layout:', layout);
+    
+    return layout;
+}
 
         // Render accordion filters
         function renderAccordions() {

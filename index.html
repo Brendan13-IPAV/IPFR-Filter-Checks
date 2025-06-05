@@ -908,6 +908,43 @@
                 ]);
             });
 
+            // Add empty row separator
+            csvData.push([]);
+            
+            // Add filterOptions.json ready line if we have an active filter
+            if (currentFilter) {
+                csvData.push(['=== COPY THIS LINE FOR filterOptions.json ===']);
+                csvData.push([]);
+                
+                // Generate the complete scoringValues array
+                // Find the maximum strategy ID to determine array length
+                const maxStrategyId = Math.max(...allStrategies.map(s => s.id));
+                const scoringValuesArray = [];
+                
+                // Build array with original scores as base
+                const originalScores = currentFilter.option.scoringValues || [];
+                for (let i = 0; i < maxStrategyId; i++) {
+                    // Use original score as default
+                    let score = originalScores[i] || 1.0;
+                    
+                    // Check if this strategy has a custom score
+                    const strategyId = i + 1;
+                    if (customScores[strategyId] !== undefined) {
+                        score = customScores[strategyId];
+                    }
+                    
+                    scoringValuesArray.push(score);
+                }
+                
+                // Create the JSON-ready line
+                const scoringValuesLine = `"scoringValues": [${scoringValuesArray.join(',')}]`;
+                csvData.push([scoringValuesLine]);
+                csvData.push([]);
+                csvData.push(['Filter Key:', currentFilter.key]);
+                csvData.push(['Option Index:', currentFilter.optionIndex]);
+                csvData.push(['Option Label:', currentFilter.option.label]);
+            }
+
             // Convert to CSV and download
             const csvContent = convertToCSV(csvData);
             const csvBlob = new Blob([csvContent], { type: 'text/csv' });

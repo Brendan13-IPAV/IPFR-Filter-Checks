@@ -351,6 +351,7 @@
           "label": "Open to negotiation",
           "pillLabel": "Open to negotiation",
          "scoringValues": [1.1,1,1.1,1.1,1.1,1.1,1.2,1.1,1.1,1,1,1.1,1,1,0.9,1.1,1.1,1.1,1,1,1,1.1,1,1.1,1.1,1.1,0.9,1,0.9,1.1,1.1,1.1,1.1,1.1,1.1,1,0.9,1,1,1,0.9,0.9,0.9,0.9,1.1,0.9,1,0.9,1.1,1,1,0.8,1,1,1,1,1,1.1,1,1.1,1.1,1.1,1.1,0.9,0.9,0.9,1,1,1,1.1,1.1,1,1.1,1.1]
+        },
         {
           "label": "Other party will not negotiate",
           "pillLabel": "Other party will not negotiate",

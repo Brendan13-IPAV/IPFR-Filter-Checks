@@ -1,16 +1,16 @@
 {
   "default": {
-    "topFilters": [ "preferredApproach", "BusinessIssue", "howCommon"],
+    "topFilters": [ "preferredApproach", "howCommon"],
     "accordions": {
-      "Your IP": ["Jurisdiction", "YourTMStatus", "YourPatStatus"],
+      "Your IP": ["Jurisdiction"],
       "Details": ["Where", "onlineIssues", "domainName", "importingGoods"],
-      "Other party details": ["theirIPRights", "identifyParty"],
+      "Other party details": ["theirTMRights", "identifyParty"],
       "Resolution Preferences": ["businessRelationship", "openToNegotiate"]
     }
   },
   
   "Patent-Enforcement": {
-    "topFilters": ["preferredApproach", "BusinessIssue", "howCommon"],
+    "topFilters": ["preferredApproach", "howCommon"],
     "accordions": {
       "Your patent details": ["Jurisdiction", "YourPatStatus"],
       "Suspected infringment details": ["Where"],
@@ -20,7 +20,7 @@
   },
 
    "Trademark-Enforcement": {
-    "topFilters": ["preferredApproach", "BusinessIssue", "howCommon"],
+    "topFilters": ["preferredApproach", "howCommon"],
     "accordions": {
       "About your trade mark": ["Jurisdiction", "YourTMStatus"],
       "Suspected infringment details": ["Where", "onlineIssues", "domainName", "importingGoods"],
@@ -30,7 +30,7 @@
   },
   
   "Trademark-Accused": {
-    "topFilters": ["preferredApproach", "BusinessIssue", "howCommon"],
+    "topFilters": ["preferredApproach", "howCommon"],
     "accordions": {
       "Accusation details": ["theirTMRights", "Where", "domainName", "onlineIssues"],
        "About your IP right (if any)": ["Jurisdiction", "YourTMStatus"],
@@ -39,33 +39,59 @@
   },
     
   "Design-Enforcement": { 
-          "topFilters": ["preferredApproach", "BusinessIssue", "howCommon"],
+          "topFilters": ["preferredApproach", "howCommon"],
     "accordions": {
       "Incomplete": ["Where"]
     }
   },
     
   "PBR-Enforcement": {      
-    "topFilters": ["preferredApproach", "BusinessIssue", "howCommon"],
+    "topFilters": ["preferredApproach", "howCommon"],
     "accordions": {
       "Incomplete": ["Where"] 
     }
   },
     
   "Copyright-Enforcement": {
-          "topFilters": [ "preferredApproach", "BusinessIssue", "howCommon"],
+          "topFilters": [ "preferredApproach", "howCommon"],
     "accordions": {
       "Incomplete": ["Where"]
     }
   },
 
-    
   "Any-Enforcement": {
           "topFilters": ["preferredApproach", "BusinessIssue", "howCommon"],
     "accordions": {
       "Incomplete": ["Where"]
     }
-  }
+  },
 
+    "Trademark-Proactive": {
+    "topFilters": ["LikelyHeadacheContext", "howCommon"],
+    "accordions": {
+        "Your goals": ["IPGoals"],
+      "About your IP right (if any)": ["Jurisdiction", "YourTMStatus"],
+      "Business context": ["Where", "domainName", "onlineIssues"]
+
+    }
+  },
+      "Patent-Proactive": {
+    "topFilters": ["LikelyHeadacheContext", "howCommon"],
+    "accordions": {
+        "Your goals": ["IPGoals"],
+      "About your IP right (if any)": ["Jurisdiction", "YourPatStatus"],
+      "Business context": ["Where", "domainName", "onlineIssues"]
+
+    }
+  },
+      "Any-Proactive": {
+    "topFilters": ["LikelyHeadacheContext", "howCommon"],
+    "accordions": {
+        "Your goals": ["IPGoals"],
+      "About your IP right (if any)": ["Jurisdiction"],
+      "Business context": ["Where", "domainName", "onlineIssues"]
+
+    }
+  }
 }
 

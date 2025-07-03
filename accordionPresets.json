@@ -1,97 +1,165 @@
-{
+                                                                      {
   "default": {
-    "topFilters": [ "preferredApproach", "howCommon"],
+    "topFilters": [],
     "accordions": {
-      "Your IP": ["Jurisdiction"],
-      "Details": ["Where", "onlineIssues", "domainName", "importingGoods"],
-      "Other party details": ["theirTMRights", "identifyParty"],
-      "Resolution Preferences": ["businessRelationship", "openToNegotiate"]
+      "Sort options": ["ProcessStage", "howCommon"],
+      "Your preferences": ["Adverserial", "Negotiated"],
+      "Infringement details": ["TargetIssues"],
+      "About your rights": ["Jurisdiction"],
+      "About the other party": ["businessRelationship"]
     }
   },
   
   "Patent-Enforcement": {
-    "topFilters": ["preferredApproach", "howCommon"],
+       "topFilters": [],
     "accordions": {
-      "Your patent details": ["Jurisdiction", "YourPatStatus"],
-      "Suspected infringment details": ["Where"],
-      "Other party details": ["identifyParty"],
-      "Commerical considerations": ["businessRelationship", "openToNegotiate"]
+      "Sort options": ["ProcessStage", "howCommon"],
+      "Your preferences": ["Adverserial", "Negotiated"],
+      "Infringement details": ["TargetIssues"],
+      "About your patent": ["Jurisdiction", "YourPatStatus"],
+      "About the other party": ["theirPatent","businessRelationship"]
     }
   },
 
    "Trademark-Enforcement": {
-    "topFilters": ["preferredApproach", "howCommon"],
+    "topFilters": [],
     "accordions": {
+      "Sort options": ["ProcessStage", "howCommon"],
+      "Your preferences": ["Adverserial", "Negotiated"],
+      "Infringement details": ["TargetIssues"],
       "About your trade mark": ["Jurisdiction", "YourTMStatus"],
-      "Suspected infringment details": ["Where", "onlineIssues", "domainName", "importingGoods"],
-      "Other Party": ["theirTMRights", "identifyParty"],
-      "Commerical considerations": ["businessRelationship", "openToNegotiate"]
-    }
-  },
-  
-  "Trademark-Accused": {
-    "topFilters": ["preferredApproach", "howCommon"],
-    "accordions": {
-      "Accusation details": ["theirTMRights", "Where", "domainName", "onlineIssues"],
-       "About your IP right (if any)": ["Jurisdiction", "YourTMStatus"],
-           "Commerical considerations": ["openToNegotiate", "businessRelationship"]
+      "About the other party": ["theirTMRights","businessRelationship"]
+
     }
   },
     
   "Design-Enforcement": { 
-          "topFilters": ["preferredApproach", "howCommon"],
+ "topFilters": [],
     "accordions": {
-      "Incomplete": ["Where"]
+      "Sort options": ["ProcessStage", "howCommon"],
+      "Your preferences": ["Adverserial", "Negotiated"],
+      "Infringement details": ["TargetIssues"],
+      "About your registered design": ["Jurisdiction", "YourDesStatus"],
+      "About the other party": ["businessRelationship"]
     }
   },
     
   "PBR-Enforcement": {      
-    "topFilters": ["preferredApproach", "howCommon"],
+ "topFilters": [],
     "accordions": {
-      "Incomplete": ["Where"] 
+      "Sort options": ["ProcessStage", "howCommon"],
+      "Your preferences": ["Adverserial", "Negotiated"],
+      "Infringement details": ["TargetIssues"],
+      "About your plant breeder's right": ["Jurisdiction", "YourPBRStatus"],
+      "About the other party": ["businessRelationship"]
     }
   },
     
   "Copyright-Enforcement": {
-          "topFilters": [ "preferredApproach", "howCommon"],
+       "topFilters": [],
     "accordions": {
-      "Incomplete": ["Where"]
+      "Sort options": ["ProcessStage", "howCommon"],
+      "Your preferences": ["Adverserial", "Negotiated"],
+      "Infringement details": ["TargetIssues"],
+      "About the other party": ["businessRelationship"]
     }
   },
 
   "Any-Enforcement": {
-          "topFilters": ["preferredApproach", "BusinessIssue", "howCommon"],
+       "topFilters": [],
     "accordions": {
-      "Incomplete": ["Where"]
+      "Sort options": ["ProcessStage", "howCommon"],
+      "Your preferences": ["Adverserial", "Negotiated"],
+      "Infringement details": ["TargetIssues"],
+      "About the other party": ["businessRelationship"]
     }
   },
 
-    "Trademark-Proactive": {
-    "topFilters": ["LikelyHeadacheContext", "howCommon"],
-    "accordions": {
-        "Your goals": ["IPGoals"],
-      "About your IP right (if any)": ["Jurisdiction", "YourTMStatus"],
-      "Business context": ["Where", "domainName", "onlineIssues"]
 
+                                                                          
+  "Trademark-Accused": {
+    "topFilters": ["GoalsAccused"],
+    "accordions": {
+      "Sort options": ["ProcessStage", "howCommon"],
+      "Your preferences": ["Adverserial", "Negotiated"],
+      "About your trade mark": ["Jurisdiction", "YourTMStatus"],
+      "About the other party": ["theirTMRights","businessRelationship"]
+    }
+  },
+
+    "Patent-Accused": {
+    "topFilters": ["GoalsAccused"],
+    "accordions": {
+      "Sort options": ["ProcessStage", "howCommon"],
+      "Your preferences": ["Adverserial", "Negotiated"],
+      "About your patent": ["Jurisdiction", "YourPatStatus"],
+      "About the other party": ["theirPatent","businessRelationship"]
+    }
+  },
+
+    "Design-Accused": {
+    "topFilters": ["GoalsAccused"],
+    "accordions": {
+      "Sort options": ["ProcessStage", "howCommon"],
+      "Your preferences": ["Adverserial", "Negotiated"],
+      "About your registered design": ["Jurisdiction", "YourDesStatus"],
+      "About the other party": ["businessRelationship"]
+    }
+  },
+    "PBR-Accused": {
+    "topFilters": ["GoalsAccused"],
+    "accordions": {
+      "Sort options": ["ProcessStage", "howCommon"],
+      "Your preferences": ["Adverserial", "Negotiated"],
+      "About your plant breeder's right": ["Jurisdiction", "YourPBRStatus"],
+      "About the other party": ["businessRelationship"]
+    }
+  },
+        "Copyright-Accused": {
+    "topFilters": ["GoalsAccused"],
+    "accordions": {
+      "Sort options": ["ProcessStage", "howCommon"],
+      "Your preferences": ["Adverserial", "Negotiated"],
+     "Infringement details": ["TargetIssues"],
+      "About the other party": ["businessRelationship"]
+    }
+  },       
+      "Any-Enforcement": {
+       "topFilters": ["GoalsAccused"],
+    "accordions": {
+      "Sort options": ["ProcessStage", "howCommon"],
+      "Your preferences": ["Adverserial", "Negotiated"],
+      "Infringement details": ["TargetIssues"],
+      "About the other party": ["businessRelationship"]
+    }
+  },
+
+                                                         
+    "Trademark-Proactive": {
+    "topFilters": ["IPGoals", "howCommon"],
+    "accordions": {
+      "About your IP right (if any)": ["Jurisdiction", "YourTMStatus"],
+      "Business context": ["LikelyHeadacheContext"],
+      "About another party": ["theirTMRights","businessRelationship"]
     }
   },
       "Patent-Proactive": {
-    "topFilters": ["LikelyHeadacheContext", "howCommon"],
+       "topFilters": ["IPGoals", "howCommon"],
     "accordions": {
-        "Your goals": ["IPGoals"],
       "About your IP right (if any)": ["Jurisdiction", "YourPatStatus"],
-      "Business context": ["Where", "domainName", "onlineIssues"]
-
+      "Business context": ["LikelyHeadacheContext"],
+      "About another party": ["theirPatent","businessRelationship"]
     }
   },
       "Any-Proactive": {
-    "topFilters": ["LikelyHeadacheContext", "howCommon"],
+       "topFilters": ["IPGoals", "howCommon"],
     "accordions": {
-        "Your goals": ["IPGoals"],
-      "About your IP right (if any)": ["Jurisdiction"],
-      "Business context": ["Where", "domainName", "onlineIssues"]
+          "About your IP right (if any)": ["Jurisdiction"],
+      "Business context": ["LikelyHeadacheContext"],
+      "About another party": ["businessRelationship"]
+    }
 
     }
   }
-}
+                                                                                
 

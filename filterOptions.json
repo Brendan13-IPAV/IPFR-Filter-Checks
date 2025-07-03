@@ -474,17 +474,17 @@
         },
         {
           "label": "Dispute the claim",
-          "pillLabel": "challenge the claim",
+          "pillLabel": "challenge the claims against you",
       "scoringValues": []
         },
         {
           "label": "Avoid escalation",
-          "pillLabel": "Pill Text 3",
+          "pillLabel": "help prevent the dispute escalating",
       "scoringValues": []
         },
             {
-          "label": "Dispute the claim",
-          "pillLabel": "Pill Text 2",
+          "label": "Understand the issue",
+          "pillLabel": "help you uderstand your position better",
       "scoringValues": []
         }
       ]

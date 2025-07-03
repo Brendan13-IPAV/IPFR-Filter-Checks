@@ -184,6 +184,11 @@
           "pillLabel": "no clear Australian trade mark",
           "scoringValues": [1.1,1.1,1.1,1.2,1.0,1.2,1.2,1.2,1.0,1.0,1.0,1.0,1.0,1.1,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,0.9,1.0,1.0,1.0,1.1,1.0,1.0,1.1,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0]
         },
+                {
+          "label": "Don't know",
+          "pillLabel": "unknown trade mark status",
+          "scoringValues": [1.1,1.1,1.1,1.2,1.0,1.2,1.2,1.2,1.0,1.0,1.0,1.0,1.0,1.1,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,0.9,1.0,1.0,1.0,1.1,1.0,1.0,1.1,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0]
+        },
         {
           "label": "Under examination",
           "pillLabel": "a trade mark awaiting examination",
@@ -221,8 +226,18 @@
           "pillLabel": "no clear Australian patent found",
           "scoringValues": [1.0]
         },
+                    {
+          "label": "Don't know",
+          "pillLabel": "an unknown patent status",
+          "scoringValues": [1.0]
+                }
         {
-          "label": "Pending examination",
+          "label": "Filed",
+          "pillLabel": "a filed patent awaiting examination",
+          "scoringValues": [1.0]
+        },
+        {
+          "label": "Under examination",
           "pillLabel": "a patent awaiting examination",
           "scoringValues": [1.0]
         },
@@ -232,15 +247,16 @@
           "scoringValues": [1.0]
         },
                 {
-          "label": "Being challenged",
+          "label": "Under opposition",
           "pillLabel": "a patent being challenged",
           "scoringValues": [1.0]
                 },
               {
-          "label": "No longer in force",
+          "label": "Expired",
           "pillLabel": "an expired or lapsed patent",
           "scoringValues": [1.0]
                 }
+          
       ]
     },
                                                       

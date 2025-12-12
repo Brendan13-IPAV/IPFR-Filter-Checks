@@ -1,4 +1,9 @@
-{
+                  {
+                    "version": "1.0.0",
+                    "lastUpdated": "2024-12-12",
+                    "presets":
+  
+  {
   "default": {
     "topFilters": [],
     "accordions": {
@@ -289,3 +294,4 @@
 
 
 }
+                  }

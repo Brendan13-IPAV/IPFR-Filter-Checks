@@ -804,7 +804,7 @@
         // Application state
         let allStrategies = [];
         let filteredStrategies = [];
-        let currentFilter = null;
+        let activeFilters = []; // Array to hold multiple active filters
         let accordionState = {};
         let filterOptions = {};
         let accordionPresets = {};
@@ -873,21 +873,24 @@ function generateSessionId() {
  * Collect current filter state for telemetry
  * Returns an object with all active filters
  */
+/**
+ * Collect current filter state for telemetry
+ * Returns an object with all active filters
+ */
+/**
+ * Collect current filter state for telemetry
+ * Returns an object with all active filters
+ */
 function collectFilterState() {
-    const accordionFilters = [];
-    
-    if (currentFilter) {
-        accordionFilters.push({
-            key: currentFilter.key,
-            option: currentFilter.option.label,
-            pillText: currentFilter.config.pillTemplate?.replace('{optionLabel}', currentFilter.option.pillLabel || currentFilter.option.label) || currentFilter.option.label
-        });
-    }
+    const accordionFiltersArray = activeFilters.map(filter => ({
+        key: filter.key,
+        option: filter.option.label
+    }));
     
     return {
         situationFilter: situationFilter.value || 'All Situations',
         ipRightsFilter: ipRightsFilter.value || 'All IP Rights',
-        accordionFilters: JSON.stringify(accordionFilters)
+        accordionFilters: JSON.stringify(accordionFiltersArray)
     };
 }
 
@@ -1303,256 +1306,288 @@ function getAccordionLayout() {
     }
 }
 
-        // Render accordion filters
-        function renderAccordions() {
-            accordionContainer.innerHTML = '';
+// Render accordion filters
+function renderAccordions() {
+    accordionContainer.innerHTML = '';
+    
+    const layout = getAccordionLayout();
+    const accordions = layout.accordions || {};
+    const topFilters = layout.topFilters || [];
+
+    // Helper function to check if a filter is active
+    function isFilterActive(filterKey, optionIndex) {
+        return activeFilters.some(f => f.key === filterKey && f.optionIndex === optionIndex);
+    }
+
+    // Helper function to check if any filter in a group is active
+    function hasActiveFilterInGroup(filterKeys) {
+        return filterKeys.some(key => 
+            activeFilters.some(f => f.key === key)
+        );
+    }
+
+    // Render top filters in an accordion to save space
+    if (topFilters.length > 0) {
+        const topFiltersKey = 'topfilters';
+        const hasActiveTopFilter = hasActiveFilterInGroup(topFilters);
+        
+        const topHeader = document.createElement('div');
+        topHeader.className = 'accordion-header';
+        const activeText = hasActiveTopFilter ? ' ✓' : '';
+        
+        topHeader.innerHTML = `
+            <span style="display:inline-block; transition: transform 0.3s ease; transform: ${accordionState[topFiltersKey] ? 'rotate(90deg)' : 'rotate(0deg)'};">▶</span>
+            Additional Filters${activeText}
+        `;
+        
+        topHeader.onclick = () => {
+            accordionState[topFiltersKey] = !accordionState[topFiltersKey];
+            renderAccordions();
+        };
+        
+        accordionContainer.appendChild(topHeader);
+
+        if (accordionState[topFiltersKey]) {
+            const topContent = document.createElement('div');
+            topContent.className = 'accordion-content';
             
-            const layout = getAccordionLayout();
-            const accordions = layout.accordions || {};
-            const topFilters = layout.topFilters || [];
+            topFilters.forEach(filterKey => {
+                const filterConfig = filterOptions[filterKey];
+                if (!filterConfig) return;
 
-            // Render top filters in an accordion to save space
-            if (topFilters.length > 0) {
-                const topFiltersKey = 'topfilters';
-                
-                const hasActiveTopFilter = topFilters.some(key => 
-                    currentFilter && currentFilter.key === key
-                );
-                
-                const topHeader = document.createElement('div');
-                topHeader.className = 'accordion-header';
-                
-                const activeText = hasActiveTopFilter ? ' ✓' : '';
-                
-                topHeader.innerHTML = `
-                    <span style="display:inline-block; transition: transform 0.3s ease; transform: ${accordionState[topFiltersKey] ? 'rotate(90deg)' : 'rotate(0deg)'};">▶</span>
-                    Additional Filters${activeText}
-                `;
-                
-                topHeader.onclick = () => {
-                    accordionState[topFiltersKey] = !accordionState[topFiltersKey];
-                    renderAccordions();
-                };
-                
-                accordionContainer.appendChild(topHeader);
+                const group = document.createElement('div');
+                group.style.marginBottom = '20px';
 
-                if (accordionState[topFiltersKey]) {
-                    const topContent = document.createElement('div');
-                    topContent.className = 'accordion-content';
+                const label = document.createElement('div');
+                label.className = 'filter-label';
+                label.textContent = filterConfig.label;
+                group.appendChild(label);
+
+                const radioGroup = document.createElement('div');
+                radioGroup.className = 'radio-group';
+
+                filterConfig.options.forEach((option, index) => {
+                    const radio = document.createElement('div');
+                    radio.className = 'radio-button';
                     
-                    topFilters.forEach(filterKey => {
-                        const filterConfig = filterOptions[filterKey];
-                        if (!filterConfig) return;
-
-                        const group = document.createElement('div');
-                        group.style.marginBottom = '20px';
-
-                        const label = document.createElement('div');
-                        label.className = 'filter-label';
-                        label.textContent = filterConfig.label;
-                        group.appendChild(label);
-
-                        const radioGroup = document.createElement('div');
-                        radioGroup.className = 'radio-group';
-
-                        filterConfig.options.forEach((option, index) => {
-                            const radio = document.createElement('div');
-                            radio.className = 'radio-button';
+                    if (isFilterActive(filterKey, index)) {
+                        radio.classList.add('radio-selected');
+                    }
+                    
+                    radio.textContent = option.label;
+                    radio.onclick = () => {
+                        const newFilter = {
+                            key: filterKey,
+                            optionIndex: index,
+                            config: filterConfig,
+                            option: option
+                        };
+                        
+                        const changeFilter = () => {
+                            // Toggle filter: remove if already active, add if not
+                            const existingIndex = activeFilters.findIndex(
+                                f => f.key === filterKey && f.optionIndex === index
+                            );
                             
-                            if (currentFilter && currentFilter.key === filterKey && currentFilter.optionIndex === index) {
-                                radio.classList.add('radio-selected');
+                            if (existingIndex !== -1) {
+                                // Remove this filter
+                                activeFilters.splice(existingIndex, 1);
+                            } else {
+                                // Remove any other filter with the same key (only one option per filter group)
+                                activeFilters = activeFilters.filter(f => f.key !== filterKey);
+                                // Add the new filter
+                                activeFilters.push(newFilter);
                             }
                             
-                            radio.textContent = option.label;
-                            radio.onclick = () => {
-                                const newFilter = {
-                                    key: filterKey,
-                                    optionIndex: index,
-                                    config: filterConfig,
-                                    option: option
-                                };
-                                
-                                const changeFilter = () => {
-                                    if (currentFilter && currentFilter.key === filterKey && currentFilter.optionIndex === index) {
-                                        currentFilter = null;
-                                    } else {
-                                        currentFilter = newFilter;
-                                    }
-                                    applyFilters();
-                                    renderAccordions();
-                                };
-                                
-                                checkUnsavedChanges(changeFilter);
-                            };
-                            radioGroup.appendChild(radio);
-                        });
+                            applyFilters();
+                            renderAccordions();
+                        };
+                        
+                        checkUnsavedChanges(changeFilter);
+                    };
+                    radioGroup.appendChild(radio);
+                });
 
-                        group.appendChild(radioGroup);
-                        topContent.appendChild(group);
-                    });
+                group.appendChild(radioGroup);
+                topContent.appendChild(group);
+            });
+            
+            accordionContainer.appendChild(topContent);
+        }
+    }
+
+    // Render accordion sections
+    Object.entries(accordions).forEach(([accordionTitle, filterKeys]) => {
+        const accordionKey = accordionTitle.toLowerCase().replace(/\s+/g, '');
+        const hasActiveFilter = hasActiveFilterInGroup(filterKeys);
+        
+        const header = document.createElement('div');
+        header.className = 'accordion-header';
+        const activeText = hasActiveFilter ? ' ✓' : '';
+        
+        header.innerHTML = `
+            <span style="display:inline-block; transition: transform 0.3s ease; transform: ${accordionState[accordionKey] ? 'rotate(90deg)' : 'rotate(0deg)'};">▶</span>
+            ${accordionTitle}${activeText}
+        `;
+        
+        header.onclick = () => {
+            accordionState[accordionKey] = !accordionState[accordionKey];
+            renderAccordions();
+        };
+        
+        accordionContainer.appendChild(header);
+
+        if (accordionState[accordionKey]) {
+            const content = document.createElement('div');
+            content.className = 'accordion-content';
+
+            filterKeys.forEach(filterKey => {
+                const filterConfig = filterOptions[filterKey];
+                if (!filterConfig) return;
+
+                const group = document.createElement('div');
+                group.style.marginBottom = '16px';
+
+                const label = document.createElement('div');
+                label.className = 'filter-label';
+                label.textContent = filterConfig.label;
+                group.appendChild(label);
+
+                const radioGroup = document.createElement('div');
+                radioGroup.className = 'radio-group';
+
+                filterConfig.options.forEach((option, index) => {
+                    const radio = document.createElement('div');
+                    radio.className = 'radio-button';
                     
-                    accordionContainer.appendChild(topContent);
-                }
-            }
-
-            // Render accordion sections
-            Object.entries(accordions).forEach(([accordionTitle, filterKeys]) => {
-                const accordionKey = accordionTitle.toLowerCase().replace(/\s+/g, '');
-                
-                const hasActiveFilter = filterKeys.some(key => 
-                    currentFilter && currentFilter.key === key
-                );
-                
-                const header = document.createElement('div');
-                header.className = 'accordion-header';
-                
-                const activeText = hasActiveFilter ? ' ✓' : '';
-                
-                header.innerHTML = `
-                    <span style="display:inline-block; transition: transform 0.3s ease; transform: ${accordionState[accordionKey] ? 'rotate(90deg)' : 'rotate(0deg)'};">▶</span>
-                    ${accordionTitle}${activeText}
-                `;
-                
-                header.onclick = () => {
-                    accordionState[accordionKey] = !accordionState[accordionKey];
-                    renderAccordions();
-                };
-                
-                accordionContainer.appendChild(header);
-
-                if (accordionState[accordionKey]) {
-                    const content = document.createElement('div');
-                    content.className = 'accordion-content';
-
-                    filterKeys.forEach(filterKey => {
-                        const filterConfig = filterOptions[filterKey];
-                        if (!filterConfig) return;
-
-                        const group = document.createElement('div');
-                        group.style.marginBottom = '16px';
-
-                        const label = document.createElement('div');
-                        label.className = 'filter-label';
-                        label.textContent = filterConfig.label;
-                        group.appendChild(label);
-
-                        const radioGroup = document.createElement('div');
-                        radioGroup.className = 'radio-group';
-
-                        filterConfig.options.forEach((option, index) => {
-                            const radio = document.createElement('div');
-                            radio.className = 'radio-button';
+                    if (isFilterActive(filterKey, index)) {
+                        radio.classList.add('radio-selected');
+                    }
+                    
+                    radio.textContent = option.label;
+                    radio.onclick = () => {
+                        const newFilter = {
+                            key: filterKey,
+                            optionIndex: index,
+                            config: filterConfig,
+                            option: option
+                        };
+                        
+                        const changeFilter = () => {
+                            // Toggle filter: remove if already active, add if not
+                            const existingIndex = activeFilters.findIndex(
+                                f => f.key === filterKey && f.optionIndex === index
+                            );
                             
-                            if (currentFilter && currentFilter.key === filterKey && currentFilter.optionIndex === index) {
-                                radio.classList.add('radio-selected');
+                            if (existingIndex !== -1) {
+                                // Remove this filter
+                                activeFilters.splice(existingIndex, 1);
+                            } else {
+                                // Remove any other filter with the same key (only one option per filter group)
+                                activeFilters = activeFilters.filter(f => f.key !== filterKey);
+                                // Add the new filter
+                                activeFilters.push(newFilter);
                             }
                             
-                            radio.textContent = option.label;
-                            radio.onclick = () => {
-                                const newFilter = {
-                                    key: filterKey,
-                                    optionIndex: index,
-                                    config: filterConfig,
-                                    option: option
-                                };
-                                
-                                const changeFilter = () => {
-                                    if (currentFilter && currentFilter.key === filterKey && currentFilter.optionIndex === index) {
-                                        currentFilter = null;
-                                    } else {
-                                        currentFilter = newFilter;
-                                    }
-                                    applyFilters();
-                                    renderAccordions();
-                                };
-                                
-                                checkUnsavedChanges(changeFilter);
-                            };
-                            radioGroup.appendChild(radio);
-                        });
+                            applyFilters();
+                            renderAccordions();
+                        };
+                        
+                        checkUnsavedChanges(changeFilter);
+                    };
+                    radioGroup.appendChild(radio);
+                });
 
-                        group.appendChild(radioGroup);
-                        content.appendChild(group);
-                    });
-
-                    accordionContainer.appendChild(content);
-                }
+                group.appendChild(radioGroup);
+                content.appendChild(group);
             });
+
+            accordionContainer.appendChild(content);
         }
+    });
+}
 
-        // Apply filters and calculate scores
-        function applyFilters() {
-            const selectedSituation = situationFilter.value;
-            const selectedIPRight = ipRightsFilter.value;
+// Apply filters and calculate scores
+function applyFilters() {
+    const selectedSituation = situationFilter.value;
+    const selectedIPRight = ipRightsFilter.value;
 
-            // Filter strategies
-            filteredStrategies = allStrategies.filter(strategy => {
-                // Situation filter
-                if (selectedSituation && strategy.responseType) {
-                    if (!strategy.responseType.includes(selectedSituation)) {
-                        return false;
-                    }
-                }
-
-                // IP Rights filter
-                if (selectedIPRight && strategy.ipTypeTags) {
-                    if (!strategy.ipTypeTags.includes(selectedIPRight) && 
-                        !strategy.ipTypeTags.includes('Any dispute')) {
-                        return false;
-                    }
-                }
-
-                return true;
-            });
-
-            // Calculate scores
-            filteredStrategies = filteredStrategies.map(strategy => {
-                let score = 1.0; // default score
-                
-                if (currentFilter && filterOptions[currentFilter.key]) {
-                    const option = currentFilter.option;
-                    if (option && option.scoringValues && strategy.id <= option.scoringValues.length) {
-                        score = option.scoringValues[strategy.id - 1] || 1.0;
-                    }
-                }
-
-                // Apply custom score adjustments
-                const customScore = customScores[strategy.id];
-                if (customScore !== undefined) {
-                    score = customScore;
-                }
-                
-                return {
-                    ...strategy,
-                    calculatedScore: Math.round(score * 10) / 10 // Round to 1 decimal
-                };
-            });
-
-            updateActiveFilterDisplay();
-            updateResultsCount();
-            renderStrategiesByScore();
-        }
-
-        // Update active filter display
-        function updateActiveFilterDisplay() {
-            activeFilterPill.innerHTML = '';
-
-            if (currentFilter) {
-                const config = currentFilter.config;
-                const option = currentFilter.option;
-                
-                let pillText = config.pillTemplate || `${config.label}: ${option.label}`;
-                pillText = pillText.replace('{optionLabel}', option.pillLabel || option.label);
-
-                const pill = document.createElement('div');
-                pill.className = 'active-filter-pill';
-                pill.innerHTML = `
-                    <span>${pillText}</span>
-                    <button onclick="clearCurrentFilter()">×</button>
-                `;
-                activeFilterPill.appendChild(pill);
+    // Filter strategies
+    filteredStrategies = allStrategies.filter(strategy => {
+        // Situation filter
+        if (selectedSituation && strategy.responseType) {
+            if (!strategy.responseType.includes(selectedSituation)) {
+                return false;
             }
         }
+
+        // IP Rights filter
+        if (selectedIPRight && strategy.ipTypeTags) {
+            if (!strategy.ipTypeTags.includes(selectedIPRight) && 
+                !strategy.ipTypeTags.includes('Any dispute')) {
+                return false;
+            }
+        }
+
+        return true;
+    });
+
+    // Calculate scores - combine all active filters
+    filteredStrategies = filteredStrategies.map(strategy => {
+        let score = 1.0; // default score
+        
+        // Apply each active filter and multiply scores
+        activeFilters.forEach(filter => {
+            if (filterOptions[filter.key]) {
+                const option = filter.option;
+                if (option && option.scoringValues && strategy.id <= option.scoringValues.length) {
+                    const filterScore = option.scoringValues[strategy.id - 1] || 1.0;
+                    score *= filterScore; // Multiply scores together
+                }
+            }
+        });
+
+        // Apply custom score adjustments
+        const customScore = customScores[strategy.id];
+        if (customScore !== undefined) {
+            score = customScore;
+        }
+        
+        return {
+            ...strategy,
+            calculatedScore: Math.round(score * 10) / 10 // Round to 1 decimal
+        };
+    });
+
+    updateActiveFilterDisplay();
+    updateResultsCount();
+    renderStrategiesByScore();
+}
+
+// Update active filter display
+function updateActiveFilterDisplay() {
+    activeFilterPill.innerHTML = '';
+
+    if (activeFilters.length > 0) {
+        activeFilters.forEach((filter, index) => {
+            const config = filter.config;
+            const option = filter.option;
+            
+            let pillText = config.pillTemplate || `${config.label}: ${option.label}`;
+            pillText = pillText.replace('{optionLabel}', option.pillLabel || option.label);
+
+            const pill = document.createElement('div');
+            pill.className = 'active-filter-pill';
+            pill.style.marginRight = '8px';
+            pill.style.marginBottom = '8px';
+            pill.innerHTML = `
+                <span>${pillText}</span>
+                <button onclick="clearSpecificFilter(${index})">×</button>
+            `;
+            activeFilterPill.appendChild(pill);
+        });
+    }
+}
 
         // Render strategies grouped by score
         function renderStrategiesByScore() {
@@ -1683,54 +1718,56 @@ function createStrategyCard(strategy) {
             updateChangesIndicator();
             applyFilters(); // Re-render with new scores
         }
-        function toggleNA(strategyId) {
-            const strategy = filteredStrategies.find(s => s.id === strategyId);
-            if (!strategy) return;
+function toggleNA(strategyId) {
+    const strategy = filteredStrategies.find(s => s.id === strategyId);
+    if (!strategy) return;
 
-            if (strategy.calculatedScore === 0) {
-                // Currently N/A, restore to original or 1.0
-                let originalScore = 1.0;
-                if (currentFilter && currentFilter.option.scoringValues) {
-                    originalScore = currentFilter.option.scoringValues[strategyId - 1] || 1.0;
-                }
-                customScores[strategyId] = originalScore;
-            } else {
-                // Set to N/A (score = 0)
-                customScores[strategyId] = 0;
+    if (strategy.calculatedScore === 0) {
+        // Currently N/A, restore to calculated score from all filters
+        let score = 1.0;
+        activeFilters.forEach(filter => {
+            if (filter.option.scoringValues && filter.option.scoringValues[strategyId - 1]) {
+                score *= filter.option.scoringValues[strategyId - 1];
             }
-            
-            hasUnsavedChanges = true;
-            updateChangesIndicator();
-            applyFilters(); // Re-render with new scores
-        }
+        });
+        customScores[strategyId] = Math.round(score * 10) / 10;
+    } else {
+        // Set to N/A (score = 0)
+        customScores[strategyId] = 0;
+    }
+    
+    hasUnsavedChanges = true;
+    updateChangesIndicator();
+    applyFilters();
+}
 
-        // Clear current filter
-        function clearCurrentFilter() {
-            const clearFilter = () => {
-                currentFilter = null;
-                applyFilters();
-                renderAccordions();
-            };
-            
-            checkUnsavedChanges(clearFilter);
-        }
+  // Clear specific filter by index
+function clearSpecificFilter(index) {
+    const clearFilter = () => {
+        activeFilters.splice(index, 1);
+        applyFilters();
+        renderAccordions();
+    };
+    
+    checkUnsavedChanges(clearFilter);
+}
 
-        // Clear all filters
-        function clearAllFilters() {
-            const clearAll = () => {
-                situationFilter.value = '';
-                ipRightsFilter.value = '';
-                currentFilter = null;
-                customScores = {};
-                hasUnsavedChanges = false;
-                accordionState = {};
-                updateChangesIndicator();
-                applyFilters();
-                renderAccordions();
-            };
-            
-            checkUnsavedChanges(clearAll);
-        }
+// Clear all filters
+function clearAllFilters() {
+    const clearAll = () => {
+        situationFilter.value = '';
+        ipRightsFilter.value = '';
+        activeFilters = [];
+        customScores = {};
+        hasUnsavedChanges = false;
+        accordionState = {};
+        updateChangesIndicator();
+        applyFilters();
+        renderAccordions();
+    };
+    
+    checkUnsavedChanges(clearAll);
+}
 
         // Update results count
         function updateResultsCount() {
@@ -1906,6 +1943,7 @@ window.openFlagModal = openFlagModal;
 window.closeFlagModal = closeFlagModal;
 window.submitFlag = submitFlag;
 window.checkPassword = checkPassword;
+window.clearSpecificFilter = clearSpecificFilter;
 
         // Initialize the application
         async function init() {

@@ -377,11 +377,24 @@
         .strategy-card.manually-moved {
             border: 3px solid #10b981;
             background: #f0fdf4;
+            animation: cardMoveIn 0.5s ease-out;
         }
 
         .strategy-card.auto-moved {
             border: 2px solid #d1d5db;
             background: #f9fafb;
+            animation: cardMoveIn 0.5s ease-out;
+        }
+
+        @keyframes cardMoveIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.9) translateY(-20px);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
         }
 
         .strategy-card.ghost {
@@ -731,6 +744,92 @@
         .flag-modal-buttons button {
             flex: 1;
         }
+
+        .success-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .success-content {
+            background: white;
+            border-radius: 16px;
+            padding: 40px;
+            max-width: 500px;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(30px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .success-icon {
+            font-size: 64px;
+            margin-bottom: 20px;
+        }
+
+        .success-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #10b981;
+            margin-bottom: 12px;
+        }
+
+        .success-message {
+            color: #6b7280;
+            margin-bottom: 24px;
+            line-height: 1.6;
+        }
+
+        .success-details {
+            background: #f9fafb;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 24px;
+            text-align: left;
+        }
+
+        .success-detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .success-detail-row:last-child {
+            border-bottom: none;
+        }
+
+        .success-detail-label {
+            font-weight: 600;
+            color: #374151;
+        }
+
+        .success-detail-value {
+            color: #6b7280;
+        }
     </style>
 </head>
     
@@ -1075,7 +1174,10 @@
             const strategy = filteredStrategies.find(s => s.id === strategyId);
             if (!strategy) return;
 
-            const currentBandKey = strategy.currentBand;
+            // Determine current band - check if there's already a pending move
+            const existingMove = pendingMoves[strategyId];
+            const currentBandKey = existingMove ? existingMove.toBand : strategy.originalBand;
+            
             const currentBandIndex = BAND_ORDER.indexOf(currentBandKey);
             const targetBandIndex = currentBandIndex + (direction === 'up' ? -1 : 1);
 
@@ -1105,9 +1207,14 @@
                         .sort((a, b) => a.calculatedScore - b.calculatedScore)[0];
                     
                     if (autoMoveCandidate) {
+                        // Determine where the auto-move candidate currently is
+                        const candidateCurrentBand = pendingMoves[autoMoveCandidate.id] 
+                            ? pendingMoves[autoMoveCandidate.id].toBand 
+                            : autoMoveCandidate.originalBand;
+                        
                         // Auto-move the lowest scorer down
                         pendingMoves[autoMoveCandidate.id] = {
-                            fromBand: targetBandKey,
+                            fromBand: candidateCurrentBand,
                             toBand: BAND_ORDER[targetBandIndex + 1],
                             isManual: false,
                             oldScore: autoMoveCandidate.calculatedScore,
@@ -1127,7 +1234,7 @@
             };
 
             updatePendingCount();
-            applyFilters();
+            renderStrategiesByBands(); // Re-render to show the movement
         }
 
         function openNAReasonModal(strategyId, direction) {
@@ -1183,18 +1290,41 @@
         // RENDERING
         // ========================================
         function calculateCurrentBands() {
-            // Apply pending moves to strategies
-            const strategiesWithMoves = filteredStrategies.map(s => {
-                const move = pendingMoves[s.id];
-                return {
-                    ...s,
-                    currentBand: move ? move.toBand : s.originalBand,
+            // Start with original bands from score calculation
+            const { bands: originalBands, targetCounts } = calculateBands(filteredStrategies);
+            
+            // If no pending moves, return original bands
+            if (Object.keys(pendingMoves).length === 0) {
+                return { bands: originalBands, targetCounts };
+            }
+            
+            // Create new band distribution with pending moves applied
+            const newBands = {
+                highlyLikely: [],
+                likely: [],
+                possible: [],
+                unlikely: [],
+                notApplicable: []
+            };
+            
+            // First, place all strategies based on pending moves or original position
+            filteredStrategies.forEach(strategy => {
+                const move = pendingMoves[strategy.id];
+                const targetBand = move ? move.toBand : strategy.originalBand;
+                
+                newBands[targetBand].push({
+                    ...strategy,
                     hasPendingMove: !!move,
                     moveType: move ? (move.isManual ? 'manual' : 'auto') : null
-                };
+                });
             });
-
-            return calculateBands(strategiesWithMoves);
+            
+            // Randomize within each band
+            for (const bandKey of BAND_ORDER) {
+                shuffleArray(newBands[bandKey]);
+            }
+            
+            return { bands: newBands, targetCounts };
         }
 
         function renderStrategiesByBands() {
@@ -1256,7 +1386,7 @@
             });
         }
 
-        function createStrategyCard(strategy, bandKey) {
+        function createStrategyCard(strategy, currentBandKey) {
             const card = document.createElement('div');
             card.className = 'strategy-card';
 
@@ -1265,7 +1395,8 @@
                 card.classList.add(move.isManual ? 'manually-moved' : 'auto-moved');
             }
 
-            const bandIndex = BAND_ORDER.indexOf(bandKey);
+            // Use currentBandKey since that's where the card is being rendered
+            const bandIndex = BAND_ORDER.indexOf(currentBandKey);
             const canMoveUp = bandIndex > 0;
             const canMoveDown = bandIndex < BAND_ORDER.length - 1;
 
@@ -1634,6 +1765,12 @@
             const moves = Object.entries(pendingMoves);
 
             let successCount = 0;
+            let manualCount = 0;
+            let autoCount = 0;
+
+            // Show loading state
+            submitChangesBtn.disabled = true;
+            submitChangesBtn.innerHTML = '⏳ Submitting...';
 
             for (const [strategyId, move] of moves) {
                 const strategy = filteredStrategies.find(s => s.id === parseInt(strategyId));
@@ -1664,15 +1801,71 @@
                 };
 
                 const success = await sendTelemetry(telemetryData, filterState);
-                if (success) successCount++;
+                if (success) {
+                    successCount++;
+                    if (move.isManual) manualCount++;
+                    else autoCount++;
+                }
             }
 
             if (successCount > 0) {
-                alert(`✅ Successfully submitted ${successCount} change${successCount === 1 ? '' : 's'}!`);
-                pendingMoves = {};
-                updatePendingCount();
-                applyFilters();
+                showSuccessModal(successCount, manualCount, autoCount);
+            } else {
+                alert('❌ Failed to submit changes. Please try again.');
+                submitChangesBtn.disabled = false;
+                submitChangesBtn.innerHTML = 'Submit Changes (<span id="pendingCount">0</span>)';
             }
+        }
+
+        function showSuccessModal(totalCount, manualCount, autoCount) {
+            const modal = document.createElement('div');
+            modal.className = 'success-modal';
+            modal.id = 'successModal';
+            modal.innerHTML = `
+                <div class="success-content">
+                    <div class="success-icon">✅</div>
+                    <div class="success-title">Changes Submitted Successfully!</div>
+                    <div class="success-message">
+                        Your feedback has been recorded and will help improve the Navigator's recommendations.
+                    </div>
+                    <div class="success-details">
+                        <div class="success-detail-row">
+                            <span class="success-detail-label">Total Changes:</span>
+                            <span class="success-detail-value">${totalCount}</span>
+                        </div>
+                        <div class="success-detail-row">
+                            <span class="success-detail-label">Manual Moves:</span>
+                            <span class="success-detail-value">${manualCount}</span>
+                        </div>
+                        <div class="success-detail-row">
+                            <span class="success-detail-label">Auto-balanced:</span>
+                            <span class="success-detail-value">${autoCount}</span>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" onclick="closeSuccessModal()" style="width: 100%;">
+                        Continue Reviewing
+                    </button>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+        }
+
+        function closeSuccessModal() {
+            const modal = document.getElementById('successModal');
+            if (modal) modal.remove();
+            
+            // Reset everything
+            pendingMoves = {};
+            situationFilter.value = '';
+            ipRightsFilter.value = '';
+            activeFilters = [];
+            accordionState = {};
+            sessionStorage.removeItem('flaggedStrategies'); // Clear flagged strategies
+            
+            updatePendingCount();
+            applyFilters();
+            renderAccordions();
         }
 
         function collectFilterState() {
@@ -1742,6 +1935,10 @@
             const strategy = filteredStrategies.find(s => s.id === strategyId);
             if (!strategy) return;
             
+            // Determine current band
+            const existingMove = pendingMoves[strategyId];
+            const currentBandKey = existingMove ? existingMove.toBand : strategy.originalBand;
+            
             currentFlagStrategy = strategy;
             
             const modal = document.createElement('div');
@@ -1750,7 +1947,7 @@
             modal.innerHTML = `
                 <div class="flag-modal-content">
                     <div class="flag-modal-title">${strategy.title}</div>
-                    <div class="flag-modal-subtitle">Current Band: ${BAND_CONFIG[strategy.currentBand || strategy.originalBand].label} | Score: ${strategy.calculatedScore}</div>
+                    <div class="flag-modal-subtitle">Current Band: ${BAND_CONFIG[currentBandKey].label} | Score: ${strategy.calculatedScore}</div>
                     
                     <div style="margin-bottom: 12px; font-weight: 600; color: #374151;">
                         What issue did you notice?
@@ -1801,11 +1998,15 @@
                 return;
             }
             
+            // Determine current band
+            const existingMove = pendingMoves[currentFlagStrategy.id];
+            const currentBandKey = existingMove ? existingMove.toBand : currentFlagStrategy.originalBand;
+            
             const filterState = collectFilterState();
             const telemetryData = {
                 strategyId: currentFlagStrategy.id,
                 strategyTitle: currentFlagStrategy.title,
-                oldBand: BAND_CONFIG[currentFlagStrategy.currentBand || currentFlagStrategy.originalBand].label,
+                oldBand: BAND_CONFIG[currentBandKey].label,
                 newBand: '',
                 oldScore: currentFlagStrategy.calculatedScore,
                 newScore: '',
@@ -1828,7 +2029,7 @@
                 sessionFlags.push(strategyId);
                 sessionStorage.setItem('flaggedStrategies', JSON.stringify(sessionFlags));
             }
-            applyFilters();
+            renderStrategiesByBands();
         }
 
         function isStrategyFlagged(strategyId) {
@@ -1861,6 +2062,7 @@
         window.closeFlagModal = closeFlagModal;
         window.submitFlag = submitFlag;
         window.checkPassword = checkPassword;
+        window.closeSuccessModal = closeSuccessModal;
 
         // ========================================
         // INITIALIZATION

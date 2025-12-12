@@ -1195,34 +1195,54 @@
             const { bands } = calculateCurrentBands();
             const targetBand = bands[targetBandKey];
             
-            // For non-NA bands, enforce capacity limits with automatic swapping
-            if (targetBandKey !== 'notApplicable' && currentBandKey !== 'notApplicable') {
-                const targetCount = window.currentTargetCounts[targetBandKey];
-                const currentInTarget = targetBand.filter(s => !pendingMoves[s.id] || pendingMoves[s.id].toBand === targetBandKey).length;
-                
-                if (currentInTarget >= targetCount) {
-                    // Find the lowest-scoring strategy in target band that hasn't been manually moved
-                    const autoMoveCandidate = targetBand
-                        .filter(s => s.id !== strategyId && (!pendingMoves[s.id] || !pendingMoves[s.id].isManual))
-                        .sort((a, b) => a.calculatedScore - b.calculatedScore)[0];
-                    
-                    if (autoMoveCandidate) {
-                        // Determine where the auto-move candidate currently is
-                        const candidateCurrentBand = pendingMoves[autoMoveCandidate.id] 
-                            ? pendingMoves[autoMoveCandidate.id].toBand 
-                            : autoMoveCandidate.originalBand;
-                        
-                        // Auto-move the lowest scorer down
-                        pendingMoves[autoMoveCandidate.id] = {
-                            fromBand: candidateCurrentBand,
-                            toBand: BAND_ORDER[targetBandIndex + 1],
-                            isManual: false,
-                            oldScore: autoMoveCandidate.calculatedScore,
-                            reason: null
-                        };
-                    }
-                }
-            }
+          // For non-NA bands, enforce capacity limits with automatic swapping
+if (targetBandKey !== 'notApplicable' && currentBandKey !== 'notApplicable') {
+    const targetCount = window.currentTargetCounts[targetBandKey];
+    const sourceCount = window.currentTargetCounts[currentBandKey];
+    const currentInTarget = targetBand.filter(s => !pendingMoves[s.id] || pendingMoves[s.id].toBand === targetBandKey).length;
+    
+    if (direction === 'up' && currentInTarget >= targetCount) {
+        // Moving UP: Push lowest scorer in target band DOWN
+        const autoMoveCandidate = targetBand
+            .filter(s => s.id !== strategyId && (!pendingMoves[s.id] || !pendingMoves[s.id].isManual))
+            .sort((a, b) => a.calculatedScore - b.calculatedScore)[0];
+        
+        if (autoMoveCandidate) {
+            const candidateCurrentBand = pendingMoves[autoMoveCandidate.id] 
+                ? pendingMoves[autoMoveCandidate.id].toBand 
+                : autoMoveCandidate.originalBand;
+            
+            pendingMoves[autoMoveCandidate.id] = {
+                fromBand: candidateCurrentBand,
+                toBand: BAND_ORDER[targetBandIndex + 1],
+                isManual: false,
+                oldScore: autoMoveCandidate.calculatedScore,
+                reason: null
+            };
+        }
+    } else if (direction === 'down' && currentInTarget >= targetCount) {
+        // Moving DOWN: Pull highest scorer from target band UP to source
+        const sourceBand = bands[currentBandKey];
+        const autoMoveCandidate = targetBand
+            .filter(s => s.id !== strategyId && (!pendingMoves[s.id] || !pendingMoves[s.id].isManual))
+            .sort((a, b) => b.calculatedScore - a.calculatedScore)[0];
+        
+        if (autoMoveCandidate) {
+            const candidateCurrentBand = pendingMoves[autoMoveCandidate.id] 
+                ? pendingMoves[autoMoveCandidate.id].toBand 
+                : autoMoveCandidate.originalBand;
+            
+            pendingMoves[autoMoveCandidate.id] = {
+                fromBand: candidateCurrentBand,
+                toBand: currentBandKey, // Move to the band we're leaving
+                isManual: false,
+                oldScore: autoMoveCandidate.calculatedScore,
+                reason: null
+            };
+        }
+    }
+}
+ 
 
             // Record the manual move
             pendingMoves[strategyId] = {
@@ -1233,8 +1253,24 @@
                 reason: requireReason || null
             };
 
-            updatePendingCount();
-            renderStrategiesByBands(); // Re-render to show the movement
+// ADD THIS BLOCK:
+// Clear pending move if strategy is back to original band
+if (targetBandKey === strategy.originalBand) {
+    delete pendingMoves[strategyId];
+}
+
+// Check if any auto-moved strategies are back to their original bands
+for (const [id, move] of Object.entries(pendingMoves)) {
+    if (!move.isManual) {
+        const strat = filteredStrategies.find(s => s.id === parseInt(id));
+        if (strat && move.toBand === strat.originalBand) {
+            delete pendingMoves[id];
+        }
+    }
+}
+
+updatePendingCount();
+renderStrategiesByBands();
         }
 
         function openNAReasonModal(strategyId, direction) {
@@ -1854,6 +1890,10 @@
         function closeSuccessModal() {
             const modal = document.getElementById('successModal');
             if (modal) modal.remove();
+
+            // ADD THESE TWO LINES:
+    submitChangesBtn.disabled = false;
+    submitChangesBtn.innerHTML = 'Submit Changes (<span id="pendingCount">0</span>)';
             
             // Reset everything
             pendingMoves = {};

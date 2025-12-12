@@ -344,6 +344,23 @@
             background: #6b7280;
         }
 
+        .band-warning {
+            color: #dc2626;
+            font-size: 13px;
+            font-weight: 600;
+            margin-left: 8px;
+        }
+
+        .band-header.over-capacity {
+            background: #fef2f2;
+            border-color: #fca5a5;
+        }
+
+        .band-header.under-capacity {
+            background: #fffbeb;
+            border-color: #fcd34d;
+        }
+
         .band-count {
             font-size: 14px;
             color: #6b7280;
@@ -395,6 +412,11 @@
                 opacity: 1;
                 transform: scale(1) translateY(0);
             }
+        }
+
+        .strategy-card.needs-action {
+            border: 2px solid #f97316;
+            background: #fff7ed;
         }
 
         .strategy-card.ghost {
@@ -1191,59 +1213,6 @@
                 return;
             }
 
-            // Handle automatic balancing
-            const { bands } = calculateCurrentBands();
-            const targetBand = bands[targetBandKey];
-            
-          // For non-NA bands, enforce capacity limits with automatic swapping
-if (targetBandKey !== 'notApplicable' && currentBandKey !== 'notApplicable') {
-    const targetCount = window.currentTargetCounts[targetBandKey];
-    const sourceCount = window.currentTargetCounts[currentBandKey];
-    const currentInTarget = targetBand.filter(s => !pendingMoves[s.id] || pendingMoves[s.id].toBand === targetBandKey).length;
-    
-    if (direction === 'up' && currentInTarget >= targetCount) {
-        // Moving UP: Push lowest scorer in target band DOWN
-        const autoMoveCandidate = targetBand
-            .filter(s => s.id !== strategyId && (!pendingMoves[s.id] || !pendingMoves[s.id].isManual))
-            .sort((a, b) => a.calculatedScore - b.calculatedScore)[0];
-        
-        if (autoMoveCandidate) {
-            const candidateCurrentBand = pendingMoves[autoMoveCandidate.id] 
-                ? pendingMoves[autoMoveCandidate.id].toBand 
-                : autoMoveCandidate.originalBand;
-            
-            pendingMoves[autoMoveCandidate.id] = {
-                fromBand: candidateCurrentBand,
-                toBand: BAND_ORDER[targetBandIndex + 1],
-                isManual: false,
-                oldScore: autoMoveCandidate.calculatedScore,
-                reason: null
-            };
-        }
-    } else if (direction === 'down' && currentInTarget >= targetCount) {
-        // Moving DOWN: Pull highest scorer from target band UP to source
-        const sourceBand = bands[currentBandKey];
-        const autoMoveCandidate = targetBand
-            .filter(s => s.id !== strategyId && (!pendingMoves[s.id] || !pendingMoves[s.id].isManual))
-            .sort((a, b) => b.calculatedScore - a.calculatedScore)[0];
-        
-        if (autoMoveCandidate) {
-            const candidateCurrentBand = pendingMoves[autoMoveCandidate.id] 
-                ? pendingMoves[autoMoveCandidate.id].toBand 
-                : autoMoveCandidate.originalBand;
-            
-            pendingMoves[autoMoveCandidate.id] = {
-                fromBand: candidateCurrentBand,
-                toBand: currentBandKey, // Move to the band we're leaving
-                isManual: false,
-                oldScore: autoMoveCandidate.calculatedScore,
-                reason: null
-            };
-        }
-    }
-}
- 
-
             // Record the manual move
             pendingMoves[strategyId] = {
                 fromBand: currentBandKey,
@@ -1253,24 +1222,64 @@ if (targetBandKey !== 'notApplicable' && currentBandKey !== 'notApplicable') {
                 reason: requireReason || null
             };
 
-// ADD THIS BLOCK:
-// Clear pending move if strategy is back to original band
-if (targetBandKey === strategy.originalBand) {
-    delete pendingMoves[strategyId];
-}
+            // Clear pending move if strategy is back to original band
+            if (targetBandKey === strategy.originalBand) {
+                delete pendingMoves[strategyId];
+            }
 
-// Check if any auto-moved strategies are back to their original bands
-for (const [id, move] of Object.entries(pendingMoves)) {
-    if (!move.isManual) {
-        const strat = filteredStrategies.find(s => s.id === parseInt(id));
-        if (strat && move.toBand === strat.originalBand) {
-            delete pendingMoves[id];
+            updatePendingCount();
+            updateSubmitButtonState();
+            renderStrategiesByBands();
         }
-    }
-}
 
-updatePendingCount();
-renderStrategiesByBands();
+        // ========================================
+        // BAND VALIDATION
+        // ========================================
+        function validateBandCapacity() {
+            const { bands, targetCounts } = calculateCurrentBands();
+            const issues = [];
+            
+            for (const bandKey of BAND_ORDER) {
+                if (bandKey === 'notApplicable') continue; // N/A has no capacity limit
+                
+                const currentCount = bands[bandKey].length;
+                const targetCount = targetCounts[bandKey];
+                const diff = currentCount - targetCount;
+                
+                // Allow ±1 for rounding errors
+                if (diff > 1) {
+                    issues.push({
+                        bandKey,
+                        type: 'over',
+                        diff: diff,
+                        message: `Too many (${currentCount}/${targetCount})`
+                    });
+                } else if (diff < -1) {
+                    issues.push({
+                        bandKey,
+                        type: 'under',
+                        diff: Math.abs(diff),
+                        message: `Need ${Math.abs(diff)} more`
+                    });
+                }
+            }
+            
+            return issues;
+        }
+
+        function updateSubmitButtonState() {
+            const issues = validateBandCapacity();
+            const hasIssues = issues.length > 0;
+            
+            submitChangesBtn.disabled = hasIssues || Object.keys(pendingMoves).length === 0;
+            
+            if (hasIssues) {
+                submitChangesBtn.title = 'Balance all bands before submitting';
+            } else if (Object.keys(pendingMoves).length === 0) {
+                submitChangesBtn.title = 'No changes to submit';
+            } else {
+                submitChangesBtn.title = 'Submit all pending changes';
+            }
         }
 
         function openNAReasonModal(strategyId, direction) {
@@ -1376,6 +1385,13 @@ renderStrategiesByBands();
 
             const { bands, targetCounts } = calculateCurrentBands();
             window.currentTargetCounts = targetCounts;
+            
+            // Get validation issues
+            const validationIssues = validateBandCapacity();
+            const issuesByBand = {};
+            validationIssues.forEach(issue => {
+                issuesByBand[issue.bandKey] = issue;
+            });
 
             strategiesContainer.innerHTML = '';
 
@@ -1383,16 +1399,24 @@ renderStrategiesByBands();
                 const bandConfig = BAND_CONFIG[bandKey];
                 const strategies = bands[bandKey];
                 const targetCount = targetCounts[bandKey] || strategies.length;
+                const issue = issuesByBand[bandKey];
 
                 const bandDiv = document.createElement('div');
                 bandDiv.className = 'relevance-band';
 
                 const header = document.createElement('div');
                 header.className = 'band-header';
+                
+                // Add warning class if there's an issue
+                if (issue) {
+                    header.classList.add(issue.type === 'over' ? 'over-capacity' : 'under-capacity');
+                }
+                
                 header.innerHTML = `
                     <div class="band-title">
                         <span class="band-badge ${bandConfig.cssClass}">${bandConfig.label}</span>
                         <span class="band-count">${strategies.length} strateg${strategies.length === 1 ? 'y' : 'ies'}${bandKey !== 'notApplicable' ? ` (target: ${targetCount})` : ''}</span>
+                        ${issue ? `<span class="band-warning">⚠️ ${issue.message}</span>` : ''}
                     </div>
                 `;
                 bandDiv.appendChild(header);
@@ -1402,7 +1426,7 @@ renderStrategiesByBands();
 
                 // Add actual strategy cards
                 strategies.forEach(strategy => {
-                    const card = createStrategyCard(strategy, bandKey);
+                    const card = createStrategyCard(strategy, bandKey, issue);
                     grid.appendChild(card);
                 });
 
@@ -1422,13 +1446,18 @@ renderStrategiesByBands();
             });
         }
 
-        function createStrategyCard(strategy, currentBandKey) {
+        function createStrategyCard(strategy, currentBandKey, issue) {
             const card = document.createElement('div');
             card.className = 'strategy-card';
 
             const move = pendingMoves[strategy.id];
             if (move) {
                 card.classList.add(move.isManual ? 'manually-moved' : 'auto-moved');
+            }
+            
+            // Add warning styling if band is over capacity
+            if (issue && issue.type === 'over') {
+                card.classList.add('needs-action');
             }
 
             // Use currentBandKey since that's where the card is being rendered
@@ -1739,6 +1768,7 @@ renderStrategiesByBands();
 
             updateActiveFilterDisplay();
             updateResultsCount();
+            updateSubmitButtonState();
             renderStrategiesByBands();
         }
 
@@ -1890,10 +1920,10 @@ renderStrategiesByBands();
         function closeSuccessModal() {
             const modal = document.getElementById('successModal');
             if (modal) modal.remove();
-
-            // ADD THESE TWO LINES:
-    submitChangesBtn.disabled = false;
-    submitChangesBtn.innerHTML = 'Submit Changes (<span id="pendingCount">0</span>)';
+            
+            // Reset submit button
+            submitChangesBtn.disabled = false;
+            submitChangesBtn.innerHTML = 'Submit Changes (<span id="pendingCount">0</span>)';
             
             // Reset everything
             pendingMoves = {};
@@ -1904,6 +1934,7 @@ renderStrategiesByBands();
             sessionStorage.removeItem('flaggedStrategies'); // Clear flagged strategies
             
             updatePendingCount();
+            updateSubmitButtonState();
             applyFilters();
             renderAccordions();
         }

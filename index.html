@@ -1247,9 +1247,61 @@ async function loadData() {
                 changesIndicator.classList.remove('visible');
             }
         }
-        function getAccordionLayout() {
-            return accordionPresets.default;
-        }
+function getAccordionLayout() {
+    const selectedSituation = situationFilter.value;
+    const selectedIPRight = ipRightsFilter.value;
+    
+    // If no filters selected, use default
+    if (!selectedSituation && !selectedIPRight) {
+        return accordionPresets.default || accordionPresets['default'];
+    }
+    
+    // Map IP rights filter values to preset keys
+    const ipRightMap = {
+        'Patent': 'patents',
+        'Trade mark': 'trademarks',
+        'Design': 'designs',
+        'PBR': 'pbr',
+        'Copyright': 'copyright',
+        'Any dispute': 'any'
+    };
+    
+    // Map situation filter values to preset keys
+    const situationMap = {
+        'Enforcement': 'enforcement',
+        'Accused': 'accused',
+        'Proactive': 'proactive',
+        'Disagree': 'disagree'
+    };
+    
+    // Build the preset key
+    let presetKey = '';
+    
+    if (selectedIPRight && selectedSituation) {
+        // Both filters selected - try specific combination
+        const ipKey = ipRightMap[selectedIPRight] || 'uncertain';
+        const situationKey = situationMap[selectedSituation] || '';
+        presetKey = `${ipKey}-${situationKey}`;
+    } else if (selectedSituation) {
+        // Only situation selected - use 'any' for IP type
+        const situationKey = situationMap[selectedSituation] || '';
+        presetKey = `any-${situationKey}`;
+    } else if (selectedIPRight) {
+        // Only IP right selected - this is less common, fall back to default
+        return accordionPresets.default || accordionPresets['default'];
+    }
+    
+    // Check if the preset exists, otherwise fall back to default
+    const layout = accordionPresets[presetKey];
+    
+    if (layout) {
+        console.log(`Using accordion preset: ${presetKey}`);
+        return layout;
+    } else {
+        console.log(`Preset '${presetKey}' not found, using default`);
+        return accordionPresets.default || accordionPresets['default'];
+    }
+}
 
         // Render accordion filters
         function renderAccordions() {

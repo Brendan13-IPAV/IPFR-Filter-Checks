@@ -544,14 +544,203 @@
         .btn-warning:hover {
             background: #b91c1c;
         }
+        .password-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.9);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+}
+
+.password-content {
+    background: white;
+    border-radius: 16px;
+    padding: 40px;
+    max-width: 400px;
+    text-align: center;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+.password-content h2 {
+    margin-bottom: 16px;
+    color: #374151;
+}
+
+.password-content p {
+    margin-bottom: 20px;
+    color: #6b7280;
+}
+
+.password-content input {
+    width: 100%;
+    padding: 12px 16px;
+    border: 2px solid #e1e5e9;
+    border-radius: 8px;
+    font-size: 16px;
+    margin-bottom: 16px;
+}
+
+.password-content input:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.password-error {
+    color: #dc2626;
+    margin-top: 12px;
+    font-weight: 600;
+}
+
+.password-modal.hidden {
+    display: none;
+}
+
+.changes-indicator {
+    display: none;
+    background: #fef3c7;
+    border: 2px solid #f59e0b;
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-bottom: 16px;
+    font-weight: 600;
+    color: #92400e;
+}
+
+.changes-indicator.visible {
+    display: block;
+}
+
+.flag-button {
+    background: #f59e0b;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 6px 12px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    width: 100%;
+}
+
+.flag-button:hover {
+    background: #d97706;
+}
+
+.flag-button.flagged {
+    background: #10b981;
+}
+
+.flag-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+}
+
+.flag-modal-content {
+    background: white;
+    border-radius: 12px;
+    padding: 24px;
+    max-width: 500px;
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.flag-modal-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: #374151;
+}
+
+.flag-modal-subtitle {
+    font-size: 0.9rem;
+    color: #6b7280;
+    margin-bottom: 20px;
+}
+
+.flag-option {
+    padding: 12px 16px;
+    border: 2px solid #e1e5e9;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-bottom: 8px;
+    transition: all 0.2s ease;
+}
+
+.flag-option:hover {
+    background: #f8f9fa;
+    border-color: #667eea;
+}
+
+.flag-option.selected {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    border-color: #667eea;
+}
+
+.flag-textarea {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #e1e5e9;
+    border-radius: 8px;
+    resize: vertical;
+    min-height: 100px;
+    font-family: inherit;
+    font-size: 14px;
+    margin-top: 16px;
+}
+
+.flag-textarea:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.flag-modal-buttons {
+    display: flex;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.flag-modal-buttons button {
+    flex: 1;
+}
     </style>
 </head>
     
 <body>
+    <!-- Password Protection Modal -->
+<div id="passwordModal" class="password-modal">
+    <div class="password-content">
+        <h2>🔒 Access Required</h2>
+        <p>Please enter the password to access the review tool:</p>
+        <input type="password" id="passwordInput" placeholder="Enter password" />
+        <button class="btn btn-primary" onclick="checkPassword()">Submit</button>
+        <div id="passwordError" class="password-error"></div>
+    </div>
+</div>
     <div class="container">
-        <div class="header">
-            <h1>IP Strategy Score Editor</h1>
-            <p>Filter strategies, adjust scores, and export your custom rankings</p>
+
+            <div class="header">
+    <h1>IP Strategy Score Editor</h1>
+    <p>Filter strategies, adjust scores, and export your custom rankings</p>
+    <div id="versionDisplay"></div>
+
             
             <div class="header-controls">
                 <div class="user-info">
@@ -622,6 +811,29 @@
         let customScores = {}; // Store custom score adjustments
         let hasUnsavedChanges = false; // Track if user has made changes
 
+        const dataVersions = {
+    strategiesContent: null,
+    strategiesMetadata: null,
+    filterOptions: null,
+    accordionPresets: null,
+    loadTimestamp: null
+};
+        // Display version info in header
+function displayVersionInfo() {
+    const versionDisplay = document.getElementById('versionDisplay');
+    if (versionDisplay && dataVersions.strategiesContent) {
+        versionDisplay.innerHTML = `
+            <div style="font-size: 11px; color: #6b7280; margin-top: 8px;">
+                <strong>Data Versions:</strong> 
+                Strategies: ${dataVersions.strategiesContent} | 
+                Metadata: ${dataVersions.strategiesMetadata} | 
+                Filters: ${dataVersions.filterOptions} | 
+                Presets: ${dataVersions.accordionPresets}
+            </div>
+        `;
+    }
+}
+
         // DOM elements
         const userName = document.getElementById('userName');
         const situationFilter = document.getElementById('situationFilter');
@@ -634,38 +846,317 @@
         const strategiesContainer = document.getElementById('strategiesContainer');
         const changesIndicator = document.getElementById('changesIndicator');
 
-        // Load all data files
-        async function loadData() {
-            try {
-                const [strategiesContent, strategiesMetadata, filterOptionsData, accordionPresetsData] = await Promise.all([
-                    fetch('strategies-content.json').then(res => res.json()),
-                    fetch('strategies-metadata.json').then(res => res.json()),
-                    fetch('filterOptions.json').then(res => res.json()),
-                    fetch('accordionPresets.json').then(res => res.json())
-                ]);
+        // ========================================
+// TELEMETRY CONFIGURATION
+// ========================================
+const TELEMETRY_CONFIG = {
+    // Replace this with your Google Apps Script Web App URL
+                                                sheetURL: 'https://script.google.com/macros/s/AKfycbyK2DqvUFqwmbMUcs2fYhhnz0F3Zu4GC8Mfm_hxRGO9DYllfJase10FeuJvHGecMvAp/exec',
+    
+    // Simple password for access control
+    accessPassword: 'ipnavigator2024',  // Change this to your preferred password
+    
+    // Session tracking
+    sessionId: generateSessionId()
+};
 
-                // Merge content and metadata
-                allStrategies = strategiesContent.map(content => {
-                    const metadata = strategiesMetadata.find(meta => meta.id === content.id);
-                    return { ...content, ...metadata };
-                });
+// Generate unique session ID
+function generateSessionId() {
+    return 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+}
 
-                // Filter out "Not Assigned" strategies
-                allStrategies = allStrategies.filter(strategy => 
-                    strategy.title !== "Not Assigned" && 
-                    strategy.overtitle !== "Not Assigned" &&
-                    strategy.description !== "Not Assigned"
-                );
+// ========================================
+// TELEMETRY FUNCTIONS
+// ========================================
 
-                filterOptions = filterOptionsData.filters;
-                accordionPresets = accordionPresetsData;
+/**
+ * Collect current filter state for telemetry
+ * Returns an object with all active filters
+ */
+function collectFilterState() {
+    const accordionFilters = [];
+    
+    if (currentFilter) {
+        accordionFilters.push({
+            key: currentFilter.key,
+            option: currentFilter.option.label,
+            pillText: currentFilter.config.pillTemplate?.replace('{optionLabel}', currentFilter.option.pillLabel || currentFilter.option.label) || currentFilter.option.label
+        });
+    }
+    
+    return {
+        situationFilter: situationFilter.value || 'All Situations',
+        ipRightsFilter: ipRightsFilter.value || 'All IP Rights',
+        accordionFilters: JSON.stringify(accordionFilters)
+    };
+}
 
-                return true;
-            } catch (error) {
-                console.error('Error loading data:', error);
-                return false;
+/**
+ * Send telemetry data to Google Sheets
+ * @param {Object} telemetryData - The data to send
+ */
+async function sendTelemetry(telemetryData) {
+    const userNameValue = userName.value.trim();
+    
+    if (!userNameValue) {
+        alert('Please enter your name in the header before submitting feedback');
+        userName.focus();
+        return false;
+    }
+    
+    const filterState = collectFilterState();
+    
+    const payload = {
+        userName: userNameValue,
+        situationFilter: filterState.situationFilter,
+        ipRightsFilter: filterState.ipRightsFilter,
+        accordionFilters: filterState.accordionFilters,
+        strategyId: telemetryData.strategyId,
+        strategyTitle: telemetryData.strategyTitle,
+        currentScore: telemetryData.currentScore,
+        issueType: telemetryData.issueType,
+        feedbackText: telemetryData.feedbackText,
+        sessionId: TELEMETRY_CONFIG.sessionId,
+        // VERSION TRACKING
+        strategiesVersion: dataVersions.strategiesContent,
+        metadataVersion: dataVersions.strategiesMetadata,
+        filtersVersion: dataVersions.filterOptions,
+        presetsVersion: dataVersions.accordionPresets,
+        dataLoadTimestamp: dataVersions.loadTimestamp
+    };
+    
+    try {
+        const response = await fetch(TELEMETRY_CONFIG.sheetURL, {
+            method: 'POST',
+            mode: 'no-cors',  // Required for Google Apps Script
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(payload)
+        });
+        
+        // Note: no-cors mode means we can't read the response
+        // but the request will succeed if the URL is correct
+        return true;
+        
+    } catch (error) {
+        console.error('Error sending telemetry:', error);
+        alert('Failed to send feedback. Please check your connection and try again.');
+        return false;
+    }
+}
+
+// ========================================
+// PASSWORD PROTECTION
+// ========================================
+
+function checkPassword() {
+    const input = document.getElementById('passwordInput');
+    const error = document.getElementById('passwordError');
+    const modal = document.getElementById('passwordModal');
+    
+    if (input.value === TELEMETRY_CONFIG.accessPassword) {
+        modal.classList.add('hidden');
+        sessionStorage.setItem('authenticated', 'true');
+    } else {
+        error.textContent = '❌ Incorrect password. Please try again.';
+        input.value = '';
+        input.focus();
+    }
+}
+
+// Check authentication on page load
+function checkAuthentication() {
+    const modal = document.getElementById('passwordModal');
+    const isAuthenticated = sessionStorage.getItem('authenticated') === 'true';
+    
+    if (isAuthenticated) {
+        modal.classList.add('hidden');
+    } else {
+        modal.classList.remove('hidden');
+        document.getElementById('passwordInput').focus();
+    }
+}
+
+// Allow Enter key to submit password
+document.addEventListener('DOMContentLoaded', () => {
+    const passwordInput = document.getElementById('passwordInput');
+    if (passwordInput) {
+        passwordInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                checkPassword();
             }
-        }
+        });
+    }
+    checkAuthentication();
+});
+
+// ========================================
+// FLAG MODAL FUNCTIONS
+// ========================================
+
+let currentFlagStrategy = null;
+
+function openFlagModal(strategyId) {
+    const strategy = filteredStrategies.find(s => s.id === strategyId);
+    if (!strategy) return;
+    
+    currentFlagStrategy = strategy;
+    
+    const modal = document.createElement('div');
+    modal.className = 'flag-modal';
+    modal.id = 'flagModal';
+    modal.innerHTML = `
+        <div class="flag-modal-content">
+            <div class="flag-modal-title">${strategy.title}</div>
+            <div class="flag-modal-subtitle">Current Score: ${strategy.calculatedScore}</div>
+            
+            <div style="margin-bottom: 12px; font-weight: 600; color: #374151;">
+                How should this strategy be adjusted?
+            </div>
+            
+            <div class="flag-option" data-value="too-high">
+                ⬇️ Ranked too high for these filters
+            </div>
+            <div class="flag-option" data-value="too-low">
+                ⬆️ Ranked too low for these filters
+            </div>
+            <div class="flag-option" data-value="irrelevant">
+                ❌ Shouldn't appear for these filters
+            </div>
+            <div class="flag-option" data-value="other">
+                💭 Other issue or suggestion
+            </div>
+            
+            <textarea 
+                class="flag-textarea" 
+                id="flagFeedback" 
+                placeholder="Please provide details about why this ranking needs adjustment..."
+            ></textarea>
+            
+            <div class="flag-modal-buttons">
+                <button class="btn btn-secondary" onclick="closeFlagModal()">Cancel</button>
+                <button class="btn btn-primary" onclick="submitFlag()">Submit Feedback</button>
+            </div>
+        </div>
+    `;
+    
+    document.body.appendChild(modal);
+    
+    // Add click handlers for flag options
+    const options = modal.querySelectorAll('.flag-option');
+    options.forEach(option => {
+        option.addEventListener('click', function() {
+            options.forEach(o => o.classList.remove('selected'));
+            this.classList.add('selected');
+        });
+    });
+}
+
+function closeFlagModal() {
+    const modal = document.getElementById('flagModal');
+    if (modal) {
+        modal.remove();
+    }
+    currentFlagStrategy = null;
+}
+
+async function submitFlag() {
+    const modal = document.getElementById('flagModal');
+    const selectedOption = modal.querySelector('.flag-option.selected');
+    const feedbackText = document.getElementById('flagFeedback').value.trim();
+    
+    if (!selectedOption) {
+        alert('Please select an issue type');
+        return;
+    }
+    
+    if (!feedbackText) {
+        alert('Please provide feedback details');
+        return;
+    }
+    
+    const telemetryData = {
+        strategyId: currentFlagStrategy.id,
+        strategyTitle: currentFlagStrategy.title,
+        currentScore: currentFlagStrategy.calculatedScore,
+        issueType: selectedOption.dataset.value,
+        feedbackText: feedbackText
+    };
+    
+    const success = await sendTelemetry(telemetryData);
+    
+    if (success) {
+        alert('✅ Feedback submitted successfully! Thank you for helping improve the Navigator.');
+        closeFlagModal();
+        
+        // Mark the strategy as flagged in this session
+        markStrategyAsFlagged(currentFlagStrategy.id);
+    }
+}
+
+function markStrategyAsFlagged(strategyId) {
+    const sessionFlags = JSON.parse(sessionStorage.getItem('flaggedStrategies') || '[]');
+    if (!sessionFlags.includes(strategyId)) {
+        sessionFlags.push(strategyId);
+        sessionStorage.setItem('flaggedStrategies', JSON.stringify(sessionFlags));
+    }
+    
+    // Update the button appearance
+    applyFilters();
+}
+
+function isStrategyFlagged(strategyId) {
+    const sessionFlags = JSON.parse(sessionStorage.getItem('flaggedStrategies') || '[]');
+    return sessionFlags.includes(strategyId);
+}
+        
+
+// Load all data files
+async function loadData() {
+    try {
+        const [strategiesContentData, strategiesMetadataData, filterOptionsData, accordionPresetsData] = await Promise.all([
+            fetch('strategies-content.json').then(res => res.json()),
+            fetch('strategies-metadata.json').then(res => res.json()),
+            fetch('filterOptions.json').then(res => res.json()),
+            fetch('accordionPresets.json').then(res => res.json())
+        ]);
+
+        // Capture version information
+        dataVersions.strategiesContent = strategiesContentData.version || 'unversioned';
+        dataVersions.strategiesMetadata = strategiesMetadataData.version || 'unversioned';
+        dataVersions.filterOptions = filterOptionsData.version || 'unversioned';
+        dataVersions.accordionPresets = accordionPresetsData.version || 'unversioned';
+        dataVersions.loadTimestamp = new Date().toISOString();
+
+        // Extract actual data (handling both versioned and legacy formats)
+        const strategiesContent = strategiesContentData.strategies || strategiesContentData;
+        const strategiesMetadata = strategiesMetadataData.metadata || strategiesMetadataData;
+        filterOptions = filterOptionsData.filters || filterOptionsData;
+        accordionPresets = accordionPresetsData.presets || accordionPresetsData;
+
+        // Merge content and metadata
+        allStrategies = strategiesContent.map(content => {
+            const metadata = strategiesMetadata.find(meta => meta.id === content.id);
+            return { ...content, ...metadata };
+        });
+
+        // Filter out "Not Assigned" strategies
+        allStrategies = allStrategies.filter(strategy => 
+            strategy.title !== "Not Assigned" && 
+            strategy.overtitle !== "Not Assigned" &&
+            strategy.description !== "Not Assigned"
+        );
+
+        // Display version info
+        displayVersionInfo();
+
+        return true;
+    } catch (error) {
+        console.error('Error loading data:', error);
+        return false;
+    }
+}
 
         // Check for unsaved changes before filter change
         function checkUnsavedChanges(callback) {
@@ -1052,37 +1543,42 @@
         }
 
         // Create strategy card
-        function createStrategyCard(strategy) {
-            const card = document.createElement('div');
-            card.className = 'strategy-card';
+       // Create strategy card
+function createStrategyCard(strategy) {
+    const card = document.createElement('div');
+    card.className = 'strategy-card';
 
-            const isNA = strategy.calculatedScore === 0;
+    const isNA = strategy.calculatedScore === 0;
+    const isFlagged = isStrategyFlagged(strategy.id);
 
-            card.innerHTML = `
-                <div class="card-header">
-                    ${strategy.overtitle ? `<div class="card-overtitle">${strategy.overtitle}</div>` : ''}
-                    <div class="card-title">${strategy.title}</div>
-                    <div class="card-description">${strategy.description}</div>
-                </div>
-                <div class="card-controls">
-                    <input type="number" 
-                           class="score-input" 
-                           value="${isNA ? '0' : strategy.calculatedScore}" 
-                           min="0" 
-                           max="3" 
-                           step="0.1" 
-                           onchange="setScore(${strategy.id}, this.value)"
-                           title="Enter score (0-3.0)">
-                    <div class="score-buttons">
-                        <button class="score-btn" onclick="adjustScore(${strategy.id}, 0.1)" title="Increase score" ${isNA ? 'disabled' : ''}>▲</button>
-                        <button class="score-btn" onclick="adjustScore(${strategy.id}, -0.1)" title="Decrease score" ${isNA ? 'disabled' : ''}>▼</button>
-                        <button class="na-btn ${isNA ? 'active' : ''}" onclick="toggleNA(${strategy.id})" title="Mark as Not Applicable">N/A</button>
-                    </div>
-                </div>
-            `;
+    card.innerHTML = `
+        <div class="card-header">
+            ${strategy.overtitle ? `<div class="card-overtitle">${strategy.overtitle}</div>` : ''}
+            <div class="card-title">${strategy.title}</div>
+            <div class="card-description">${strategy.description}</div>
+        </div>
+        <div class="card-controls">
+            <input type="number" 
+                   class="score-input" 
+                   value="${isNA ? '0' : strategy.calculatedScore}" 
+                   min="0" 
+                   max="3" 
+                   step="0.1" 
+                   onchange="setScore(${strategy.id}, this.value)"
+                   title="Enter score (0-3.0)">
+            <div class="score-buttons">
+                <button class="score-btn" onclick="adjustScore(${strategy.id}, 0.1)" title="Increase score" ${isNA ? 'disabled' : ''}>▲</button>
+                <button class="score-btn" onclick="adjustScore(${strategy.id}, -0.1)" title="Decrease score" ${isNA ? 'disabled' : ''}>▼</button>
+                <button class="na-btn ${isNA ? 'active' : ''}" onclick="toggleNA(${strategy.id})" title="Mark as Not Applicable">N/A</button>
+            </div>
+        </div>
+        <button class="flag-button ${isFlagged ? 'flagged' : ''}" onclick="openFlagModal(${strategy.id})">
+            ${isFlagged ? '✓ Flagged' : '🚩 Flag Issue'}
+        </button>
+    `;
 
-            return card;
-        }
+    return card;
+}
 
         // Adjust strategy score
         function adjustScore(strategyId, adjustment) {
@@ -1326,13 +1822,18 @@
             exportBtn.addEventListener('click', exportScores);
         }
 
-        // Make functions globally available
-        window.adjustScore = adjustScore;
-        window.setScore = setScore;
-        window.toggleNA = toggleNA;
-        window.clearCurrentFilter = clearCurrentFilter;
-        window.closeWarningModal = closeWarningModal;
-        window.confirmWarning = confirmWarning;
+
+// Make functions globally available
+window.adjustScore = adjustScore;
+window.setScore = setScore;
+window.toggleNA = toggleNA;
+window.clearCurrentFilter = clearCurrentFilter;
+window.closeWarningModal = closeWarningModal;
+window.confirmWarning = confirmWarning;
+window.openFlagModal = openFlagModal;
+window.closeFlagModal = closeFlagModal;
+window.submitFlag = submitFlag;
+window.checkPassword = checkPassword;
 
         // Initialize the application
         async function init() {

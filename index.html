@@ -1129,11 +1129,28 @@ async function loadData() {
         dataVersions.accordionPresets = accordionPresetsData.version || 'unversioned';
         dataVersions.loadTimestamp = new Date().toISOString();
 
-        // Extract actual data (handling both versioned and legacy formats)
+        // Extract actual data
+        // For strategies files: look for 'strategies' array, fallback to whole object
         const strategiesContent = strategiesContentData.strategies || strategiesContentData;
-        const strategiesMetadata = strategiesMetadataData.metadata || strategiesMetadataData;
-        filterOptions = filterOptionsData.filters || filterOptionsData;
-        accordionPresets = accordionPresetsData.presets || accordionPresetsData;
+        const strategiesMetadata = strategiesMetadataData.metadata || strategiesMetadataData.strategies || strategiesMetadataData;
+        
+        // For filterOptions: look for 'filters' object, fallback to whole object
+        const rawFilterOptions = filterOptionsData.filters || filterOptionsData;
+        // Remove version/metadata keys from filters
+        filterOptions = {};
+        Object.keys(rawFilterOptions).forEach(key => {
+            if (key !== 'version' && key !== 'lastUpdated') {
+                filterOptions[key] = rawFilterOptions[key];
+            }
+        });
+        
+        // For accordionPresets: remove version/metadata keys, keep everything else
+        accordionPresets = {};
+        Object.keys(accordionPresetsData).forEach(key => {
+            if (key !== 'version' && key !== 'lastUpdated') {
+                accordionPresets[key] = accordionPresetsData[key];
+            }
+        });
 
         // Merge content and metadata
         allStrategies = strategiesContent.map(content => {
@@ -1150,6 +1167,9 @@ async function loadData() {
 
         // Display version info
         displayVersionInfo();
+
+        console.log('Loaded accordionPresets:', accordionPresets); // Debug
+        console.log('Loaded filterOptions:', filterOptions); // Debug
 
         return true;
     } catch (error) {

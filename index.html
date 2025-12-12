@@ -1,0 +1,1836 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IP Strategy Score Editor</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .header h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 1.1rem;
+            margin-bottom: 16px;
+        }
+
+        .header-controls {
+            display: grid;
+            grid-template-columns: 1fr 1fr 200px;
+            gap: 24px;
+            align-items: end;
+            margin-top: 20px;
+        }
+
+        .user-greeting {
+            display: flex;
+            align-items: center;
+            font-weight: 600;
+            color: #374151;
+            font-size: 16px;
+        }
+
+        .primary-filters {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .filter-label {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #374151;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        select {
+            padding: 12px 16px;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .top-controls {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 8px;
+        }
+
+        .results-count {
+            font-weight: 600;
+            color: #374151;
+            font-size: 14px;
+        }
+
+        .control-buttons {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 13px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-secondary {
+            background: #f8f9fa;
+            color: #495057;
+            border: 2px solid #e9ecef;
+        }
+
+        .btn-secondary:hover {
+            background: #e9ecef;
+            transform: translateY(-1px);
+        }
+
+        .btn-primary {
+            background: #667eea;
+            color: white;
+            border: 1px solid #667eea;
+        }
+
+        .btn-primary:hover {
+            background: #5a6fd8;
+            transform: translateY(-1px);
+        }
+
+        .main-layout {
+            display: grid;
+            grid-template-columns: 350px 1fr;
+            gap: 24px;
+            align-items: start;
+        }
+
+        .sidebar {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 20px;
+            max-height: calc(100vh - 40px);
+            overflow-y: auto;
+        }
+
+        .content-area {
+            min-width: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .active-filter-pill {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .active-filter-pill button {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-size: 18px;
+            padding: 4px 8px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            width: 24px;
+            height: 24px;
+        }
+
+        .active-filter-pill button:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.1);
+        }
+
+        .accordion-header {
+            background: #f8f9fa;
+            padding: 12px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-bottom: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .accordion-header:hover {
+            background: #e9ecef;
+            border-color: #667eea;
+        }
+
+        .accordion-content {
+            background: white;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 16px;
+            border: 1px solid #e1e5e9;
+        }
+
+        .radio-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .radio-button {
+            padding: 12px 16px;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: white;
+            font-size: 14px;
+            font-weight: 500;
+            user-select: none;
+        }
+
+        .radio-button:hover {
+            background: #f8f9fa;
+            border-color: #667eea;
+            transform: translateY(-1px);
+        }
+
+        .radio-button.radio-selected {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border-color: #667eea;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+
+        /* SCORE-BASED GRID LAYOUT */
+        .score-group {
+            margin-bottom: 32px;
+        }
+
+        .score-header {
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            padding: 12px 20px;
+            margin-bottom: 16px;
+            font-weight: 700;
+            font-size: 16px;
+            color: #374151;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .score-badge {
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .score-badge.high {
+            background: #10b981; /* Green for scores > 1.0 */
+        }
+
+        .score-badge.neutral {
+            background: #6b7280; /* Grey for score = 1.0 */
+        }
+
+        .score-badge.low {
+            background: #f59e0b; /* Orange for scores < 1.0 */
+        }
+
+        .strategies-row {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 16px;
+        }
+
+        .strategy-card {
+            background: white;
+            border: 2px solid #e1e5e9;
+            border-radius: 12px;
+            padding: 16px;
+            transition: all 0.3s ease;
+            position: relative;
+            min-height: 280px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .strategy-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            border-color: #667eea;
+        }
+
+        .strategy-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+        }
+
+        .card-header {
+            margin-bottom: 12px;
+            flex: 1;
+        }
+
+        .card-overtitle {
+            font-size: 11px;
+            color: #667eea;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .card-title {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 8px;
+            line-height: 1.3;
+        }
+
+        .card-description {
+            color: #6b7280;
+            line-height: 1.4;
+            font-size: 13px;
+        }
+
+        .card-controls {
+            border-top: 1px solid #e5e7eb;
+            padding-top: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .score-input {
+            background: #f3f4f6;
+            color: #374151;
+            border: 1px solid #d1d5db;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 13px;
+            font-weight: 600;
+            width: 50px;
+            text-align: center;
+            -moz-appearance: textfield; /* Firefox */
+        }
+
+        .score-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.1);
+        }
+
+        /* Hide number input arrows in Chrome, Safari, Edge */
+        .score-input::-webkit-outer-spin-button,
+        .score-input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        .score-buttons {
+            display: flex;
+            gap: 4px;
+            align-items: center;
+        }
+
+        .score-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            transition: all 0.2s ease;
+        }
+
+        .score-btn:hover {
+            background: #5a6fd8;
+            transform: scale(1.1);
+        }
+
+        .score-btn:disabled {
+            background: #d1d5db;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .na-btn {
+            background: #9ca3af;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 2px 6px;
+            cursor: pointer;
+            font-size: 10px;
+            font-weight: 600;
+            margin-left: 4px;
+            transition: all 0.2s ease;
+        }
+
+        .na-btn:hover {
+            background: #6b7280;
+        }
+
+        .na-btn.active {
+            background: #ef4444;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 60px 40px;
+            color: #666;
+        }
+
+        .warning-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .warning-content {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            max-width: 500px;
+            margin: 20px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+        }
+
+        .warning-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #dc2626;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .warning-message {
+            color: #374151;
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+
+        .warning-buttons {
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+        }
+
+        .btn-warning {
+            background: #dc2626;
+            color: white;
+            border: 1px solid #dc2626;
+        }
+
+        .btn-warning:hover {
+            background: #b91c1c;
+        }
+
+        .password-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+        }
+
+        .password-content {
+            background: white;
+            border-radius: 16px;
+            padding: 40px;
+            max-width: 400px;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .password-content h2 {
+            margin-bottom: 16px;
+            color: #374151;
+        }
+
+        .password-content p {
+            margin-bottom: 20px;
+            color: #6b7280;
+        }
+
+        .password-content input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            font-size: 16px;
+            margin-bottom: 16px;
+        }
+
+        .password-content input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .password-error {
+            color: #dc2626;
+            margin-top: 12px;
+            font-weight: 600;
+        }
+
+        .password-modal.hidden {
+            display: none;
+        }
+
+        .changes-indicator {
+            display: none;
+            background: #fef3c7;
+            border: 2px solid #f59e0b;
+            border-radius: 8px;
+            padding: 12px 16px;
+            margin-bottom: 16px;
+            font-weight: 600;
+            color: #92400e;
+        }
+
+        .changes-indicator.visible {
+            display: block;
+        }
+
+        .flag-button {
+            background: #f59e0b;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 6px 12px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            width: 100%;
+        }
+
+        .flag-button:hover {
+            background: #d97706;
+        }
+
+        .flag-button.flagged {
+            background: #10b981;
+        }
+
+        .flag-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+
+        .flag-modal-content {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .flag-modal-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: #374151;
+        }
+
+        .flag-modal-subtitle {
+            font-size: 0.9rem;
+            color: #6b7280;
+            margin-bottom: 20px;
+        }
+
+        .flag-option {
+            padding: 12px 16px;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-bottom: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .flag-option:hover {
+            background: #f8f9fa;
+            border-color: #667eea;
+        }
+
+        .flag-option.selected {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border-color: #667eea;
+        }
+
+        .flag-textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            resize: vertical;
+            min-height: 100px;
+            font-family: inherit;
+            font-size: 14px;
+            margin-top: 16px;
+        }
+
+        .flag-textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .flag-modal-buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .flag-modal-buttons button {
+            flex: 1;
+        }
+    </style>
+</head>
+    
+<body>
+    <!-- Password Protection Modal with Name Input -->
+    <div id="passwordModal" class="password-modal">
+        <div class="password-content">
+            <h2>🔒 Access Required</h2>
+            <p>Please enter your details to access the review tool:</p>
+            <input type="text" id="loginNameInput" placeholder="Your name" />
+            <input type="password" id="passwordInput" placeholder="Password" />
+            <button class="btn btn-primary" onclick="checkPassword()">Submit</button>
+            <div id="passwordError" class="password-error"></div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="header">
+            <h1>IP Strategy Score Editor</h1>
+            <p>Filter strategies, adjust scores, and flag content issues</p>
+            <div id="versionDisplay"></div>
+            
+            <div class="header-controls">
+                <div class="user-greeting">
+                    👤 <span id="userGreeting">Loading...</span>
+                </div>
+                
+                <div class="primary-filters">
+                    <div class="filter-group">
+                        <label class="filter-label">Situation Type</label>
+                        <select id="situationFilter">
+                            <option value="">All Situations</option>
+                            <option value="Enforcement">I believe my IP has been infringed</option>
+                            <option value="Accused">I've been accused of infringement</option>
+                            <option value="Disagree">I want help on IP processes</option>
+                            <option value="Proactive">I want to prevent future IP headaches</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label class="filter-label">IP Rights Type</label>
+                        <select id="ipRightsFilter">
+                            <option value="">All IP Rights</option>
+                            <option value="Patent">Patents</option>
+                            <option value="Trade mark">Trade marks</option>
+                            <option value="Design">Design rights</option>
+                            <option value="PBR">Plant breeder's rights</option>
+                            <option value="Copyright">Copyright</option>
+                            <option value="Any dispute">Any IP right</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="top-controls">
+                    <div class="results-count" id="resultsCount">Loading...</div>
+                    <div class="control-buttons">
+                        <button class="btn btn-secondary" id="clearFilters">🗑️ Clear</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="main-layout">
+            <div class="sidebar">
+                <div id="accordionContainer"></div>
+            </div>
+
+            <div class="content-area">
+                <div id="activeFilterPill"></div>
+                <div class="changes-indicator" id="changesIndicator">
+                    ⚠️ You have unsaved changes. Changes will be lost when switching filters.
+                </div>
+                <div id="strategiesContainer">
+                    <div class="loading">Loading strategy data...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Application state
+        let allStrategies = [];
+        let filteredStrategies = [];
+        let activeFilters = []; // Array to hold multiple active filters
+        let accordionState = {};
+        let filterOptions = {};
+        let accordionPresets = {};
+        let customScores = {}; // Store custom score adjustments
+        let hasUnsavedChanges = false; // Track if user has made changes
+        let currentUserName = ''; // Store the logged-in user's name
+
+        const dataVersions = {
+            strategiesContent: null,
+            strategiesMetadata: null,
+            filterOptions: null,
+            accordionPresets: null,
+            loadTimestamp: null
+        };
+
+        // Display version info in header
+        function displayVersionInfo() {
+            const versionDisplay = document.getElementById('versionDisplay');
+            if (versionDisplay && dataVersions.strategiesContent) {
+                versionDisplay.innerHTML = `
+                    <div style="font-size: 11px; color: #6b7280; margin-top: 8px;">
+                        <strong>Data Versions:</strong> 
+                        Strategies: ${dataVersions.strategiesContent} | 
+                        Metadata: ${dataVersions.strategiesMetadata} | 
+                        Filters: ${dataVersions.filterOptions} | 
+                        Presets: ${dataVersions.accordionPresets}
+                    </div>
+                `;
+            }
+        }
+
+        // DOM elements
+        const userGreeting = document.getElementById('userGreeting');
+        const situationFilter = document.getElementById('situationFilter');
+        const ipRightsFilter = document.getElementById('ipRightsFilter');
+        const clearFilters = document.getElementById('clearFilters');
+        const resultsCount = document.getElementById('resultsCount');
+        const accordionContainer = document.getElementById('accordionContainer');
+        const activeFilterPill = document.getElementById('activeFilterPill');
+        const strategiesContainer = document.getElementById('strategiesContainer');
+        const changesIndicator = document.getElementById('changesIndicator');
+
+        // ========================================
+        // TELEMETRY CONFIGURATION
+        // ========================================
+        const TELEMETRY_CONFIG = {
+            // Replace this with your Google Apps Script Web App URL
+            sheetURL: 'https://script.google.com/macros/s/AKfycbyK2DqvUFqwmbMUcs2fYhhnz0F3Zu4GC8Mfm_hxRGO9DYllfJase10FeuJvHGecMvAp/exec',
+            
+            // Simple password for access control
+            accessPassword: 'ipnavigator2024',  // Change this to your preferred password
+            
+            // Session tracking
+            sessionId: generateSessionId()
+        };
+
+        // Generate unique session ID
+        function generateSessionId() {
+            return 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+        }
+
+        // ========================================
+        // TELEMETRY FUNCTIONS
+        // ========================================
+
+        /**
+         * Collect current filter state for telemetry
+         * Returns an object with all active filters
+         */
+        function collectFilterState() {
+            const accordionFiltersArray = activeFilters.map(filter => ({
+                key: filter.key,
+                option: filter.option.label
+            }));
+            
+            return {
+                situationFilter: situationFilter.value || 'All Situations',
+                ipRightsFilter: ipRightsFilter.value || 'All IP Rights',
+                accordionFilters: JSON.stringify(accordionFiltersArray)
+            };
+        }
+
+        /**
+         * Send telemetry data to Google Sheets
+         * @param {Object} telemetryData - The data to send
+         */
+        async function sendTelemetry(telemetryData) {
+            if (!currentUserName) {
+                alert('User name not found. Please refresh and log in again.');
+                return false;
+            }
+            
+            const filterState = collectFilterState();
+            
+            const payload = {
+                userName: currentUserName,
+                situationFilter: filterState.situationFilter,
+                ipRightsFilter: filterState.ipRightsFilter,
+                accordionFilters: filterState.accordionFilters,
+                strategyId: telemetryData.strategyId,
+                strategyTitle: telemetryData.strategyTitle,
+                currentScore: telemetryData.currentScore,
+                issueType: telemetryData.issueType,
+                feedbackText: telemetryData.feedbackText,
+                sessionId: TELEMETRY_CONFIG.sessionId,
+                // VERSION TRACKING
+                strategiesVersion: dataVersions.strategiesContent,
+                metadataVersion: dataVersions.strategiesMetadata,
+                filtersVersion: dataVersions.filterOptions,
+                presetsVersion: dataVersions.accordionPresets,
+                dataLoadTimestamp: dataVersions.loadTimestamp
+            };
+            
+            try {
+                const response = await fetch(TELEMETRY_CONFIG.sheetURL, {
+                    method: 'POST',
+                    mode: 'no-cors',  // Required for Google Apps Script
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(payload)
+                });
+                
+                // Note: no-cors mode means we can't read the response
+                // but the request will succeed if the URL is correct
+                return true;
+                
+            } catch (error) {
+                console.error('Error sending telemetry:', error);
+                alert('Failed to send feedback. Please check your connection and try again.');
+                return false;
+            }
+        }
+
+        // ========================================
+        // PASSWORD PROTECTION WITH NAME INPUT
+        // ========================================
+
+        function checkPassword() {
+            const nameInput = document.getElementById('loginNameInput');
+            const passwordInput = document.getElementById('passwordInput');
+            const error = document.getElementById('passwordError');
+            const modal = document.getElementById('passwordModal');
+            
+            const name = nameInput.value.trim();
+            const password = passwordInput.value;
+            
+            if (!name) {
+                error.textContent = '❌ Please enter your name.';
+                nameInput.focus();
+                return;
+            }
+            
+            if (password === TELEMETRY_CONFIG.accessPassword) {
+                currentUserName = name;
+                sessionStorage.setItem('authenticated', 'true');
+                sessionStorage.setItem('userName', name);
+                modal.classList.add('hidden');
+                updateUserGreeting();
+            } else {
+                error.textContent = '❌ Incorrect password. Please try again.';
+                passwordInput.value = '';
+                passwordInput.focus();
+            }
+        }
+
+        // Update user greeting in header
+        function updateUserGreeting() {
+            if (userGreeting && currentUserName) {
+                userGreeting.textContent = currentUserName;
+            }
+        }
+
+        // Check authentication on page load
+        function checkAuthentication() {
+            const modal = document.getElementById('passwordModal');
+            const isAuthenticated = sessionStorage.getItem('authenticated') === 'true';
+            const storedName = sessionStorage.getItem('userName');
+            
+            if (isAuthenticated && storedName) {
+                currentUserName = storedName;
+                modal.classList.add('hidden');
+                updateUserGreeting();
+            } else {
+                modal.classList.remove('hidden');
+                document.getElementById('loginNameInput').focus();
+            }
+        }
+
+        // Allow Enter key to submit password
+        document.addEventListener('DOMContentLoaded', () => {
+            const passwordInput = document.getElementById('passwordInput');
+            const nameInput = document.getElementById('loginNameInput');
+            
+            if (nameInput) {
+                nameInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') {
+                        passwordInput.focus();
+                    }
+                });
+            }
+            
+            if (passwordInput) {
+                passwordInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') {
+                        checkPassword();
+                    }
+                });
+            }
+            
+            checkAuthentication();
+        });
+
+        // ========================================
+        // FLAG MODAL FUNCTIONS
+        // ========================================
+
+        let currentFlagStrategy = null;
+
+        function openFlagModal(strategyId) {
+            const strategy = filteredStrategies.find(s => s.id === strategyId);
+            if (!strategy) return;
+            
+            currentFlagStrategy = strategy;
+            
+            const modal = document.createElement('div');
+            modal.className = 'flag-modal';
+            modal.id = 'flagModal';
+            modal.innerHTML = `
+                <div class="flag-modal-content">
+                    <div class="flag-modal-title">${strategy.title}</div>
+                    <div class="flag-modal-subtitle">Current Score: ${strategy.calculatedScore}</div>
+                    
+                    <div style="margin-bottom: 12px; font-weight: 600; color: #374151;">
+                        How should this strategy be adjusted?
+                    </div>
+                    
+                    <div class="flag-option" data-value="too-high">
+                        ⬇️ Ranked too high for these filters
+                    </div>
+                    <div class="flag-option" data-value="too-low">
+                        ⬆️ Ranked too low for these filters
+                    </div>
+                    <div class="flag-option" data-value="irrelevant">
+                        ❌ Shouldn't appear for these filters
+                    </div>
+                    <div class="flag-option" data-value="other">
+                        💭 Other issue or suggestion
+                    </div>
+                    
+                    <textarea 
+                        class="flag-textarea" 
+                        id="flagFeedback" 
+                        placeholder="Please provide details about why this ranking needs adjustment..."
+                    ></textarea>
+                    
+                    <div class="flag-modal-buttons">
+                        <button class="btn btn-secondary" onclick="closeFlagModal()">Cancel</button>
+                        <button class="btn btn-primary" onclick="submitFlag()">Submit Feedback</button>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+            
+            // Add click handlers for flag options
+            const options = modal.querySelectorAll('.flag-option');
+            options.forEach(option => {
+                option.addEventListener('click', function() {
+                    options.forEach(o => o.classList.remove('selected'));
+                    this.classList.add('selected');
+                });
+            });
+        }
+
+        function closeFlagModal() {
+            const modal = document.getElementById('flagModal');
+            if (modal) {
+                modal.remove();
+            }
+            currentFlagStrategy = null;
+        }
+
+        async function submitFlag() {
+            const modal = document.getElementById('flagModal');
+            const selectedOption = modal.querySelector('.flag-option.selected');
+            const feedbackText = document.getElementById('flagFeedback').value.trim();
+            
+            if (!selectedOption) {
+                alert('Please select an issue type');
+                return;
+            }
+            
+            if (!feedbackText) {
+                alert('Please provide feedback details');
+                return;
+            }
+            
+            const telemetryData = {
+                strategyId: currentFlagStrategy.id,
+                strategyTitle: currentFlagStrategy.title,
+                currentScore: currentFlagStrategy.calculatedScore,
+                issueType: selectedOption.dataset.value,
+                feedbackText: feedbackText
+            };
+            
+            const success = await sendTelemetry(telemetryData);
+            
+            if (success) {
+                alert('✅ Feedback submitted successfully! Thank you for helping improve the Navigator.');
+                closeFlagModal();
+                
+                // Mark the strategy as flagged in this session
+                markStrategyAsFlagged(currentFlagStrategy.id);
+            }
+        }
+
+        function markStrategyAsFlagged(strategyId) {
+            const sessionFlags = JSON.parse(sessionStorage.getItem('flaggedStrategies') || '[]');
+            if (!sessionFlags.includes(strategyId)) {
+                sessionFlags.push(strategyId);
+                sessionStorage.setItem('flaggedStrategies', JSON.stringify(sessionFlags));
+            }
+            
+            // Update the button appearance
+            applyFilters();
+        }
+
+        function isStrategyFlagged(strategyId) {
+            const sessionFlags = JSON.parse(sessionStorage.getItem('flaggedStrategies') || '[]');
+            return sessionFlags.includes(strategyId);
+        }
+
+        // Load all data files
+        async function loadData() {
+            try {
+                const [strategiesContentData, strategiesMetadataData, filterOptionsData, accordionPresetsData] = await Promise.all([
+                    fetch('strategies-content.json').then(res => res.json()),
+                    fetch('strategies-metadata.json').then(res => res.json()),
+                    fetch('filterOptions.json').then(res => res.json()),
+                    fetch('accordionPresets.json').then(res => res.json())
+                ]);
+
+                // Capture version information
+                dataVersions.strategiesContent = strategiesContentData.version || 'unversioned';
+                dataVersions.strategiesMetadata = strategiesMetadataData.version || 'unversioned';
+                dataVersions.filterOptions = filterOptionsData.version || 'unversioned';
+                dataVersions.accordionPresets = accordionPresetsData.version || 'unversioned';
+                dataVersions.loadTimestamp = new Date().toISOString();
+
+                // Extract actual data
+                // For strategies files: look for 'strategies' array, fallback to whole object
+                const strategiesContent = strategiesContentData.strategies || strategiesContentData;
+                const strategiesMetadata = strategiesMetadataData.metadata || strategiesMetadataData.strategies || strategiesMetadataData;
+                
+                // For filterOptions: look for 'filters' object, fallback to whole object
+                const rawFilterOptions = filterOptionsData.filters || filterOptionsData;
+                // Remove version/metadata keys from filters
+                filterOptions = {};
+                Object.keys(rawFilterOptions).forEach(key => {
+                    if (key !== 'version' && key !== 'lastUpdated') {
+                        filterOptions[key] = rawFilterOptions[key];
+                    }
+                });
+                
+                // For accordionPresets: remove version/metadata keys, keep everything else
+                accordionPresets = {};
+                Object.keys(accordionPresetsData).forEach(key => {
+                    if (key !== 'version' && key !== 'lastUpdated') {
+                        accordionPresets[key] = accordionPresetsData[key];
+                    }
+                });
+
+                // Merge content and metadata
+                allStrategies = strategiesContent.map(content => {
+                    const metadata = strategiesMetadata.find(meta => meta.id === content.id);
+                    return { ...content, ...metadata };
+                });
+
+                // Filter out "Not Assigned" strategies
+                allStrategies = allStrategies.filter(strategy => 
+                    strategy.title !== "Not Assigned" && 
+                    strategy.overtitle !== "Not Assigned" &&
+                    strategy.description !== "Not Assigned"
+                );
+
+                // Display version info
+                displayVersionInfo();
+
+                console.log('Loaded accordionPresets:', accordionPresets); // Debug
+                console.log('Loaded filterOptions:', filterOptions); // Debug
+
+                return true;
+            } catch (error) {
+                console.error('Error loading data:', error);
+                return false;
+            }
+        }
+
+        // Check for unsaved changes before filter change
+        function checkUnsavedChanges(callback) {
+            if (hasUnsavedChanges) {
+                showWarningModal(
+                    'Unsaved Changes',
+                    'You have unsaved score changes that will be lost if you switch filters. Do you want to continue?',
+                    () => {
+                        // User confirmed - clear changes and proceed
+                        customScores = {};
+                        hasUnsavedChanges = false;
+                        updateChangesIndicator();
+                        callback();
+                    }
+                );
+            } else {
+                callback();
+            }
+        }
+
+        // Show warning modal
+        function showWarningModal(title, message, onConfirm) {
+            const modal = document.createElement('div');
+            modal.className = 'warning-modal';
+            modal.innerHTML = `
+                <div class="warning-content">
+                    <div class="warning-title">
+                        ⚠️ ${title}
+                    </div>
+                    <div class="warning-message">
+                        ${message}
+                    </div>
+                    <div class="warning-buttons">
+                        <button class="btn btn-secondary" onclick="closeWarningModal()">Cancel</button>
+                        <button class="btn btn-warning" onclick="confirmWarning()">Continue & Lose Changes</button>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+            
+            // Store the callback for the confirm button
+            window.currentWarningCallback = onConfirm;
+        }
+
+        // Close warning modal
+        function closeWarningModal() {
+            const modal = document.querySelector('.warning-modal');
+            if (modal) {
+                modal.remove();
+            }
+            window.currentWarningCallback = null;
+        }
+
+        // Confirm warning and execute callback
+        function confirmWarning() {
+            if (window.currentWarningCallback) {
+                window.currentWarningCallback();
+            }
+            closeWarningModal();
+        }
+
+        // Update changes indicator visibility
+        function updateChangesIndicator() {
+            if (hasUnsavedChanges) {
+                changesIndicator.classList.add('visible');
+            } else {
+                changesIndicator.classList.remove('visible');
+            }
+        }
+
+        function getAccordionLayout() {
+            const selectedSituation = situationFilter.value;
+            const selectedIPRight = ipRightsFilter.value;
+            
+            // If no filters selected, use default
+            if (!selectedSituation && !selectedIPRight) {
+                return accordionPresets.default || accordionPresets['default'];
+            }
+            
+            // Map IP rights filter values to preset keys
+            const ipRightMap = {
+                'Patent': 'patents',
+                'Trade mark': 'trademarks',
+                'Design': 'designs',
+                'PBR': 'pbr',
+                'Copyright': 'copyright',
+                'Any dispute': 'any'
+            };
+            
+            // Map situation filter values to preset keys
+            const situationMap = {
+                'Enforcement': 'enforcement',
+                'Accused': 'accused',
+                'Proactive': 'proactive',
+                'Disagree': 'disagree'
+            };
+            
+            // Build the preset key
+            let presetKey = '';
+            
+            if (selectedIPRight && selectedSituation) {
+                // Both filters selected - try specific combination
+                const ipKey = ipRightMap[selectedIPRight] || 'uncertain';
+                const situationKey = situationMap[selectedSituation] || '';
+                presetKey = `${ipKey}-${situationKey}`;
+            } else if (selectedSituation) {
+                // Only situation selected - use 'any' for IP type
+                const situationKey = situationMap[selectedSituation] || '';
+                presetKey = `any-${situationKey}`;
+            } else if (selectedIPRight) {
+                // Only IP right selected - this is less common, fall back to default
+                return accordionPresets.default || accordionPresets['default'];
+            }
+            
+            // Check if the preset exists, otherwise fall back to default
+            const layout = accordionPresets[presetKey];
+            
+            if (layout) {
+                console.log(`Using accordion preset: ${presetKey}`);
+                return layout;
+            } else {
+                console.log(`Preset '${presetKey}' not found, using default`);
+                return accordionPresets.default || accordionPresets['default'];
+            }
+        }
+
+        // Render accordion filters
+        function renderAccordions() {
+            accordionContainer.innerHTML = '';
+            
+            const layout = getAccordionLayout();
+            const accordions = layout.accordions || {};
+            const topFilters = layout.topFilters || [];
+
+            // Helper function to check if a filter is active
+            function isFilterActive(filterKey, optionIndex) {
+                return activeFilters.some(f => f.key === filterKey && f.optionIndex === optionIndex);
+            }
+
+            // Helper function to check if any filter in a group is active
+            function hasActiveFilterInGroup(filterKeys) {
+                return filterKeys.some(key => 
+                    activeFilters.some(f => f.key === key)
+                );
+            }
+
+            // Render top filters in an accordion to save space
+            if (topFilters.length > 0) {
+                const topFiltersKey = 'topfilters';
+                const hasActiveTopFilter = hasActiveFilterInGroup(topFilters);
+                
+                const topHeader = document.createElement('div');
+                topHeader.className = 'accordion-header';
+                const activeText = hasActiveTopFilter ? ' ✓' : '';
+                
+                topHeader.innerHTML = `
+                    <span style="display:inline-block; transition: transform 0.3s ease; transform: ${accordionState[topFiltersKey] ? 'rotate(90deg)' : 'rotate(0deg)'};">▶</span>
+                    Additional Filters${activeText}
+                `;
+                
+                topHeader.onclick = () => {
+                    accordionState[topFiltersKey] = !accordionState[topFiltersKey];
+                    renderAccordions();
+                };
+                
+                accordionContainer.appendChild(topHeader);
+
+                if (accordionState[topFiltersKey]) {
+                    const topContent = document.createElement('div');
+                    topContent.className = 'accordion-content';
+                    
+                    topFilters.forEach(filterKey => {
+                        const filterConfig = filterOptions[filterKey];
+                        if (!filterConfig) return;
+
+                        const group = document.createElement('div');
+                        group.style.marginBottom = '20px';
+
+                        const label = document.createElement('div');
+                        label.className = 'filter-label';
+                        label.textContent = filterConfig.label;
+                        group.appendChild(label);
+
+                        const radioGroup = document.createElement('div');
+                        radioGroup.className = 'radio-group';
+
+                        filterConfig.options.forEach((option, index) => {
+                            const radio = document.createElement('div');
+                            radio.className = 'radio-button';
+                            
+                            if (isFilterActive(filterKey, index)) {
+                                radio.classList.add('radio-selected');
+                            }
+                            
+                            radio.textContent = option.label;
+                            radio.onclick = () => {
+                                const newFilter = {
+                                    key: filterKey,
+                                    optionIndex: index,
+                                    config: filterConfig,
+                                    option: option
+                                };
+                                
+                                const changeFilter = () => {
+                                    // Toggle filter: remove if already active, add if not
+                                    const existingIndex = activeFilters.findIndex(
+                                        f => f.key === filterKey && f.optionIndex === index
+                                    );
+                                    
+                                    if (existingIndex !== -1) {
+                                        // Remove this filter
+                                        activeFilters.splice(existingIndex, 1);
+                                    } else {
+                                        // Remove any other filter with the same key (only one option per filter group)
+                                        activeFilters = activeFilters.filter(f => f.key !== filterKey);
+                                        // Add the new filter
+                                        activeFilters.push(newFilter);
+                                    }
+                                    
+                                    applyFilters();
+                                    renderAccordions();
+                                };
+                                
+                                checkUnsavedChanges(changeFilter);
+                            };
+                            radioGroup.appendChild(radio);
+                        });
+
+                        group.appendChild(radioGroup);
+                        topContent.appendChild(group);
+                    });
+                    
+                    accordionContainer.appendChild(topContent);
+                }
+            }
+
+            // Render accordion sections
+            Object.entries(accordions).forEach(([accordionTitle, filterKeys]) => {
+                const accordionKey = accordionTitle.toLowerCase().replace(/\s+/g, '');
+                const hasActiveFilter = hasActiveFilterInGroup(filterKeys);
+                
+                const header = document.createElement('div');
+                header.className = 'accordion-header';
+                const activeText = hasActiveFilter ? ' ✓' : '';
+                
+                header.innerHTML = `
+                    <span style="display:inline-block; transition: transform 0.3s ease; transform: ${accordionState[accordionKey] ? 'rotate(90deg)' : 'rotate(0deg)'};">▶</span>
+                    ${accordionTitle}${activeText}
+                `;
+                
+                header.onclick = () => {
+                    accordionState[accordionKey] = !accordionState[accordionKey];
+                    renderAccordions();
+                };
+                
+                accordionContainer.appendChild(header);
+
+                if (accordionState[accordionKey]) {
+                    const content = document.createElement('div');
+                    content.className = 'accordion-content';
+
+                    filterKeys.forEach(filterKey => {
+                        const filterConfig = filterOptions[filterKey];
+                        if (!filterConfig) return;
+
+                        const group = document.createElement('div');
+                        group.style.marginBottom = '16px';
+
+                        const label = document.createElement('div');
+                        label.className = 'filter-label';
+                        label.textContent = filterConfig.label;
+                        group.appendChild(label);
+
+                        const radioGroup = document.createElement('div');
+                        radioGroup.className = 'radio-group';
+
+                        filterConfig.options.forEach((option, index) => {
+                            const radio = document.createElement('div');
+                            radio.className = 'radio-button';
+                            
+                            if (isFilterActive(filterKey, index)) {
+                                radio.classList.add('radio-selected');
+                            }
+                            
+                            radio.textContent = option.label;
+                            radio.onclick = () => {
+                                const newFilter = {
+                                    key: filterKey,
+                                    optionIndex: index,
+                                    config: filterConfig,
+                                    option: option
+                                };
+                                
+                                const changeFilter = () => {
+                                    // Toggle filter: remove if already active, add if not
+                                    const existingIndex = activeFilters.findIndex(
+                                        f => f.key === filterKey && f.optionIndex === index
+                                    );
+                                    
+                                    if (existingIndex !== -1) {
+                                        // Remove this filter
+                                        activeFilters.splice(existingIndex, 1);
+                                    } else {
+                                        // Remove any other filter with the same key (only one option per filter group)
+                                        activeFilters = activeFilters.filter(f => f.key !== filterKey);
+                                        // Add the new filter
+                                        activeFilters.push(newFilter);
+                                    }
+                                    
+                                    applyFilters();
+                                    renderAccordions();
+                                };
+                                
+                                checkUnsavedChanges(changeFilter);
+                            };
+                            radioGroup.appendChild(radio);
+                        });
+
+                        group.appendChild(radioGroup);
+                        content.appendChild(group);
+                    });
+
+                    accordionContainer.appendChild(content);
+                }
+            });
+        }
+
+        // Apply filters and calculate scores
+        function applyFilters() {
+            const selectedSituation = situationFilter.value;
+            const selectedIPRight = ipRightsFilter.value;
+
+            // Filter strategies
+            filteredStrategies = allStrategies.filter(strategy => {
+                // Situation filter
+                if (selectedSituation && strategy.responseType) {
+                    if (!strategy.responseType.includes(selectedSituation)) {
+                        return false;
+                    }
+                }
+
+                // IP Rights filter
+                if (selectedIPRight && strategy.ipTypeTags) {
+                    if (!strategy.ipTypeTags.includes(selectedIPRight) && 
+                        !strategy.ipTypeTags.includes('Any dispute')) {
+                        return false;
+                    }
+                }
+
+                return true;
+            });
+
+            // Calculate scores - combine all active filters
+            filteredStrategies = filteredStrategies.map(strategy => {
+                let score = 1.0; // default score
+                
+                // Apply each active filter and multiply scores
+                activeFilters.forEach(filter => {
+                    if (filterOptions[filter.key]) {
+                        const option = filter.option;
+                        if (option && option.scoringValues && strategy.id <= option.scoringValues.length) {
+                            const filterScore = option.scoringValues[strategy.id - 1] || 1.0;
+                            score *= filterScore; // Multiply scores together
+                        }
+                    }
+                });
+
+                // Apply custom score adjustments
+                const customScore = customScores[strategy.id];
+                if (customScore !== undefined) {
+                    score = customScore;
+                }
+                
+                return {
+                    ...strategy,
+                    calculatedScore: Math.round(score * 10) / 10 // Round to 1 decimal
+                };
+            });
+
+            updateActiveFilterDisplay();
+            updateResultsCount();
+            renderStrategiesByScore();
+        }
+
+        // Update active filter display
+        function updateActiveFilterDisplay() {
+            activeFilterPill.innerHTML = '';
+
+            if (activeFilters.length > 0) {
+                activeFilters.forEach((filter, index) => {
+                    const config = filter.config;
+                    const option = filter.option;
+                    
+                    let pillText = config.pillTemplate || `${config.label}: ${option.label}`;
+                    pillText = pillText.replace('{optionLabel}', option.pillLabel || option.label);
+
+                    const pill = document.createElement('div');
+                    pill.className = 'active-filter-pill';
+                    pill.style.marginRight = '8px';
+                    pill.style.marginBottom = '8px';
+                    pill.innerHTML = `
+                        <span>${pillText}</span>
+                        <button onclick="clearSpecificFilter(${index})">×</button>
+                    `;
+                    activeFilterPill.appendChild(pill);
+                });
+            }
+        }
+
+        // Render strategies grouped by score
+        function renderStrategiesByScore() {
+            if (filteredStrategies.length === 0) {
+                strategiesContainer.innerHTML = `
+                    <div class="no-results">
+                        <h3>No strategies found</h3>
+                        <p>Try adjusting your filters</p>
+                    </div>
+                `;
+                return;
+            }
+
+            // Group strategies by score
+            const scoreGroups = {};
+            filteredStrategies.forEach(strategy => {
+                const score = strategy.calculatedScore;
+                if (!scoreGroups[score]) {
+                    scoreGroups[score] = [];
+                }
+                scoreGroups[score].push(strategy);
+            });
+
+            // Sort scores descending
+            const sortedScores = Object.keys(scoreGroups).map(s => parseFloat(s)).sort((a, b) => b - a);
+
+            strategiesContainer.innerHTML = '';
+
+            sortedScores.forEach(score => {
+                const strategies = scoreGroups[score];
+                
+                const scoreGroup = document.createElement('div');
+                scoreGroup.className = 'score-group';
+
+                const scoreHeader = document.createElement('div');
+                scoreHeader.className = 'score-header';
+                
+                // Determine score badge class
+                let badgeClass = 'neutral';
+                if (score > 1.0) badgeClass = 'high';
+                else if (score < 1.0) badgeClass = 'low';
+                
+                scoreHeader.innerHTML = `
+                    <span class="score-badge ${badgeClass}">Score ${score}</span>
+                    <span>${strategies.length} strateg${strategies.length === 1 ? 'y' : 'ies'}</span>
+                `;
+                scoreGroup.appendChild(scoreHeader);
+
+                const strategiesRow = document.createElement('div');
+                strategiesRow.className = 'strategies-row';
+
+                strategies.forEach(strategy => {
+                    const card = createStrategyCard(strategy);
+                    strategiesRow.appendChild(card);
+                });
+
+                scoreGroup.appendChild(strategiesRow);
+                strategiesContainer.appendChild(scoreGroup);
+            });
+        }
+
+        // Create strategy card
+        function createStrategyCard(strategy) {
+            const card = document.createElement('div');
+            card.className = 'strategy-card';
+
+            const isNA = strategy.calculatedScore === 0;
+            const isFlagged = isStrategyFlagged(strategy.id);
+
+            card.innerHTML = `
+                <div class="card-header">
+                    ${strategy.overtitle ? `<div class="card-overtitle">${strategy.overtitle}</div>` : ''}
+                    <div class="card-title">${strategy.title}</div>
+                    <div class="card-description">${strategy.description}</div>
+                </div>
+                <div class="card-controls">
+                    <input type="number" 
+                           class="score-input" 
+                           value="${isNA ? '0' : strategy.calculatedScore}" 
+                           min="0" 
+                           max="3" 
+                           step="0.1" 
+                           onchange="setScore(${strategy.id}, this.value)"
+                           title="Enter score (0-3.0)">
+                    <div class="score-buttons">
+                        <button class="score-btn" onclick="adjustScore(${strategy.id}, 0.1)" title="Increase score" ${isNA ? 'disabled' : ''}>▲</button>
+                        <button class="score-btn" onclick="adjustScore(${strategy.id}, -0.1)" title="Decrease score" ${isNA ? 'disabled' : ''}>▼</button>
+                        <button class="na-btn ${isNA ? 'active' : ''}" onclick="toggleNA(${strategy.id})" title="Mark as Not Applicable">N/A</button>
+                    </div>
+                </div>
+                <button class="flag-button ${isFlagged ? 'flagged' : ''}" onclick="openFlagModal(${strategy.id})">
+                    ${isFlagged ? '✓ Flagged' : '🚩 Flag Issue'}
+                </button>
+            `;
+
+            return card;
+        }
+
+        // Adjust strategy score
+        function adjustScore(strategyId, adjustment) {
+            const strategy = filteredStrategies.find(s => s.id === strategyId);
+            if (!strategy) return;
+
+            const newScore = Math.max(0, Math.min(3.0, strategy.calculatedScore + adjustment));
+            const roundedScore = Math.round(newScore * 10) / 10;
+            
+            customScores[strategyId] = roundedScore;
+            hasUnsavedChanges = true;
+            updateChangesIndicator();
+            applyFilters(); // Re-render with new scores
+        }
+
+        // Set specific score value
+        function setScore(strategyId, value) {
+            const strategy = filteredStrategies.find(s => s.id === strategyId);
+            if (!strategy) return;
+
+            let newScore = parseFloat(value);
+            if (isNaN(newScore)) newScore = 1.0;
+            
+            // Clamp between 0 and 3.0
+            newScore = Math.max(0, Math.min(3.0, newScore));
+            const roundedScore = Math.round(newScore * 10) / 10;
+            
+            customScores[strategyId] = roundedScore;
+            hasUnsavedChanges = true;
+            updateChangesIndicator();
+            applyFilters(); // Re-render with new scores
+        }
+
+        function toggleNA(strategyId) {
+            const strategy = filteredStrategies.find(s => s.id === strategyId);
+            if (!strategy) return;
+
+            if (strategy.calculatedScore === 0) {
+                // Currently N/A, restore to calculated score from all filters
+                let score = 1.0;
+                activeFilters.forEach(filter => {
+                    if (filter.option.scoringValues && filter.option.scoringValues[strategyId - 1]) {
+                        score *= filter.option.scoringValues[strategyId - 1];
+                    }
+                });
+                customScores[strategyId] = Math.round(score * 10) / 10;
+            } else {
+                // Set to N/A (score = 0)
+                customScores[strategyId] = 0;
+            }
+            
+            hasUnsavedChanges = true;
+            updateChangesIndicator();
+            applyFilters();
+        }
+
+        // Clear specific filter by index
+        function clearSpecificFilter(index) {
+            const clearFilter = () => {
+                activeFilters.splice(index, 1);
+                applyFilters();
+                renderAccordions();
+            };
+            
+            checkUnsavedChanges(clearFilter);
+        }
+
+        // Clear all filters
+        function clearAllFilters() {
+            const clearAll = () => {
+                situationFilter.value = '';
+                ipRightsFilter.value = '';
+                activeFilters = [];
+                customScores = {};
+                hasUnsavedChanges = false;
+                accordionState = {};
+                updateChangesIndicator();
+                applyFilters();
+                renderAccordions();
+            };
+            
+            checkUnsavedChanges(clearAll);
+        }
+
+        // Update results count
+        function updateResultsCount() {
+            resultsCount.textContent = `${filteredStrategies.length} strategies`;
+        }
+
+        // Setup event listeners
+        function setupEventListeners() {
+            situationFilter.addEventListener('change', () => {
+                const applyChange = () => {
+                    applyFilters();
+                    renderAccordions();
+                };
+                checkUnsavedChanges(applyChange);
+            });
+            ipRightsFilter.addEventListener('change', () => {
+                const applyChange = () => {
+                    applyFilters();
+                    renderAccordions();
+                };
+                checkUnsavedChanges(applyChange);
+            });
+            clearFilters.addEventListener('click', clearAllFilters);
+        }
+
+        // Make functions globally available
+        window.adjustScore = adjustScore;
+        window.setScore = setScore;
+        window.toggleNA = toggleNA;
+        window.clearSpecificFilter = clearSpecificFilter;
+        window.closeWarningModal = closeWarningModal;
+        window.confirmWarning = confirmWarning;
+        window.openFlagModal = openFlagModal;
+        window.closeFlagModal = closeFlagModal;
+        window.submitFlag = submitFlag;
+        window.checkPassword = checkPassword;
+
+        // Initialize the application
+        async function init() {
+            const dataLoaded = await loadData();
+            
+            if (!dataLoaded) {
+                strategiesContainer.innerHTML = `
+                    <div class="no-results">
+                        <h3>Failed to load data</h3>
+                        <p>Please check that all data is available</p>
+                    </div>
+                `;
+                return;
+            }
+
+            setupEventListeners();
+            renderAccordions();
+            applyFilters();
+        }
+
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>

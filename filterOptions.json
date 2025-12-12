@@ -1,9 +1,7 @@
                 {
                   "version": "1.0.0",
                   "lastUpdated": "2024-12-12",
-                  "filters":
   
-  {
   "filters": {
     "Jurisdiction": {
       "label": "Focus on rights registered with:",
@@ -614,6 +612,6 @@
       ]
     }
   }
-}
+
 
                 }

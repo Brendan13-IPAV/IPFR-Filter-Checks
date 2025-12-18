@@ -1,940 +1,123 @@
                         {
-                          "version": "1.0.0",
-                          "lastUpdated": "2024-12-12",
+                          "version": "1.0.1",
+                          "lastUpdated": "2024-12-18",
                           "strategies": 
 
 [
-  {
-    "id": 1,
-    "overtitle": "Patent opposition",
-    "title": "Challenge a new or amended patent",
-    "description": "Initiate a challenge to the validity of a new patent with IP Australia",
-      "contentCardUrl": "https://ipnavigator.com.au/content-card/strategy-1"
+{"id": 1, "overtitle": "Patent opposition", "title": "Challenge a new or amended patent", "description": "Initiate a challenge to the validity of a new patent with IP Australia", "contentCardUrl": "Challenge a new or amended patent | IP Australia First Response"},
+{"id": 2, "overtitle": "e-commerce registeries", "title": "Inform online platforms that you have IP rights", "description": "Register your IP with online platforms to access their enforcement tools.", "contentCardUrl": "https://ipfirstresponse.ipaustralia.gov.au/options/ensure-online-platforms-are-aware-your-ip-rights"},
+{"id": 3, "overtitle": "Letter of demand", "title": "Receiving a letter of demand ", "description": "Understanding what you can do when you receive a letter of demand / cease and desist.  ", "contentCardUrl": "Receiving a letter of demand | IP Australia First Response"},
+{"id": 4, "overtitle": "Guage the situation  ", "title": "Choose not to respond immediately ", "description": "When to delay responding to groundless IP infringement claims and how to gather evidence for future defence.", "contentCardUrl": "Evaluate the situation before deciding what to do | IP Australia First Response"},
+{"id": 5, "overtitle": "Develop new IP  ", "title": "Create new products or processes which do not use contested IP ", "description": "Develop entirely new intellectual property to avoid relying on any IP that is currently under dispute.", "contentCardUrl": ""},
+{"id": 6, "overtitle": "De-escalate", "title": "Pause use of contested IP until resolution", "description": "Evaluate the accuser’s demands and consider stopping use of the contested IP to avoid escalation.", "contentCardUrl": "Ceasing use of contested IP | IP Australia First Response"},
+{"id": 7, "overtitle": "IP attorney or lawyer  ", "title": "Obtain legal advice on an accusation of infringment", "description": "Seek expert advice on how to respond to allegations of IP infringement ", "contentCardUrl": "Obtain legal advice on your situation | IP Australia First Response"},
+{"id": 8, "overtitle": "Apply for a trade mark", "title": "Register your trade mark", "description": "Apply to IP Australia for a registered trade mark to secure exclusive rights to your brand  to reinforce your defence.", "contentCardUrl": "Register your trade mark | IP Australia First Response"},
+{"id": 9, "overtitle": "Patent re-examination", "title": "Challenge a granted patent", "description": "Request a re-examination with IP Australia, to revoke or amend a granted patent", "contentCardUrl": "Challenge a granted patent | IP Australia First Response"},
+{"id": 10, "overtitle": "Opposition process", "title": "Respond to an opposition filed against your trade mark", "description": "How to respond when someone has opposed your trade mark application", "contentCardUrl": "Defend your trade mark from opposition | IP Australia First Response"},
+{"id": 11, "overtitle": "Opposition process", "title": "Respond to an opposition filed against your patent", "description": "How to respond when someone has opposed your patent application", "contentCardUrl": "Responding to a patent opposition | IP Australia First Response"},
+{"id": 12, "overtitle": "Apply for a design right", "title": "Register your right to use your design exclusively", "description": "Submit an application to IP Australia to secure exclusive rights that protect the overall appearance that results from visual features applied to a product. ", "contentCardUrl": "Apply to register your design right | IP Australia First Response"},
+{"id": 13, "overtitle": "Patent Re-Examination ", "title": "Challenge a granted patent ", "description": "Challenge the validity of a patent that you are accused of infringing. ", "contentCardUrl": "Challenge a granted patent | IP Australia First Response"},
+{"id": 14, "overtitle": "Report criminal activities ", "title": "Report a scam, fraud or risk to public interest", "description": "Notify authorities about scams, counterfeits, or fraudulent activities that pose a risk to public safety or trust.", "contentCardUrl": "Report a scam, fraud or other risk to public interest | IP Australia First Response"},
+{"id": 15, "overtitle": "Informal contact", "title": "De-escalate and resolve disputes via conversation", "description": "Engage in an informal conversation to resolve IP disputes", "contentCardUrl": "De-escalate and resolve disputes informally | IP Australia First Response"},
+{"id": 16, "overtitle": "Court", "title": "Respond to an unjustified threat ", "description": "Use the court to respond to a legally unjustified demand or threat ", "contentCardUrl": "Respond to an unjustified threat | IP Australia First Response"},
+{"id": 17, "overtitle": "Court - Patent", "title": "Seek binding, authoritative decisions", "description": "Escalate a wide range of patent matters to court", "contentCardUrl": "Seek binding, authoritative decisions | IP Australia First Response"},
+{"id": 18, "overtitle": "Opposition process", "title": "Challenge the registration of a new trade mark", "description": "Initiate a trade mark opposition process against a new trade mark with IP Australia", "contentCardUrl": "Challenge the registration of a trade mark | IP Australia First Response"},
+{"id": 19, "overtitle": "Farm-saved seed", "title": "Using saved seed on your farm to grow your next crop  ", "description": "Even when a plant is protected by plant breeder's rights (PBR), farmers are permitted to use saved seed on their farms to grow their next crop. ", "contentCardUrl": ""},
+{"id": 20, "overtitle": "", "title": "PBR Objections", "description": "", "contentCardUrl": ""},
+{"id": 21, "overtitle": "Monitor competitors' IP", "title": "Identify and track your competitors' patents and activity", "description": "Monitor your competitors' activity to anticipate conflicts or opportunities.", "contentCardUrl": "Identify and monitor relevant IP | IP Australia First Response"},
+{"id": 22, "overtitle": "Monitor supply chain", "title": "Detect and discourage potential infringement in your supply chain", "description": "Ensure your partners and suppliers are not unintentionally exposing you to IP risk through unlicensed or counterfeit components.", "contentCardUrl": "Detect and discourage potential infringement | IP Australia First Response"},
+{"id": 23, "overtitle": "Reinforce your right", "title": "Use your trademark prominently to build recognition and protection", "description": "Make strong, visible use of your IP to increase consumer recognition and legal standing.", "contentCardUrl": "Strengthen your trade mark by using it | IP Australia First Response"},
+{"id": 24, "overtitle": "IP Audit", "title": "CONDUCT IP AUDITS TO SPOT GAPS, REDUCE RISKS AND PLAN NEXT STEPS", "description": "Identify IP in your portfolio, who owns it, what it’s worth, it’s legal status, and what to do next.", "contentCardUrl": "Conduct IP audits to spot gaps, reduce risks and plan next-steps | IP Australia First Response"},
+{"id": 25, "overtitle": "Trade mark registration revocation", "title": "Remove a trade mark from the register", "description": "Let IP Australia know a recently registered trade mark should not have been registered", "contentCardUrl": "Remove a trade mark from the register | IP Australia First Response"},
+{"id": 26, "overtitle": "Educate your customers ", "title": "Help customers differentiate between your products and lookalikes  ", "description": "Build brand loyalty and reduce confusion by clearly explaining what makes your product genuine. ", "contentCardUrl": "Help customers differentiate between your products and lookalikes | IP Australia First Response"},
+{"id": 27, "overtitle": "IP Licensing", "title": "Explore opportunities by licensing  your IP", "description": "Consider licensing your IP to others or obtaining a licence for contested IP to avoid disputes and add value.", "contentCardUrl": "Commercialise your IP via licensing | IP Australia First Response"},
+{"id": 28, "overtitle": "Designs search", "title": "Check your design against existing designs ", "description": "Conduct a thorough search of existing registered designs - also known as Freedom to Operate search.", "contentCardUrl": ""},
+{"id": 29, "overtitle": "Create Contact Clauses", "title": "Plan how IP disputes will be handled via contracts ", "description": "Create ready-to-use contract clauses that will proactively refer IP disputes to dispute resolution processes endorsed by the World Intellectual Property Organisation (WIPO). ", "contentCardUrl": "Plan how IP disputes will be handled via contracts | IP Australia First Response"},
+{"id": 30, "overtitle": "Notification of prior art", "title": "PREVENT A PATENT UNDER EXAMINATION FROM BEING GRANTED", "description": "Submit a third-party notification of prior art (S27) to alert IP Australia to earlier work that may show a patent application lacks novelty or inventiveness and thus cannot be granted.", "contentCardUrl": "https://ipfirstresponse.ipaustralia.gov.au/options/prevent-patent-under-examination-being-granted"},
+{"id": 31, "overtitle": "Enforcing to defend ", "title": "Assert your rights, as a response to an accusation  ", "description": "If you believe that you are genuinely in the right to retain your IP, gather evidence and defend your right to use it.", "contentCardUrl": "Enforce your own IP as a response to an IP infringement accusation | IP Australia First Response"},
+{"id": 32, "overtitle": "Trade mark non-use action", "title": "Remove a trade mark from the register", "description": "Request IP Australia removes an unused  trade mark from the register.", "contentCardUrl": "Remove a trade mark from the register | IP Australia First Response"},
+{"id": 33, "overtitle": "Court - Trade mark", "title": "Seek binding, authoritative decisions", "description": "Escalate a wide range of trade mark matters to court", "contentCardUrl": "Seek binding, authoritative decisions | IP Australia First Response"},
+{"id": 34, "overtitle": "Patent search", "title": "Check your idea against existing patents.", "description": "Conduct a thorough search of existing patents - also known as Freedom to Operate search.", "contentCardUrl": "Conduct a 'Freedom to Operate' search | IP Australia First Response"},
+{"id": 35, "overtitle": "Interim court injuction order", "title": "Seek a court order to prevent further damage while preparing for court.", "description": "Lodge an interim injunction order through court", "contentCardUrl": "Stop infringing activity immediately | IP Australia First Response"},
+{"id": 36, "overtitle": "Negotiation", "title": "Reach an agreement with the accusing party", "description": "Negotiate a mutually acceptable commercial or financial resolution. ", "contentCardUrl": "Reach an agreement with the accusing party B1014 | IP Australia First Response"},
+{"id": 37, "overtitle": "World IP Organisation (WIPO) ", "title": "Access international arbitration and mediation services", "description": "Seek dispute resolution through the WIPO Arbitration and Mediation Center", "contentCardUrl": "Resolve international disputes | IP Australia First Response"},
+{"id": 38, "overtitle": "Opposition process", "title": "Challenge the registration of a new trade mark to defend your right", "description": "Oppose a trade mark you’re accused of infringing before it becomes registered", "contentCardUrl": "Challenge the registration of a new trade mark | IP Australia First Response"},
+{"id": 39, "overtitle": "Trade mark non-use action", "title": "Request IP Australia remove an unused trademark to defend your right", "description": "Request IP Australia removes an unused  trade mark from the register.", "contentCardUrl": "Request IP Australia remove an unused trademark to defend your right | IP Australia First Response"},
+{"id": 40, "overtitle": "Design certification ", "title": "Request IP Australia confirms a registered design is valid", "description": "Request IP Australia examines and certifies a registered design to secure full protection", "contentCardUrl": "Request certification for your registered design | IP Australia First Response"},
+{"id": 41, "overtitle": "Alternative dispute resolution (ADR) ", "title": "resolve conflicts with the help of experienced facilitators  ", "description": "Understand more about the options in the ADR space.", "contentCardUrl": "Resolve conflicts with the help of experienced facilitators   | IP Australia First Response"},
+{"id": 42, "overtitle": "ASBFEO", "title": "Access help tailored to resolve business disputes", "description": "Australia Small Business & Family Enterprise Ombudsman (ASBFEO)", "contentCardUrl": "Access help tailored to resolve business disputes  | IP Australia First Response"},
+{"id": 43, "overtitle": "Mediation ", "title": "Resolve IP issues with the help of a third party", "description": "Invite the other party to enter into mediation to agree to mutually acceptable agreement", "contentCardUrl": "Resolve IP issues with the help of a third party | IP Australia First Response"},
+{"id": 44, "overtitle": "Arbitration ", "title": "Resolve IP issues with the help of a third party", "description": "Agree to be bound by the decision of a highly qualified third-party assessment", "contentCardUrl": "Resolve IP issues with the help of a third party | IP Australia First Response"},
+{"id": 45, "overtitle": "Letter of demand", "title": "Demand the other party stops infringing in writing", "description": "Send a letter to infringing party notifying them of potential infringement", "contentCardUrl": "Demand the other party stops infringing | IP Australia First Response"},
+{"id": 46, "overtitle": "Informal contact", "title": "Provide an opportunity for the other party to stop infringing.", "description": "Alert the alleged infringer of your registered rights to allow them to stop infringing", "contentCardUrl": "Provide an opportunity to stop infringement | IP Australia First Response"},
+{"id": 47, "overtitle": "Hiring a professional", "title": "CHOOSING A ‘QUALIFIED PERSON’ (QP) to conduct growing trials  ", "description": "Deciding who will conduct growing trials for your plant breeder’s rights application. ", "contentCardUrl": "Choosing a 'Qualified Person' (QP) | IP Australia First Response"},
+{"id": 48, "overtitle": "Negotiation", "title": "Agree to a formal commercial arrangement", "description": "Work with an IP professional to come to an agreement with another party", "contentCardUrl": "Agree to a commercial arrangement | IP Australia First Response"},
+{"id": 49, "overtitle": "eCommerce platform", "title": "Notify online marketplaces of infringement on their platform", "description": "Request infringing material is removed from online marketplaces and platforms", "contentCardUrl": "Stop infringement facilitated online | IP Australia First Response"},
+{"id": 50, "overtitle": "International disputes", "title": "Considerations when responding to international accusations", "description": "Find the right assistance for responding to accusations of IP infringement happening outside of Australia. ", "contentCardUrl": "Respond to international accusations | IP Australia First Response"},
+{"id": 51, "overtitle": "eCommerce platform", "title": "Oppose an IP infringement notice from an online marketplace ", "description": "Dispute an action that an eCommerce platform has taken against you", "contentCardUrl": "Respond to a takedown request | IP Australia First Response"},
+{"id": 52, "overtitle": "MONITOR COMPETITORS' IP", "title": "Monitor the trade mark register and market for competitor activity", "description": "Ensure the exclusivity of your trade mark by detecting potential conflicts early.", "contentCardUrl": "https://ipfirstresponse.ipaustralia.gov.au/options/monitor-market-protect-your-trade-mark"},
+{"id": 53, "overtitle": "Apply for a PBR", "title": "Apply for a Plant Breeder's right (PBR)", "description": "Register my plant breeder's rights to secure the exclusive commercial rights over a new plant variety.", "contentCardUrl": "Apply for a Plant Breeder's right (PBR) | IP Australia First Response"},
+{"id": 54, "overtitle": "Apply for a design right", "title": "Apply for a design right to register your design", "description": " Register the visual appearance of products including shape, configuration, pattern, and ornamentation to prevent copying of aesthetic features by competitors.", "contentCardUrl": ""},
+{"id": 55, "overtitle": "Apply for a patent", "title": "Apply for a patent to protect your invention from being copied ", "description": " Prepare and submit formal patent applications to IP Australia to secure exclusive rights for your invention.", "contentCardUrl": "Apply for a patent for register your invention | IP Australia First Response"},
+{"id": 56, "overtitle": "IP Laws", "title": "Familiarise yourself with IP laws ", "description": "Explains the key laws, regulations and rules that form the legal backbone of IP rights in Australia.", "contentCardUrl": "Review relevant IP legislation | IP Australia First Response"},
+{"id": 57, "overtitle": "Report IP crime or safety concerns", "title": "Prevent risks to public interest", "description": "Inform Government about risks to public health, crime, counterfeiting, frauds & scams.", "contentCardUrl": "Prevent risks to public interest | IP Australia First Response"},
+{"id": 58, "overtitle": "Notice of Objection", "title": "Stop infringing goods entering the country", "description": "Lodge a notice of objection with the Australian Border Force.", "contentCardUrl": "Stop infringing goods entering the country | IP Australia First Response"},
+{"id": 59, "overtitle": "IP attorney or lawyer", "title": "Obtain legal advice to help manage your IP", "description": "Seek expert advice on proactively avoiding IP issues.", "contentCardUrl": "Obtain legal advice for your situation | IP Australia First Response"},
+{"id": 60, "overtitle": "IP attorney or lawyer", "title": "Obtain legal advice on your enforcement options", "description": "Seek a qualified & experienced professional to provide specific, tailored advice.", "contentCardUrl": "Obtain legal advice on enforcement options | IP Australia First Response"},
+{"id": 61, "overtitle": "International disputes", "title": "Considerations before enforcing your IP overseas", "description": "Find the right assistance to enforce your IP right in the case of infringement happening outside of Australia. ", "contentCardUrl": "Enforce your IP overseas | IP Australia First Response"},
+{"id": 62, "overtitle": "Guage the situation  ", "title": "Choose not to act immediately ", "description": "Strategically enforce your IP only when worthwhile", "contentCardUrl": "Take no immediate action | IP Australia First Response"},
+{"id": 63, "overtitle": "Rebrand your business  ", "title": "Choose to rebrand to avoid potential IP conflicts", "description": "Strategically rebrand your business to avoid disputes.", "contentCardUrl": "Avoid potential IP conflicts | IP Australia First Response"},
+{"id": 64, "overtitle": "IP STRATEGY ", "title": "DEVELOP A STRATEGY TO MANAGE YOUR IP", "description": "Develop a  forward-looking intellectual property (IP) strategy that may help you take proactive steps to secure, manage and enforce your IP.", "contentCardUrl": "Develop a strategy to manage your IP | IP Australia First Response"},
+{"id": 65, "overtitle": "IP insurance", "title": "Coverage against potential future costs related to infringement", "description": "Protect yourself from some costs involved in IP disputes  ", "contentCardUrl": "Coverage against potential future infringement | IP Australia First Response"},
+{"id": 66, "overtitle": "Sorry, This information isn't available yet", "title": "Design rights", "description": "We cannot provide information on this right just yet", "contentCardUrl": ""},
+{"id": 67, "overtitle": "Sorry, This information isn't available yet", "title": "Plant breeders' rights", "description": "We cannot provide information on this right just yet", "contentCardUrl": ""},
+{"id": 68, "overtitle": "Sorry, This information isn't available yet", "title": "Copyright", "description": "We cannot provide information on this right just yet", "contentCardUrl": ""},
+{"id": 69, "overtitle": "Sorry, This information isn't available yet", "title": "Other IP Types", "description": "We cannot provide information on this right just yet", "contentCardUrl": ""},
+{"id": 70, "overtitle": "Domain Name Dispute (auDRP)", "title": "Dispute a domain name that infringes your trade mark", "description": "Dispute a .au domain name that may infringe an IP right", "contentCardUrl": "Dispute a domain name that infringes your trade mark | IP Australia First Response"},
+{"id": 71, "overtitle": "Domain Name Dispute (UDRP)", "title": "Challenge the use of international domain name", "description": "Dispute an international domain name that infringes your trade mark", "contentCardUrl": "Challenge the use of international domain name | IP Australia First Response"},
+{"id": 72, "overtitle": "", "title": "EDVs", "description": "", "contentCardUrl": ""},
+{"id": 73, "overtitle": "Apply for a trade mark", "title": "Register your unregistered trade mark", "description": "Strengthen your position as the registered owner of your trade mark in Australia", "contentCardUrl": "Register your trade mark | IP Australia First Response"},
+{"id": 74, "overtitle": "Support from your vendors", "title": "Ask your suppliers and sellers to help protect your IP ", "description": "Contact businesses you work with to raise concerns about suspected IP infringement and ask for their help preventing further infringement.", "contentCardUrl": "Ask your suppliers and sellers to help protect your IP | IP Australia First Response"},
+{"id": 75, "overtitle": "Opposition process", "title": "Dispute design right decision", "description": "Request a hearing to dispute the outcome of a design examination undertaken by IP Australia. ", "contentCardUrl": "https://ipfirstresponse.ipaustralia.gov.au/options/dispute-designs-decision"},
+{"id": 76, "overtitle": "Design certification ", "title": "Request conformation that someone else's registered design is valid", "description": "Third-party examination lets any person request IP Australia to conduct a formal examination of a registered Australian design", "contentCardUrl": "Request certification of someone's registered design | IP Australia First Response"},
+{"id": 77, "overtitle": "Learn about IP", "title": "What is IP and how does it protect me?", "description": "", "contentCardUrl": "What is IP and how does it protect me? | IP Australia First Response"},
+{"id": 78, "overtitle": "Business names", "title": "Is my business name my IP?", "description": "", "contentCardUrl": "Is my business name my IP? | IP Australia First Response"},
+{"id": 79, "overtitle": "Protecting your business", "title": "What IP protection means for my business ", "description": "", "contentCardUrl": "What IP protection means for my business | IP Australia First Response"},
+{"id": 80, "overtitle": "Costs of IP", "title": "Why is this so expensive?", "description": "", "contentCardUrl": "Why is this so expensive? | IP Australia First Response"},
+{"id": 81, "overtitle": "Before applying", "title": "What to check before getting registered IP", "description": "", "contentCardUrl": "What to check before getting registered IP | IP Australia First Response"},
+{"id": 82, "overtitle": "Applying for IP", "title": "Is it worth registering my IP?", "description": "", "contentCardUrl": "Is it worth registering my IP? | IP Australia First Response"},
+{"id": 83, "overtitle": "Using IP in business", "title": "Discover where you are in your IP journey", "description": "", "contentCardUrl": "Discover where you are in your IP journey | IP Australia First Response"},
+{"id": 84, "overtitle": "Checking IP rights ", "title": "check if someone else already owns a word, logo OR IDEA You WANT ", "description": "", "contentCardUrl": "check if someone else already owns a word, logo OR IDEA You WANT | IP Australia First Response"},
+{"id": 85, "overtitle": "Making money", "title": "Does IP help me to make or save money?", "description": "", "contentCardUrl": "Does IP help me to make or save money? | IP Australia First Response"},
+{"id": 86, "overtitle": "Selling or licensing", "title": "Can I sell or license my IP?", "description": "", "contentCardUrl": "Can I sell or license my IP? | IP Australia First Response"},
+{"id": 87, "overtitle": "IP disputes ", "title": "What do I do if someone copies my stuff?", "description": "", "contentCardUrl": "What do I do if someone copies my stuff? | IP Australia First Response"},
+{"id": 88, "overtitle": "Using IP", "title": "Can I get in trouble for using someone else's IP?", "description": "", "contentCardUrl": "Can I get in trouble for using someone else's IP? | IP Australia First Response"},
+{"id": 89, "overtitle": "Complaints", "title": "I'm not happy with IP Australia - what can I do?", "description": "", "contentCardUrl": "I'm not happy with IP Australia - what can I do? | IP Australia First Response"},
+{"id": 90, "overtitle": "Complaints", "title": "Making a Complaint About a Lawyer or Attorney ", "description": "", "contentCardUrl": "Making a complaint about a lawyer or attorney  | IP Australia First Response"},
+{"id": 91, "overtitle": "Getting legal help ", "title": "What to expect from a lawyer or attorney", "description": "", "contentCardUrl": "What to expect from a lawyer or attorney | IP Australia First Response"},
+{"id": 92, "overtitle": "IP attorney or lawyer", "title": "DO I NEED A LAWYER TO DEAL with IP issues? ", "description": "", "contentCardUrl": "DO I NEED A LAWYER TO DEAL with IP issues? | IP Australia First Response"},
+{"id": 93, "overtitle": "IP Disputes ", "title": "How can I deal with IP issues without going to court? ", "description": "", "contentCardUrl": "How can I deal with IP issues without going to court? | IP Australia First Response"},
+{"id": 94, "overtitle": "Disagreements about registration", "title": "What are the ways to challenge a decision IP Australia has made?", "description": "", "contentCardUrl": "What are the ways to challenge a decision IP Australia has made? | IP Australia First Response"},
+{"id": 95, "overtitle": "IP Australia process", "title": "What happens in an IP Australia hearing?", "description": "", "contentCardUrl": "What happens in an IP Australia hearing? | IP Australia First Response"},
+{"id": 96, "overtitle": "Australian IP overseas", "title": "Does my Australian ip work overseas? ", "description": "", "contentCardUrl": "Does my Australian ip work overseas? | IP Australia First Response"},
+{"id": 97, "overtitle": "IP in other countries", "title": "Can I protect my ideas in other countries?", "description": "", "contentCardUrl": "Can I protect my ideas in other countries? | IP Australia First Response"},
+{"id": 98, "overtitle": "Global IP", "title": "Is there a global IP office?", "description": "", "contentCardUrl": "Is there a global IP office? | IP Australia First Response"},
+{"id": 99, "overtitle": "Free tools ", "title": "Free IP tools you can use ", "description": "", "contentCardUrl": "Free IP tools you can use | IP Australia First Response"},
+{"id": 100, "overtitle": "", "title": "Common scams", "description": "", "contentCardUrl": "Common scams | IP Australia First Response"},
+{"id": 101, "overtitle": "Protecting your business", "title": "How does IP Australia fit in a broader business support context?", "description": "", "contentCardUrl": "How does IP Australia fit in a broader business support context? | IP Australia First Response"},
+{"id": 102, "overtitle": "Infringment 101", "title": "Trade mark infringement", "description": "Understand what is, and is not, considered trade mark infringment", "contentCardUrl": "Trade mark infringement | IP Australia First Response"},
+{"id": 103, "overtitle": "Infringment 101", "title": "Patent infringement", "description": "Understand what is and is not considered patent infringment", "contentCardUrl": "Patent infringement | IP Australia First Response"},
+{"id": 104, "overtitle": "Infringment 101", "title": "Design infringement", "description": "Understand what is and is not considered design infringment", "contentCardUrl": "Design infringement | IP Australia First Response"},
+{"id": 105, "overtitle": "Infringment 101", "title": "PBR infringement", "description": "Understand what is and is not considered plant breeders rights  infringment", "contentCardUrl": "Plant breeder’s right (PBR) infringement | IP Australia First Response"},
+{"id": 106, "overtitle": "Infringment 101", "title": "Copyright infringement", "description": "Understand what is and is not considered copyright infringment", "contentCardUrl": "Copyright infringement | IP Australia First Response"},
+{"id": 107, "overtitle": "Infringment 101", "title": "Unregistered trade marks", "description": "Understand unregistered trade marks and what legal protection is available.", "contentCardUrl": "Unregistered trade marks | IP Australia First Response"},
+{"id": 108, "overtitle": "", "title": "Toyota Case Study", "description": "", "contentCardUrl": "The Toyota story: What can SMEs learn from Toyota’s approach to counterfeit products? | IP Australia First Response"},
+{"id": , "overtitle": "", "title": "Enforcing a 'filed' patent", "description": "", "contentCardUrl": ""},
+{"id": , "overtitle": "", "title": "PBR Court", "description": "", "contentCardUrl": ""},
+{"id": , "overtitle": "", "title": "What to consider when using AI", "description": "", "contentCardUrl": ""},
+{"id": , "overtitle": "", "title": "Speeding up your examination", "description": "", "contentCardUrl": ""}
 
-  },
-  {
-    "id": 2,
-    "overtitle": "Online brand registry",
-    "title": "Make sure online platforms are aware of your IP rights.",
-    "description": "Register your trade mark with platforms to unlock extra enforcement tools.",
-      "contentCardUrl": "https://ipnavigator.com.au/content-card/strategy-1"
-  },
-  {
-    "id": 3,
-    "overtitle": "Letter of demand",
-    "title": "Receiving a letter of demand",
-    "description": "B1000 - Understanding what you can do when you receive a letter of demand / cease and desist.",
-      "contentCardUrl": "https://ipnavigator.com.au/content-card/strategy-1"
-  },
-  {
-    "id": 4,
-    "overtitle": "Evaluate the situation",
-    "title": "Choose not to respond immediately",
-    "description": "B1004 - When to delay responding to groundless IP infringement claims and how to gather evidence for future defence.",
-    "costText": "-",
-    "effortText": "-",
-    "resolutionText": "-"
-  },
-  {
-    "id": 5,
-    "overtitle": "Develop new IP",
-    "title": "Create new products or services which do not use contested IP",
-    "description": "Develop entirely new intellectual property to avoid relying on any IP that is currently under dispute.",
-    "costText": "-",
-    "effortText": "-",
-    "resolutionText": "-"
-  },
-  {
-    "id": 6,
-    "overtitle": "Consider the demands",
-    "title": "De-escalate disputes by ceasing use of contested IP",
-    "description": "B1003 - Evaluate the accuser's demands and consider stopping use of the contested IP to avoid escalation.",
-    "costText": "-",
-    "effortText": "-",
-    "resolutionText": "-"
-  },
-  {
-    "id": 7,
-    "overtitle": "IP attorney or lawyer",
-    "title": "Obtain legal advice on Your Situation",
-    "description": "B1004 - Seek expert advice on how to respond to allegations of IP infringement",
-    "costText": "-",
-    "effortText": "-",
-    "resolutionText": "-"
-  },
-  {
-    "id": 8,
-    "overtitle": "IP Australia",
-    "title": "Register your trade mark to reinforce your defence",
-    "description": "B1005 - Apply to IP Australia for a registered trade mark to secure exclusive rights to your brand",
-    "costText": "-",
-    "effortText": "-",
-    "resolutionText": "-"
-  },
-  {
-    "id": 9,
-    "overtitle": "Patent re-examination",
-    "title": "Challenge a granted patent",
-    "description": "Request a re-examination with IP Australia, to revoke or amend a granted patent",
-    "costText": "$800, plus any legal fees",
-    "effortText": "Days (to request)",
-    "resolutionText": "<1% of patents are subject to re-examination"
-  },
-  {
-    "id": 10,
-    "overtitle": "IP Australia",
-    "title": "Defend your trade mark from opposition",
-    "description": "B1006 - How to respond when someone has opposed your trade mark application",
-    "costText": "-",
-    "effortText": "-",
-    "resolutionText": "-"
-  },
-  {
-    "id": 11,
-    "overtitle": "IP Australia",
-    "title": "Responding to a patent opposition",
-    "description": "B1007 - How to respond when someone has opposed your patent application",
-    "costText": "-",
-    "effortText": "-",
-    "resolutionText": "-"
-  },
-  {
-    "id": 12,
-    "overtitle": "IP Australia",
-    "title": "BLANK BLANK BLANK Challenge their Australian trade mark registration",
-    "description": "B1008 - Don't use. Ask IP Australia to refuse, cancel or narrow a trade mark that is affecting you",
-    "costText": "-",
-    "effortText": "-",
-    "resolutionText": "-"
-  },
-  {
-    "id": 13,
-    "overtitle": "Patent Re-Examination",
-    "title": "Challenge a granted patent",
-    "description": "B1009 - Request a re-examination with IP Australia, to revoke or amend a granted patent",
-    "costText": "-",
-    "effortText": "-",
-    "resolutionText": "-"
-  },
-  {
-    "id": 14,
-    "overtitle": "Report criminal activities",
-    "title": "Report a scam, fraud or other risk to public interest",
-    "description": "B1010 - How to recognise and report scams or crimes that misuse intellectual property (IP) infringement claims to intimidate or extort.",
-    "costText": "-",
-    "effortText": "-",
-    "resolutionText": "-"
-  },
-  {
-    "id": 15,
-    "overtitle": "Negotiate and de-escalate",
-    "title": "Engage in a conversation to resolve IP disputes",
-    "description": "B1012 - Discuss resolution options with the other party to find a mutually acceptable solution.",
-    "costText": "-",
-    "effortText": "-",
-    "resolutionText": "-"
-  },
-  {
-    "id": 16,
-    "overtitle": "Court",
-    "title": "Respond to an unjustified threat",
-    "description": "B1013 - Options to take if you receive an unjustified threat for your intellectual property",
-    "costText": "-",
-    "effortText": "-",
-    "resolutionText": "-"
-  },
-  {
-    "id": 17,
-    "overtitle": "Court - Patent",
-    "title": "Seek binding, authoritative decisions",
-    "description": "Escalate a wide range of patent matters to court.",
-    "costText": "Significant legal fees ($100k+)",
-    "effortText": "Years",
-    "resolutionText": "Court decisions are binding although appeal is possible"
-  },
-  {
-    "id": 18,
-    "overtitle": "Trade mark opposition",
-    "title": "Challenge the registration of a trade mark",
-    "description": "Initiate a trade mark opposition process against a new trademark with IP Australia.",
-    "costText": "$650+, plus legal fees (often significant)",
-    "effortText": "Months to years",
-    "resolutionText": "1-3% of trade marks are opposed"
-  },
-  {
-    "id": 19,
-    "overtitle": "Monitor",
-    "title": "Regularly scan for breaches",
-    "description": "Set up systems to regularly monitor for potential IP infringement.",
-    "costText": "-",
-    "effortText": "-",
-    "resolutionText": "-"
-  },
-  {
-    "id": 20,
-    "overtitle": "Monitor",
-    "title": "Pay for a market Scanning Tool",
-    "description": "Use commercial tools to monitor marketplaces and online platforms for IP infringement.",
-    "costText": "-",
-    "effortText": "-",
-    "resolutionText": "-"
-  },
-  {
-    "id": 21,
-    "overtitle": "Monitor",
-    "title": "Monitor supply chain",
-    "description": "Keep track of your supply chain to identify potential IP risks.",
-    "costText": "-",
-    "effortText": "-",
-    "resolutionText": "-"
-  },
-  {
-    "id": 22,
-    "overtitle": "Monitor",
-    "title": "Monitoring competitors' IP",
-    "description": "Track competitors' intellectual property activities and filings.",
-    "costText": "-",
-    "effortText": "-",
-    "resolutionText": "-"
-  },
-  {
-    "id": 23,
-    "overtitle": "Strengthen your position",
-    "title": "Use your IP well to strengthen your position",
-    "description": "Leverage your existing IP assets strategically to improve your defensive position.",
-    "costText": "-",
-    "effortText": "-",
-    "resolutionText": "-"
-  },
-  {
-    "id": 24,
-    "overtitle": "Strengthen your position",
-    "title": "Extend your IP",
-    "description": "Expand your IP portfolio to create stronger protection and defensive positions.",
-    "costText": "-",
-    "effortText": "-",
-    "resolutionText": "-"
-  },
-  {
-    "id": 25,
-    "overtitle": "Trade mark registration revocation",
-    "title": "Remove a trade mark from the register",
-    "description": "Let IP Australia know a recently registered trade mark should not be registered",
-    "costText": "Free at initial stages",
-    "effortText": "Days (to request)",
-    "resolutionText": "Revocation of registration is very rare"
-  },
-  {
-    "id": 26,
-    "overtitle": "Strengthen your position",
-    "title": "Educate your customers about your brand",
-    "description": "Help customers understand and recognize your authentic brand to reduce confusion.",
-    "costText": "-",
-    "effortText": "-",
-    "resolutionText": "-"
-  },
-  {
-    "id": 27,
-    "overtitle": "Commercial arrangement",
-    "title": "Investigate licensing",
-    "description": "Explore licensing opportunities as a way to resolve IP disputes or generate revenue.",
-    "costText": "-",
-    "effortText": "-",
-    "resolutionText": "-"
-  },
-  {
-    "id": 28,
-    "overtitle": "Monitor",
-    "title": "Set up TM alert on TM registers",
-    "description": "Configure automated alerts to monitor trademark registrations that might conflict with your rights.",
-    "costText": "-",
-    "effortText": "-",
-    "resolutionText": "-"
-  },
-  {
-    "id": 29,
-    "overtitle": "Pre-plan IP conflicts",
-    "title": "WIPO Contract Clause Builder",
-    "description": "Use WIPO's tools to build contract clauses that help prevent IP disputes.",
-    "costText": "-",
-    "effortText": "-",
-    "resolutionText": "-"
-  },
-  {
-    "id": 30,
-    "overtitle": "Third Party Notification of Prior Art",
-    "title": "Prevent a patent under examination from being granted",
-    "description": "Submit prior art evidence to IP Australia to prevent a problematic patent from being granted.",
-    "costText": "-",
-    "effortText": "-",
-    "resolutionText": "-"
-  },
-  {
-    "id": 31,
-    "overtitle": "Overlapping IP infringement claims",
-    "title": "Enforcing your own IP as a response to IP infringement accusations",
-    "description": "B1015 - Consider taking enforcement action if someone accusing you of infringement has actually been infringing your rights",
-    "costText": "-",
-    "effortText": "-",
-    "resolutionText": "-"
-  },
-  {
-    "id": 32,
-    "overtitle": "Trade mark non-use action",
-    "title": "Remove a trade mark from the register",
-    "description": "Request IP Australia removes a trade mark from REGISTER FOR NON-USE",
-    "costText": "$350, plus legal fees if opposed",
-    "effortText": "Weeks to months",
-    "resolutionText": "Approx 1200 applications made to IP Australia per year"
-  },
-  {
-    "id": 33,
-    "overtitle": "Court - Trade Mark",
-    "title": "Seek binding, authoritative decisions",
-    "description": "Escalate a wide range of trade mark matters to court.",
-    "costText": "Significant legal fees ($80k+)",
-    "effortText": "Years",
-    "resolutionText": "-"
-  },
-  {
-    "id": 34,
-    "overtitle": "Research",
-    "title": "Freedom to operate analysis",
-    "description": "Confirm that my business will not infringe anyones registered rights.",
-    "costText": "-",
-    "effortText": "-",
-    "resolutionText": "-"
-  },
-  {
-    "id": 35,
-    "overtitle": "Interim court injunction order",
-    "title": "Stop infringing activity immediately",
-    "description": "Lodge an interim injunction order through court",
-    "costText": "Significant legal fees",
-    "effortText": "-",
-    "resolutionText": "Requires compelling rationalle"
-  },
-  {
-    "id": 36,
-    "overtitle": "Negotiation",
-    "title": "Reach an agreement with the accusing party",
-    "description": "B1014 - Negotiate a mutually acceptable commercial or financial resolution.",
-    "costText": "-",
-    "effortText": "-",
-    "resolutionText": "-"
-  },
-  {
-    "id": 37,
-    "overtitle": "World IP Organisation (WIPO)",
-    "title": "Resolve international disputes",
-    "description": "Seek dispute resolution through the WIPO Arbitration and Mediation Center",
-    "costText": "Mediation: US$2,750+, plus legal fees, Arbitration: US$9,000+, plus legal fees (often significant)",
-    "effortText": "Months",
-    "resolutionText": "92% of users prefer this over litigation to resolve cross-border disputes"
-  },
-  {
-    "id": 38,
-    "overtitle": "Trade mark opposition",
-    "title": "Challenge the registration of a new trade mark",
-    "description": "B1019 - Oppose a trade mark you’re accused of infringing before it becomes registered",
-    "costText": "-",
-    "effortText": "-",
-    "resolutionText": "-"
-  },
-  {
-    "id": 39,
-    "overtitle": "Trade mark non-use action",
-    "title": "Remove a trade mark from the register",
-    "description": "B1020 - Request IP Australia removes a trade mark from the register for non-use",
-    "costText": "-",
-    "effortText": "-",
-    "resolutionText": "-"
-  },
-  {
-    "id": 40,
-    "overtitle": "Design certification ",
-    "title": "Request certification for a registered design  ",
-    "description": "B1017 - Request IP Australia examines and certifies a registered design ",
-    "costText": "-",
-    "effortText": "-",
-    "resolutionText": "-"
-  },
-  {
-    "id": 41,
-    "overtitle": "Alternative dispute resolution (ADR)",
-    "title": "resolve conflicts with the help of experienced facilitators",
-    "description": "Understand more about the options in the ADR space.",
-    "costText": "-",
-    "effortText": "-",
-    "resolutionText": "-"
-  },
-  {
-    "id": 42,
-    "overtitle": "ASBFEO",
-    "title": "Access help tailored to resolve business disputes",
-    "description": "Australia Small Business & Family Enterprise Ombudsman (ASBFEO).",
-    "costText": "Free (dispute resolution costs extra)",
-    "effortText": "-",
-    "resolutionText": "Up to 80% of cases resolved with ASBFEO's help"
-  },
-  {
-    "id": 43,
-    "overtitle": "Mediation",
-    "title": "Resolve IP issues with the help of a third party",
-    "description": "Invite the other party to enter into mediation to agree to mutually acceptable agreement.",
-    "costText": "$3500-$5000 per day, plus any legal fees",
-    "effortText": "Weeks to months",
-    "resolutionText": "-"
-  },
-  {
-    "id": 44,
-    "overtitle": "Arbitration",
-    "title": "Resolve IP issues with the help of a third party",
-    "description": "Agree to be bound by the decision of a highly qualified third party assessment.",
-    "costText": "$10,000+, plus legal fees (often significant)",
-    "effortText": "Months",
-    "resolutionText": "-"
-  },
-  {
-    "id": 45,
-    "overtitle": "Letter of demand",
-    "title": "Demand the other party stops infringing",
-    "description": "Send a letter to the infringing party notifying them of potential infringement.",
-    "costText": "$1,500- $10,000 (with representation)",
-    "effortText": "Days to weeks",
-    "resolutionText": "40% of patent holders find it effective to stop copying"
-  },
-  {
-    "id": 46,
-    "overtitle": "Informal contact",
-    "title": "Provide an opportunity to stop infringement",
-    "description": "Alert the alleged infringer of your registered rights to allow them to stop infringing.",
-    "costText": "-",
-    "effortText": "Days to weeks",
-    "resolutionText": "-"
-  },
-  {
-    "id": 47,
-    "overtitle": "Not Assigned",
-    "title": "Finding a QP (PBR)",
-    "description": "Not Assigned",
-    "costText": "-",
-    "effortText": "-",
-    "resolutionText": "-"
-  },
-  {
-    "id": 48,
-    "overtitle": "Negotiation",
-    "title": "Agree to a commercial arrangement",
-    "description": "Work with an IP professional to come to an agreement with another party.",
-    "costText": "Variable (legal fees likely)",
-    "effortText": "Days to weeks",
-    "resolutionText": "Over 90% of commercial disputes settle outside court or arbitration"
-  },
-  {
-    "id": 49,
-    "overtitle": "Takedown request",
-    "title": "Stop infringement facilitated online",
-    "description": "Request infringing material is removed from online marketplaces and platforms.",
-    "costText": "Free",
-    "effortText": "Hours to days",
-    "resolutionText": "-"
-  },
-  {
-    "id": 50,
-    "overtitle": "International options",
-    "title": "Respond to international accusations",
-    "description": "B1016 - Considerations when responding to accusations of IP infringement happening outside of Australia. ",
-    "costText": "-",
-    "effortText": "-",
-    "resolutionText": "-"
-  },
-  {
-    "id": 51,
-    "overtitle": "Takedown request",
-    "title": "Respond to a takedown request",
-    "description": "B1018 - Responding to an IP infringement notice from an online marketplace",
-    "costText": "-",
-    "effortText": "-",
-    "resolutionText": "-"
-  },
-  {
-    "id": 52,
-    "overtitle": "Monitor",
-    "title": "Monitor the market to prevent harm to your trade mark.",
-    "description": "Keep an eye on others' new brands so you can act early if they get too close to yours.",
-    "costText": "-",
-    "effortText": "-",
-    "resolutionText": "-"
-  },
-  {
-    "id": 53,
-    "overtitle": "Not Assigned",
-    "title": "Not Assigned",
-    "description": "Not Assigned",
-    "costText": "-",
-    "effortText": "-",
-    "resolutionText": "-"
-  },
-  {
-    "id": 54,
-    "overtitle": "Not Assigned",
-    "title": "Not Assigned",
-    "description": "Not Assigned",
-    "costText": "-",
-    "effortText": "-",
-    "resolutionText": "-"
-  },
-  {
-    "id": 55,
-    "overtitle": "Not Assigned",
-    "title": "Not Assigned",
-    "description": "Not Assigned",
-    "costText": "-",
-    "effortText": "-",
-    "resolutionText": "-"
-  },
-  {
-    "id": 56,
-    "overtitle": "Not Assigned",
-    "title": "Not Assigned",
-    "description": "Not Assigned",
-    "costText": "-",
-    "effortText": "-",
-    "resolutionText": "-"
-  },
-  {
-    "id": 57,
-    "overtitle": "Report IP crime or safety concerns",
-    "title": "Prevent risks to public interest",
-    "description": "Inform Government about risks to public health, crime, counterfeiting, frauds & scams.",
-    "costText": "Free",
-    "effortText": "Hours to days",
-    "resolutionText": "IP crimes are rarely prosecuted"
-  },
-  {
-    "id": 58,
-    "overtitle": "Notice of Objection",
-    "title": "Stop infringing goods entering the country",
-    "description": "Lodge a notice of objection with the Australian Border Force.",
-    "costText": "$0 to lodge",
-    "effortText": "Applying - hours",
-    "resolutionText": "More than 500 TM Notices are currently in force"
-  },
-  {
-    "id": 59,
-    "overtitle": "Not Assigned",
-    "title": "Not Assigned",
-    "description": "Not Assigned",
-    "costText": "-",
-    "effortText": "-",
-    "resolutionText": "-"
-  },
-  {
-    "id": 60,
-    "overtitle": "IP attorney or lawyer",
-    "title": "Obtain legal advice on enforcement options",
-    "description": "Seek a qualified & experienced professional to provide specific, tailored advice.",
-    "costText": "-",
-    "effortText": "-",
-    "resolutionText": "-"
-  },  
-  {
-    "id": 61,
-    "overtitle": "International options",
-    "title": "Enforce your IP overseas",
-    "description": "Understand OPTIONS RELATING TO ENFORCING IP OVERSEAS",
-    "costText": "-",
-    "effortText": "-",
-    "resolutionText": "-"
-  },
-  {
-    "id": 62,
-    "overtitle": "Monitor the situation",
-    "title": "Take no immediate action",
-    "description": "Strategically rebrand your IP only when worthwhile",
-    "costText": "$0, plus any professional services",
-    "effortText": "Variable but low",
-    "resolutionText": "-"
-  },
-  {
-    "id": 63,
-    "overtitle": "Rebrand your business",
-    "title": "Avoid potential IP conflicts",
-    "description": "Strategically rebrand your business to avoid disputes.",
-    "costText": "Variable (based on brand value)",
-    "effortText": "Days to weeks",
-    "resolutionText": "-"
-  },
-  {
-    "id": 64,
-    "overtitle": "Not Assigned",
-    "title": "Not Assigned",
-    "description": "Not Assigned",
-    "costText": "-",
-    "effortText": "-",
-    "resolutionText": "-"
-  },
-  {
-    "id": 65,
-    "overtitle": "IP insurance",
-    "title": "Coverage against potential future infringement",
-    "description": "Protect yourself from certain costs involved in IP disputes",
-    "costText": "$500+ per year for TMs, $10,000+ per year for patents",
-    "effortText": "Hours",
-    "resolutionText": "-"
-  },
-  {
-    "id": 66,
-       "overtitle": "Not Assigned",
-    "title": "Design rights",
-    "description": "We cannot provide information on this right just yet",
-    "costText": "-",
-    "effortText": "-",
-    "resolutionText": "-"
-  },
-  {
-    "id": 67,
-   "overtitle": "Not Assigned",
-    "title": "Plant breeders' rights",
-    "description": "We cannot provide information on this right just yet",
-    "costText": "-",
-    "effortText": "-",
-    "resolutionText": "-"
-  },
-  {
-    "id": 68,
-    "overtitle": "Sorry, This information isn't available yet",
-    "title": "Copyright",
-    "description": "We cannot provide information on this right just yet",
-    "costText": "-",
-    "effortText": "-",
-    "resolutionText": "-"
-  },
-  {
-    "id": 69,
-   "overtitle": "Not Assigned",
-    "title": "Other IP Types",
-    "description": "We cannot provide information on this right just yet",
-    "costText": "-",
-    "effortText": "-",
-    "resolutionText": "-"
-  },
-  {
-    "id": 70,
-    "overtitle": "Domain Name Dispute (auDRP)",
-    "title": "Dispute a domain name that infringes your trade mark",
-    "description": "Dispute a .au domain name that may infringe an IP right",
-    "costText": "$2,000+ per domain, plus any legal fees",
-    "effortText": "Weeks to months",
-    "resolutionText": "40-50% of cases end in licence transfer"
-  },
-  {
-    "id": 71,
-    "overtitle": "Domain Name Dispute (UDRP)",
-    "title": "Challenge the use of international domain name",
-    "description": "Dispute an international domain name that infringes your trade mark",
-    "costText": "US$1,500+ per domain, plus any legal fees",
-    "effortText": "Weeks to months",
-    "resolutionText": "-"
-  },
-  {
-    "id": 72,
-    "overtitle": "Apply for an IP right (not TM)",
-    "title": "Register your IP right (excluding TMs)",
-    "description": "Not Assigned",
-    "costText": "-",
-    "effortText": "-",
-    "resolutionText": "-"
-  },
-  {
-    "id": 73,
-    "overtitle": "IP Australia",
-    "title": "Register your trade mark",
-    "description": "Strengthen your position as the registered owner of your trade mark in Australia",
-    "costText": "$250+ per class",
-    "effortText": "Applying - hours",
-    "resolutionText": "-"
-  },
-  {
-    "id": 74,
-    "overtitle": "Contact intermediaries",
-    "title": "Ask your suppliers and sellers to help protect your IP",
-    "description": "Contact businesses you work with to raise concerns about suspected IP infringement and ask for their help in preventing further harm.",
-    "costText": "Free",
-    "effortText": "Days",
-    "resolutionText": "-"
-  },
-  {
-    "id": 75,
-    "overtitle": "Not Assigned",
-    "title": "Not Assigned",
-    "description": "Not Assigned",
-    "costText": "-",
-    "effortText": "-",
-    "resolutionText": "-"
-  },
-  {
-    "id": 76,
-    "overtitle": "Not Assigned",
-    "title": "Not Assigned",
-    "description": "Not Assigned",
-    "costText": "-",
-    "effortText": "-",
-    "resolutionText": "-"
-  },
-  {
-    "id": 77,
-    "overtitle": "Not Assigned",
-    "title": "Not Assigned",
-    "description": "Not Assigned",
-    "costText": "-",
-    "effortText": "-",
-    "resolutionText": "-"
-  },
-  {
-    "id": 78,
-    "overtitle": "Not Assigned",
-    "title": "Not Assigned",
-    "description": "Not Assigned",
-    "costText": "-",
-    "effortText": "-",
-    "resolutionText": "-"
-  },
-  {
-    "id": 79,
-    "overtitle": "Not Assigned",
-    "title": "Not Assigned",
-    "description": "Not Assigned",
-    "costText": "-",
-    "effortText": "-",
-    "resolutionText": "-"
-  },
-  {
-    "id": 80,
-    "overtitle": "Not Assigned",
-    "title": "Not Assigned",
-    "description": "Not Assigned",
-    "costText": "-",
-    "effortText": "-",
-    "resolutionText": "-"
-  },
-  {
-    "id": 81,
-    "overtitle": "Not Assigned",
-    "title": "Not Assigned",
-    "description": "Not Assigned",
-    "costText": "-",
-    "effortText": "-",
-    "resolutionText": "-"
-  },
-  {
-    "id": 82,
-    "overtitle": "Not Assigned",
-    "title": "Not Assigned",
-    "description": "Not Assigned",
-    "costText": "-",
-    "effortText": "-",
-    "resolutionText": "-"
-  },
-  {
-    "id": 83,
-    "overtitle": "Not Assigned",
-    "title": "Not Assigned",
-    "description": "Not Assigned",
-    "costText": "-",
-    "effortText": "-",
-    "resolutionText": "-"
-  },
-  {
-    "id": 84,
-    "overtitle": "Not Assigned",
-    "title": "Not Assigned",
-    "description": "Not Assigned",
-    "costText": "-",
-    "effortText": "-",
-    "resolutionText": "-"
-  },
-  {
-    "id": 85,
-    "overtitle": "Not Assigned",
-    "title": "Not Assigned",
-    "description": "Not Assigned",
-    "costText": "-",
-    "effortText": "-",
-    "resolutionText": "-"
-  },
-  {
-    "id": 86,
-    "overtitle": "Not Assigned",
-    "title": "Not Assigned",
-    "description": "Not Assigned",
-    "costText": "-",
-    "effortText": "-",
-    "resolutionText": "-"
-  },
-  {
-    "id": 87,
-    "overtitle": "Not Assigned",
-    "title": "Not Assigned",
-    "description": "Not Assigned",
-    "costText": "-",
-    "effortText": "-",
-    "resolutionText": "-"
-  },
-  {
-    "id": 88,
-    "overtitle": "Not Assigned",
-    "title": "Not Assigned",
-    "description": "Not Assigned",
-    "costText": "-",
-    "effortText": "-",
-    "resolutionText": "-"
-  },
-  {
-    "id": 89,
-    "overtitle": "Not Assigned",
-    "title": "Not Assigned",
-    "description": "Not Assigned",
-    "costText": "-",
-    "effortText": "-",
-    "resolutionText": "-"
-  },
-  {
-    "id": 90,
-    "overtitle": "Not Assigned",
-    "title": "Not Assigned",
-    "description": "Not Assigned",
-    "costText": "-",
-    "effortText": "-",
-    "resolutionText": "-"
-  },
-  {
-    "id": 91,
-    "overtitle": "Not Assigned",
-    "title": "Not Assigned",
-    "description": "Not Assigned",
-    "costText": "-",
-    "effortText": "-",
-    "resolutionText": "-"
-  },
-  {
-    "id": 92,
-    "overtitle": "Not Assigned",
-    "title": "Not Assigned",
-    "description": "Not Assigned",
-    "costText": "-",
-    "effortText": "-",
-    "resolutionText": "-"
-  },
-  {
-    "id": 93,
-    "overtitle": "Not Assigned",
-    "title": "Not Assigned",
-    "description": "Not Assigned",
-    "costText": "-",
-    "effortText": "-",
-    "resolutionText": "-"
-  },
-  {
-    "id": 94,
-    "overtitle": "Not Assigned",
-    "title": "Not Assigned",
-    "description": "Not Assigned",
-    "costText": "-",
-    "effortText": "-",
-    "resolutionText": "-"
-  },
-  {
-    "id": 95,
-    "overtitle": "Not Assigned",
-    "title": "Not Assigned",
-    "description": "Not Assigned",
-    "costText": "-",
-    "effortText": "-",
-    "resolutionText": "-"
-  },
-  {
-    "id": 96,
-    "overtitle": "Not Assigned",
-    "title": "Not Assigned",
-    "description": "Not Assigned",
-    "costText": "-",
-    "effortText": "-",
-    "resolutionText": "-"
-  },
-  {
-    "id": 97,
-    "overtitle": "Not Assigned",
-    "title": "Not Assigned",
-    "description": "Not Assigned",
-    "costText": "-",
-    "effortText": "-",
-    "resolutionText": "-"
-  },
-  {
-    "id": 98,
-    "overtitle": "Not Assigned",
-    "title": "Not Assigned",
-    "description": "Not Assigned",
-    "costText": "-",
-    "effortText": "-",
-    "resolutionText": "-"
-  },
-  {
-    "id": 99,
-    "overtitle": "Not Assigned",
-    "title": "Not Assigned",
-    "description": "Not Assigned",
-    "costText": "-",
-    "effortText": "-",
-    "resolutionText": "-"
-  },
-  {
-    "id": 100,
-    "overtitle": "Not Assigned",
-    "title": "Not Assigned",
-    "description": "Not Assigned",
-    "costText": "-",
-    "effortText": "-",
-    "resolutionText": "-"
-  },
-  {
-    "id": 101,
-    "overtitle": "Not Assigned",
-    "title": "Not Assigned",
-    "description": "Not Assigned",
-    "costText": "-",
-    "effortText": "-",
-    "resolutionText": "-"
-  },
-  {
-    "id": 102,
-    "overtitle": "Not Assigned",
-    "title": "Not Assigned",
-    "description": "Not Assigned",
-    "costText": "-",
-    "effortText": "-",
-    "resolutionText": "-"
-  },
-  {
-    "id": 103,
-    "overtitle": "Not Assigned",
-    "title": "Not Assigned",
-    "description": "Not Assigned",
-    "costText": "-",
-    "effortText": "-",
-    "resolutionText": "-"
-  },
-  {
-    "id": 104,
-    "overtitle": "Not Assigned",
-    "title": "Not Assigned",
-    "description": "Not Assigned",
-    "costText": "-",
-    "effortText": "-",
-    "resolutionText": "-"
-  }
+
 ]
 
 

@@ -6,7 +6,7 @@
 [
 {"id": 1, "responseType": ["Enforcement", "Proactive" ], "ipTypeTags": ["Patent"]},
 {"id": 2, "responseType": ["Proactive"], "ipTypeTags": ["Trade mark", "Design", "PBR", "Copyright", "Patent"]},
-{"id": 3, "responseType": ["Accused", ], "ipTypeTags": ["Any dispute"]},
+{"id": 3, "responseType": ["Accused"], "ipTypeTags": ["Any dispute"]},
 {"id": 4, "responseType": [ "Accused"], "ipTypeTags": ["Any dispute"]},
 {"id": 5, "responseType": [], "ipTypeTags": []},
 {"id": 6, "responseType": ["Accused"], "ipTypeTags": ["Any dispute"]},

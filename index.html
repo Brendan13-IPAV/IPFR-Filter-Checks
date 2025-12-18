@@ -706,6 +706,13 @@
             background: #5a6fd8;
             transform: translateY(-1px);
         }
+        .btn-primary:disabled {
+    background: #d1d5db;
+    color: #9ca3af;
+    border: 1px solid #d1d5db;
+    cursor: not-allowed;
+    transform: none;
+}
     </style>
 </head>
     
@@ -1041,21 +1048,21 @@
         }
 
         // ========================================
-        // VALIDATION
+        // VALIDATION - turned off as it was previous version of tool
         // ========================================
-        function validateRankDistribution() {
-            const scores = filteredStrategies.map(s => s.calculatedScore);
-            const uniqueScoresAbove1_2 = [...new Set(scores.filter(s => s > 1.2))];
+        // function validateRankDistribution() {
+        //     const scores = filteredStrategies.map(s => s.calculatedScore);
+        //     const uniqueScoresAbove1_2 = [...new Set(scores.filter(s => s > 1.2))];
             
-            if (uniqueScoresAbove1_2.length > MAX_RANKS_ABOVE_1_2) {
-                validationError.textContent = `⚠️ Maximum ${MAX_RANKS_ABOVE_1_2} unique score ranks allowed above 1.2. Currently: ${uniqueScoresAbove1_2.length} ranks (${uniqueScoresAbove1_2.sort((a,b) => b-a).join(', ')})`;
-                validationError.style.display = 'block';
-                return false;
-            }
+        //     if (uniqueScoresAbove1_2.length > MAX_RANKS_ABOVE_1_2) {
+        //         validationError.textContent = `⚠️ Maximum ${MAX_RANKS_ABOVE_1_2} unique score ranks allowed above 1.2. Currently: ${uniqueScoresAbove1_2.length} ranks (${uniqueScoresAbove1_2.sort((a,b) => b-a).join(', ')})`;
+        //         validationError.style.display = 'block';
+        //         return false;
+        //     }
             
-            validationError.style.display = 'none';
-            return true;
-        }
+        //     validationError.style.display = 'none';
+        //     return true;
+        // }
 
         // ========================================
         // SCORE ADJUSTMENT

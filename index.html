@@ -1232,6 +1232,7 @@
                 });
                 
                 submittedChanges.add(strategyId);
+                        updateBulkButtonState(); // ADD THIS LINE
                 renderStrategiesByRank();
                 return true;
                 
@@ -1735,21 +1736,21 @@ if (topFilters.length > 0) {
             const isSingleFilter = activeFilters.length === 1;
 
             // For multiple filters, calculate percentiles
-            let percentileMap = {};
-            if (!isSingleFilter) {
-                // Separate non-zero scores and sort them
-                const nonZeroStrategies = filteredStrategies.filter(s => s.calculatedScore !== 0);
-                const sortedScores = nonZeroStrategies
-                    .map(s => s.calculatedScore)
-                    .sort((a, b) => b - a); // Descending order
-                
-                // Calculate percentile for each strategy
-                nonZeroStrategies.forEach(strategy => {
-                    const rank = sortedScores.indexOf(strategy.calculatedScore);
-                    const percentile = (rank + 1) / sortedScores.length;
-                    percentileMap[strategy.id] = percentile;
-                });
-            }
+// For multiple filters, calculate percentiles
+let percentileMap = {};
+if (!isSingleFilter) {
+    // Separate non-zero scores and sort them
+    const nonZeroStrategies = filteredStrategies.filter(s => s.calculatedScore !== 0);
+    
+    // Sort strategies by score (descending)
+    const sortedStrategies = [...nonZeroStrategies].sort((a, b) => b.calculatedScore - a.calculatedScore);
+    
+    // Calculate percentile for each strategy based on their position
+    sortedStrategies.forEach((strategy, index) => {
+        const percentile = (index + 1) / sortedStrategies.length;
+        percentileMap[strategy.id] = percentile;
+    });
+}
 
             // Group by score
             const scoreGroups = {};

@@ -770,6 +770,8 @@
                     <div class="results-count" id="resultsCount">Loading...</div>
                     <div class="control-buttons">
                         <button class="btn btn-secondary" id="clearFilters">🗑️ Clear</button>
+                        <button class="btn btn-primary" id="bulkNoChanges">✓ Mark All as Reviewed</button>
+
                     </div>
                 </div>
             </div>
@@ -1098,6 +1100,7 @@
             // Validate and re-render
             validateRankDistribution();
             renderStrategiesByRank();
+                updateBulkButtonState(); 
         }
 
         function toggleNA(strategyId) {
@@ -1235,6 +1238,46 @@
             }
         }
 
+function updateBulkButtonState() {
+    const bulkBtn = document.getElementById('bulkNoChanges');
+    if (!bulkBtn) return;
+    
+    const hasAnyChanges = Object.keys(pendingChanges).length > 0 || submittedChanges.size > 0;
+    
+    if (hasAnyChanges) {
+        bulkBtn.disabled = true;
+        bulkBtn.title = "Cannot mark as reviewed when changes are pending or submitted";
+    } else {
+        bulkBtn.disabled = false;
+        bulkBtn.title = `Mark all ${filteredStrategies.length} visible strategies as reviewed`;
+    }
+}
+
+async function bulkSubmitNoChanges() {
+    if (!confirm(`Mark all ${filteredStrategies.length} visible strategies as reviewed with no changes?`)) {
+        return;
+    }
+    
+    const bulkBtn = document.getElementById('bulkNoChanges');
+    bulkBtn.disabled = true;
+    bulkBtn.textContent = 'Submitting...';
+    
+    let successCount = 0;
+    
+    for (const strategy of filteredStrategies) {
+        // Only submit if not already submitted
+        if (!submittedChanges.has(strategy.id)) {
+            const success = await submitNoChangesNeeded(strategy.id);
+            if (success) successCount++;
+        }
+    }
+    
+    bulkBtn.textContent = '✓ Mark All as Reviewed';
+    updateBulkButtonState();
+    
+    alert(`Successfully marked ${successCount} strategies as reviewed.`);
+}
+
         async function submitStrategyChange(strategyId) {
             const strategy = filteredStrategies.find(s => s.id === strategyId);
             const change = pendingChanges[strategyId];
@@ -1280,6 +1323,8 @@
                 submittedChanges.add(strategyId);
                 
                 renderStrategiesByRank();
+                 updateBulkButtonState(); 
+                
                 return true;
                 
             } catch (error) {
@@ -1535,6 +1580,7 @@
         function clearSessionState() {
             pendingChanges = {};
             submittedChanges.clear();
+            updateBulkButtonState(); 
         }
 
         function applyFilters() {
@@ -1586,6 +1632,7 @@
             updateResultsCount();
             validateRankDistribution();
             renderStrategiesByRank();
+                updateBulkButtonState();
         }
 
         function updateActiveFilterDisplay() {
@@ -1799,26 +1846,26 @@
                     ` : ''}
                     ${isSubmitted ? `
                         <button class="undo-btn" onclick="undoToOriginal(${strategy.id})">
-                            Undo to Original Position
+                            Undo, move to original position
                         </button>
                     ` : ''}
-                    ${!hasChanged && !isSubmitted ? `
-                        <button class="no-changes-btn" onclick="submitNoChangesNeeded(${strategy.id})">
-                            No Changes Needed - Mark as Reviewed
-                        </button>
-                    ` : ''}
+
                 </div>
             `;
 
             return card;
         }
-
-        function updateReason(strategyId, reason) {
-            if (pendingChanges[strategyId]) {
-                pendingChanges[strategyId].reason = reason;
-                renderStrategiesByRank();
-            }
+function updateReason(strategyId, reason) {
+    if (pendingChanges[strategyId]) {
+        pendingChanges[strategyId].reason = reason;
+        
+        // Just update the submit button state without re-rendering everything
+        const submitBtn = document.querySelector(`button[onclick="submitStrategyChange(${strategyId})"]`);
+        if (submitBtn) {
+            submitBtn.disabled = !reason.trim();
         }
+    }
+}
 
         // ========================================
         // EVENT LISTENERS
@@ -1835,6 +1882,7 @@
                 renderAccordions();
             });
             clearFilters.addEventListener('click', clearAllFilters);
+            document.getElementById('bulkNoChanges').addEventListener('click', bulkSubmitNoChanges);
         }
 
         // Make functions globally available
@@ -1847,6 +1895,8 @@
         window.submitStrategyChange = submitStrategyChange;
         window.submitNoChangesNeeded = submitNoChangesNeeded;
         window.updateReason = updateReason;
+        window.bulkSubmitNoChanges = bulkSubmitNoChanges;
+        window.updateBulkButtonState = updateBulkButtonState;
 
         // ========================================
         // INITIALIZATION
@@ -1867,6 +1917,7 @@
             setupEventListeners();
             renderAccordions();
             applyFilters();
+                updateBulkButtonState(); 
         }
 
         document.addEventListener('DOMContentLoaded', init);

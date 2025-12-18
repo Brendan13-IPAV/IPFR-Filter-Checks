@@ -1,0 +1,1664 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IP Strategy Relevance Review</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .header h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 1.1rem;
+            margin-bottom: 16px;
+        }
+
+        .header-controls {
+            display: grid;
+            grid-template-columns: 1fr 1fr 250px;
+            gap: 24px;
+            align-items: end;
+            margin-top: 20px;
+        }
+
+        .user-greeting {
+            display: flex;
+            align-items: center;
+            font-weight: 600;
+            color: #374151;
+            font-size: 16px;
+        }
+
+        .primary-filters {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .filter-label {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #374151;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        select {
+            padding: 12px 16px;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .top-controls {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 8px;
+        }
+
+        .results-count {
+            font-weight: 600;
+            color: #374151;
+            font-size: 14px;
+        }
+
+        .control-buttons {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 13px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-secondary {
+            background: #f8f9fa;
+            color: #495057;
+            border: 2px solid #e9ecef;
+        }
+
+        .btn-secondary:hover {
+            background: #e9ecef;
+            transform: translateY(-1px);
+        }
+
+        .main-layout {
+            display: grid;
+            grid-template-columns: 350px 1fr;
+            gap: 24px;
+            align-items: start;
+        }
+
+        .sidebar {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 20px;
+            max-height: calc(100vh - 40px);
+            overflow-y: auto;
+        }
+
+        .content-area {
+            min-width: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .active-filter-pill {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .active-filter-pill button {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-size: 18px;
+            padding: 4px 8px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            width: 24px;
+            height: 24px;
+        }
+
+        .active-filter-pill button:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.1);
+        }
+
+        .accordion-header {
+            background: #f8f9fa;
+            padding: 12px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-bottom: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .accordion-header:hover {
+            background: #e9ecef;
+            border-color: #667eea;
+        }
+
+        .accordion-content {
+            background: white;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 16px;
+            border: 1px solid #e1e5e9;
+        }
+
+        .radio-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .radio-button {
+            padding: 12px 16px;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: white;
+            font-size: 14px;
+            font-weight: 500;
+            user-select: none;
+        }
+
+        .radio-button:hover {
+            background: #f8f9fa;
+            border-color: #667eea;
+            transform: translateY(-1px);
+        }
+
+        .radio-button.radio-selected {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border-color: #667eea;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+
+        /* RANK-BASED LAYOUT */
+        .rank-group {
+            margin-bottom: 32px;
+        }
+
+        .rank-header {
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            padding: 12px 20px;
+            margin-bottom: 16px;
+            font-weight: 700;
+            font-size: 16px;
+            color: #374151;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .rank-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .rank-badge {
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .rank-badge.more-likely {
+            background: #10b981;
+        }
+
+        .rank-badge.no-effect {
+            background: #6b7280;
+        }
+
+        .rank-badge.less-likely {
+            background: #f59e0b;
+        }
+
+        .rank-badge.not-applicable {
+            background: #ef4444;
+        }
+
+        .rank-count {
+            font-size: 14px;
+            color: #6b7280;
+            font-weight: 500;
+        }
+
+        .strategies-row {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 16px;
+        }
+
+        .strategy-card {
+            background: white;
+            border: 2px solid #e1e5e9;
+            border-radius: 12px;
+            padding: 16px;
+            transition: all 0.3s ease;
+            position: relative;
+            min-height: 320px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .strategy-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            border-color: #667eea;
+        }
+
+        .strategy-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+        }
+
+        .status-badge {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 700;
+            z-index: 10;
+        }
+
+        .status-badge.pending {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .status-badge.submitted {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .card-header {
+            margin-bottom: 12px;
+            flex: 1;
+        }
+
+        .card-overtitle {
+            font-size: 11px;
+            color: #667eea;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .card-title {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 8px;
+            line-height: 1.3;
+        }
+
+        .card-description {
+            color: #6b7280;
+            line-height: 1.4;
+            font-size: 13px;
+            margin-bottom: 8px;
+        }
+
+        .card-link {
+            color: #667eea;
+            font-size: 12px;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .card-link:hover {
+            text-decoration: underline;
+        }
+
+        .card-controls {
+            border-top: 1px solid #e5e7eb;
+            padding-top: 12px;
+        }
+
+        .score-control {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .score-input {
+            background: #f3f4f6;
+            color: #374151;
+            border: 1px solid #d1d5db;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 13px;
+            font-weight: 600;
+            width: 50px;
+            text-align: center;
+            -moz-appearance: textfield;
+        }
+
+        .score-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.1);
+        }
+
+        .score-input::-webkit-outer-spin-button,
+        .score-input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        .score-buttons {
+            display: flex;
+            gap: 4px;
+            align-items: center;
+        }
+
+        .score-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            transition: all 0.2s ease;
+        }
+
+        .score-btn:hover {
+            background: #5a6fd8;
+            transform: scale(1.1);
+        }
+
+        .score-btn:disabled {
+            background: #d1d5db;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .na-btn {
+            background: #9ca3af;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 2px 6px;
+            cursor: pointer;
+            font-size: 10px;
+            font-weight: 600;
+            margin-left: 4px;
+            transition: all 0.2s ease;
+        }
+
+        .na-btn:hover {
+            background: #6b7280;
+        }
+
+        .na-btn.active {
+            background: #ef4444;
+        }
+
+        .reason-input {
+            width: 100%;
+            padding: 8px;
+            border: 2px solid #e1e5e9;
+            border-radius: 6px;
+            resize: vertical;
+            min-height: 60px;
+            font-size: 12px;
+            font-family: inherit;
+            margin-top: 8px;
+        }
+
+        .reason-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .reason-input::placeholder {
+            color: #9ca3af;
+        }
+
+        .submit-reason-btn {
+            width: 100%;
+            margin-top: 8px;
+            padding: 6px 12px;
+            background: #10b981;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+
+        .submit-reason-btn:hover {
+            background: #059669;
+        }
+
+        .submit-reason-btn:disabled {
+            background: #d1d5db;
+            cursor: not-allowed;
+        }
+
+        .undo-btn {
+            width: 100%;
+            margin-top: 4px;
+            padding: 6px 12px;
+            background: #f59e0b;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+
+        .undo-btn:hover {
+            background: #d97706;
+        }
+
+        .validation-error {
+            background: #fef2f2;
+            border: 2px solid #fca5a5;
+            color: #dc2626;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 16px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 60px 40px;
+            color: #666;
+        }
+
+        .password-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+        }
+
+        .password-content {
+            background: white;
+            border-radius: 16px;
+            padding: 40px;
+            max-width: 400px;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .password-content h2 {
+            margin-bottom: 16px;
+            color: #374151;
+        }
+
+        .password-content p {
+            margin-bottom: 20px;
+            color: #6b7280;
+        }
+
+        .password-content input,
+        .password-content select {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            font-size: 16px;
+            margin-bottom: 16px;
+        }
+
+        .password-content input:focus,
+        .password-content select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .password-error {
+            color: #dc2626;
+            margin-top: 12px;
+            font-weight: 600;
+        }
+
+        .password-modal.hidden {
+            display: none;
+        }
+
+        .btn-primary {
+            background: #667eea;
+            color: white;
+            border: 1px solid #667eea;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+
+        .btn-primary:hover {
+            background: #5a6fd8;
+            transform: translateY(-1px);
+        }
+    </style>
+</head>
+    
+<body>
+    <!-- Password Protection Modal with User Type -->
+    <div id="passwordModal" class="password-modal">
+        <div class="password-content">
+            <h2>🔒 Access Required</h2>
+            <p>Please enter your details to access the review tool:</p>
+            <input type="text" id="loginNameInput" placeholder="Your name" />
+            <select id="userTypeSelect">
+                <option value="">Select your role...</option>
+                <option value="IP Australia employee">IP Australia employee</option>
+                <option value="IP professional">IP professional</option>
+                <option value="Other government agency">Other government agency</option>
+                <option value="Other">Other</option>
+            </select>
+            <input type="password" id="passwordInput" placeholder="Password" />
+            <button class="btn-primary" onclick="checkPassword()">Submit</button>
+            <div id="passwordError" class="password-error"></div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="header">
+            <h1>IP Strategy Relevance Review</h1>
+            <p>Review and adjust strategy rankings based on filter relevance</p>
+            <div id="versionDisplay"></div>
+            
+            <div class="header-controls">
+                <div class="user-greeting">
+                    👤 <span id="userGreeting">Loading...</span>
+                </div>
+                
+                <div class="primary-filters">
+                    <div class="filter-group">
+                        <label class="filter-label">Situation Type</label>
+                        <select id="situationFilter">
+                            <option value="">All Situations</option>
+                            <option value="Enforcement">I believe my IP has been infringed</option>
+                            <option value="Accused">I've been accused of infringement</option>
+                            <option value="Disagree">I want help on IP processes</option>
+                            <option value="Proactive">I want to prevent future IP headaches</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label class="filter-label">IP Rights Type</label>
+                        <select id="ipRightsFilter">
+                            <option value="">All IP Rights</option>
+                            <option value="Patent">Patents</option>
+                            <option value="Trade mark">Trade marks</option>
+                            <option value="Design">Design rights</option>
+                            <option value="PBR">Plant breeder's rights</option>
+                            <option value="Copyright">Copyright</option>
+                            <option value="Any dispute">Any IP right</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="top-controls">
+                    <div class="results-count" id="resultsCount">Loading...</div>
+                    <div class="control-buttons">
+                        <button class="btn btn-secondary" id="clearFilters">🗑️ Clear</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="main-layout">
+            <div class="sidebar">
+                <div id="accordionContainer"></div>
+            </div>
+
+            <div class="content-area">
+                <div id="activeFilterPill"></div>
+                <div id="validationError" class="validation-error" style="display: none;"></div>
+                <div id="strategiesContainer">
+                    <div class="loading">Loading strategy data...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ========================================
+        // CONFIGURATION
+        // ========================================
+        const MAX_RANKS_ABOVE_1_2 = 2;
+
+        // Application state
+        let allStrategies = [];
+        let filteredStrategies = [];
+        let activeFilters = [];
+        let accordionState = {};
+        let filterOptions = {};
+        let accordionPresets = {};
+        let currentUserName = '';
+        let currentUserType = '';
+        let originalScores = {}; // Store original calculated scores
+        let pendingChanges = {}; // { strategyId: { oldScore, newScore, reason, status } }
+        let submittedChanges = new Set(); // Track submitted strategy IDs for this session
+
+        const dataVersions = {
+            strategiesContent: null,
+            strategiesMetadata: null,
+            filterOptions: null,
+            accordionPresets: null,
+            loadTimestamp: null
+        };
+
+        // DOM elements
+        const userGreeting = document.getElementById('userGreeting');
+        const situationFilter = document.getElementById('situationFilter');
+        const ipRightsFilter = document.getElementById('ipRightsFilter');
+        const clearFilters = document.getElementById('clearFilters');
+        const resultsCount = document.getElementById('resultsCount');
+        const accordionContainer = document.getElementById('accordionContainer');
+        const activeFilterPill = document.getElementById('activeFilterPill');
+        const strategiesContainer = document.getElementById('strategiesContainer');
+        const validationError = document.getElementById('validationError');
+
+        // ========================================
+        // TELEMETRY CONFIGURATION
+        // ========================================
+        const TELEMETRY_CONFIG = {
+            sheetURL: 'https://script.google.com/macros/s/AKfycbyK2DqvUFqwmbMUcs2fYhhnz0F3Zu4GC8Mfm_hxRGO9DYllfJase10FeuJvHGecMvAp/exec',
+            accessPassword: 'ipnavigator2024',
+            sessionId: generateSessionId()
+        };
+
+        function generateSessionId() {
+            return 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+        }
+
+        // Display version info
+        function displayVersionInfo() {
+            const versionDisplay = document.getElementById('versionDisplay');
+            if (versionDisplay && dataVersions.strategiesContent) {
+                versionDisplay.innerHTML = `
+                    <div style="font-size: 11px; color: #6b7280; margin-top: 8px;">
+                        <strong>Data Versions:</strong> 
+                        Strategies: ${dataVersions.strategiesContent} | 
+                        Metadata: ${dataVersions.strategiesMetadata} | 
+                        Filters: ${dataVersions.filterOptions} | 
+                        Presets: ${dataVersions.accordionPresets}
+                    </div>
+                `;
+            }
+        }
+
+        // ========================================
+        // PASSWORD PROTECTION
+        // ========================================
+        function checkPassword() {
+            const nameInput = document.getElementById('loginNameInput');
+            const userTypeSelect = document.getElementById('userTypeSelect');
+            const passwordInput = document.getElementById('passwordInput');
+            const error = document.getElementById('passwordError');
+            const modal = document.getElementById('passwordModal');
+            
+            const name = nameInput.value.trim();
+            const userType = userTypeSelect.value;
+            const password = passwordInput.value;
+            
+            if (!name) {
+                error.textContent = '❌ Please enter your name.';
+                nameInput.focus();
+                return;
+            }
+
+            if (!userType) {
+                error.textContent = '❌ Please select your role.';
+                userTypeSelect.focus();
+                return;
+            }
+            
+            if (password === TELEMETRY_CONFIG.accessPassword) {
+                currentUserName = name;
+                currentUserType = userType;
+                sessionStorage.setItem('authenticated', 'true');
+                sessionStorage.setItem('userName', name);
+                sessionStorage.setItem('userType', userType);
+                modal.classList.add('hidden');
+                updateUserGreeting();
+            } else {
+                error.textContent = '❌ Incorrect password. Please try again.';
+                passwordInput.value = '';
+                passwordInput.focus();
+            }
+        }
+
+        function updateUserGreeting() {
+            if (userGreeting && currentUserName) {
+                userGreeting.textContent = `${currentUserName} (${currentUserType})`;
+            }
+        }
+
+        function checkAuthentication() {
+            const modal = document.getElementById('passwordModal');
+            const isAuthenticated = sessionStorage.getItem('authenticated') === 'true';
+            const storedName = sessionStorage.getItem('userName');
+            const storedType = sessionStorage.getItem('userType');
+            
+            if (isAuthenticated && storedName && storedType) {
+                currentUserName = storedName;
+                currentUserType = storedType;
+                modal.classList.add('hidden');
+                updateUserGreeting();
+            } else {
+                modal.classList.remove('hidden');
+                document.getElementById('loginNameInput').focus();
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const passwordInput = document.getElementById('passwordInput');
+            const nameInput = document.getElementById('loginNameInput');
+            const userTypeSelect = document.getElementById('userTypeSelect');
+            
+            if (nameInput) {
+                nameInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') {
+                        userTypeSelect.focus();
+                    }
+                });
+            }
+
+            if (userTypeSelect) {
+                userTypeSelect.addEventListener('change', () => {
+                    passwordInput.focus();
+                });
+            }
+            
+            if (passwordInput) {
+                passwordInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') {
+                        checkPassword();
+                    }
+                });
+            }
+            
+            checkAuthentication();
+        });
+
+        // ========================================
+        // DATA LOADING
+        // ========================================
+        async function loadData() {
+            try {
+                const [strategiesContentData, strategiesMetadataData, filterOptionsData, accordionPresetsData] = await Promise.all([
+                    fetch('strategies-content.json').then(res => res.json()),
+                    fetch('strategies-metadata.json').then(res => res.json()),
+                    fetch('filterOptions.json').then(res => res.json()),
+                    fetch('accordionPresets.json').then(res => res.json())
+                ]);
+
+                dataVersions.strategiesContent = strategiesContentData.version || 'unversioned';
+                dataVersions.strategiesMetadata = strategiesMetadataData.version || 'unversioned';
+                dataVersions.filterOptions = filterOptionsData.version || 'unversioned';
+                dataVersions.accordionPresets = accordionPresetsData.version || 'unversioned';
+                dataVersions.loadTimestamp = new Date().toISOString();
+
+                const strategiesContent = strategiesContentData.strategies || strategiesContentData;
+                const strategiesMetadata = strategiesMetadataData.metadata || strategiesMetadataData.strategies || strategiesMetadataData;
+                
+                const rawFilterOptions = filterOptionsData.filters || filterOptionsData;
+                filterOptions = {};
+                Object.keys(rawFilterOptions).forEach(key => {
+                    if (key !== 'version' && key !== 'lastUpdated') {
+                        filterOptions[key] = rawFilterOptions[key];
+                    }
+                });
+                
+                accordionPresets = {};
+                Object.keys(accordionPresetsData).forEach(key => {
+                    if (key !== 'version' && key !== 'lastUpdated') {
+                        accordionPresets[key] = accordionPresetsData[key];
+                    }
+                });
+
+                allStrategies = strategiesContent.map(content => {
+                    const metadata = strategiesMetadata.find(meta => meta.id === content.id);
+                    return { ...content, ...metadata };
+                });
+
+                allStrategies = allStrategies.filter(strategy => 
+                    strategy.title !== "Not Assigned" && 
+                    strategy.overtitle !== "Not Assigned" &&
+                    strategy.description !== "Not Assigned"
+                );
+
+                displayVersionInfo();
+                return true;
+            } catch (error) {
+                console.error('Error loading data:', error);
+                return false;
+            }
+        }
+
+        // ========================================
+        // VALIDATION
+        // ========================================
+        function validateRankDistribution() {
+            const scores = filteredStrategies.map(s => s.calculatedScore);
+            const uniqueScoresAbove1_2 = [...new Set(scores.filter(s => s > 1.2))];
+            
+            if (uniqueScoresAbove1_2.length > MAX_RANKS_ABOVE_1_2) {
+                validationError.textContent = `⚠️ Maximum ${MAX_RANKS_ABOVE_1_2} unique score ranks allowed above 1.2. Currently: ${uniqueScoresAbove1_2.length} ranks (${uniqueScoresAbove1_2.sort((a,b) => b-a).join(', ')})`;
+                validationError.style.display = 'block';
+                return false;
+            }
+            
+            validationError.style.display = 'none';
+            return true;
+        }
+
+        // ========================================
+        // SCORE ADJUSTMENT
+        // ========================================
+        function adjustScore(strategyId, adjustment) {
+            const strategy = filteredStrategies.find(s => s.id === strategyId);
+            if (!strategy) return;
+
+            const newScore = Math.max(0, Math.min(3.0, strategy.calculatedScore + adjustment));
+            const roundedScore = Math.round(newScore * 10) / 10;
+            
+            setScore(strategyId, roundedScore);
+        }
+
+        function setScore(strategyId, value) {
+            const strategy = filteredStrategies.find(s => s.id === strategyId);
+            if (!strategy) return;
+
+            let newScore = parseFloat(value);
+            if (isNaN(newScore)) newScore = originalScores[strategyId] || 1.0;
+            
+            newScore = Math.max(0, Math.min(3.0, newScore));
+            const roundedScore = Math.round(newScore * 10) / 10;
+            
+            // Update the strategy score
+            strategy.calculatedScore = roundedScore;
+
+            // Store or update pending change
+            const originalScore = originalScores[strategyId];
+            if (roundedScore !== originalScore) {
+                if (!pendingChanges[strategyId]) {
+                    pendingChanges[strategyId] = {
+                        oldScore: originalScore,
+                        newScore: roundedScore,
+                        reason: '',
+                        status: 'pending'
+                    };
+                } else {
+                    pendingChanges[strategyId].newScore = roundedScore;
+                }
+            } else {
+                // Score returned to original - remove pending change
+                delete pendingChanges[strategyId];
+            }
+
+            // Validate and re-render
+            validateRankDistribution();
+            renderStrategiesByRank();
+        }
+
+        function toggleNA(strategyId) {
+            const strategy = filteredStrategies.find(s => s.id === strategyId);
+            if (!strategy) return;
+
+            if (strategy.calculatedScore === 0) {
+                // Restore to original score
+                const originalScore = originalScores[strategyId];
+                setScore(strategyId, originalScore);
+            } else {
+                // Set to N/A
+                setScore(strategyId, 0);
+            }
+        }
+
+        function undoToOriginal(strategyId) {
+            const originalScore = originalScores[strategyId];
+            setScore(strategyId, originalScore);
+            
+            // Remove from pending and submitted
+            delete pendingChanges[strategyId];
+            submittedChanges.delete(strategyId);
+            
+            renderStrategiesByRank();
+        }
+
+        // ========================================
+        // TELEMETRY
+        // ========================================
+        function collectFilterState() {
+            const accordionFiltersArray = activeFilters.map(filter => ({
+                key: filter.key,
+                option: filter.option.label
+            }));
+            
+            return {
+                situationFilter: situationFilter.value || 'All Situations',
+                ipRightsFilter: ipRightsFilter.value || 'All IP Rights',
+                accordionFilters: JSON.stringify(accordionFiltersArray)
+            };
+        }
+
+        async function submitStrategyChange(strategyId) {
+            const strategy = filteredStrategies.find(s => s.id === strategyId);
+            const change = pendingChanges[strategyId];
+            
+            if (!strategy || !change || !change.reason.trim()) {
+                alert('Please provide a reason for the change');
+                return false;
+            }
+
+            const filterState = collectFilterState();
+            
+            const payload = {
+                userName: currentUserName,
+                userType: currentUserType,
+                situationFilter: filterState.situationFilter,
+                ipRightsFilter: filterState.ipRightsFilter,
+                accordionFilters: filterState.accordionFilters,
+                strategyId: strategy.id,
+                strategyTitle: strategy.title,
+                oldScore: change.oldScore,
+                newScore: change.newScore,
+                reason: change.reason,
+                sessionId: TELEMETRY_CONFIG.sessionId,
+                strategiesVersion: dataVersions.strategiesContent,
+                metadataVersion: dataVersions.strategiesMetadata,
+                filtersVersion: dataVersions.filterOptions,
+                presetsVersion: dataVersions.accordionPresets,
+                dataLoadTimestamp: dataVersions.loadTimestamp
+            };
+            
+            try {
+                await fetch(TELEMETRY_CONFIG.sheetURL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(payload)
+                });
+                
+                // Mark as submitted
+                change.status = 'submitted';
+                submittedChanges.add(strategyId);
+                
+                renderStrategiesByRank();
+                return true;
+                
+            } catch (error) {
+                console.error('Error sending telemetry:', error);
+                alert('Failed to submit change. Please try again.');
+                return false;
+            }
+        }
+
+        // ========================================
+        // FILTER MANAGEMENT
+        // ========================================
+        function getAccordionLayout() {
+            const selectedSituation = situationFilter.value;
+            const selectedIPRight = ipRightsFilter.value;
+            
+            if (!selectedSituation && !selectedIPRight) {
+                return accordionPresets.default || accordionPresets['default'];
+            }
+            
+            const ipRightMap = {
+                'Patent': 'patents',
+                'Trade mark': 'trademarks',
+                'Design': 'designs',
+                'PBR': 'pbr',
+                'Copyright': 'copyright',
+                'Any dispute': 'any'
+            };
+            
+            const situationMap = {
+                'Enforcement': 'enforcement',
+                'Accused': 'accused',
+                'Proactive': 'proactive',
+                'Disagree': 'disagree'
+            };
+            
+            let presetKey = '';
+            
+            if (selectedIPRight && selectedSituation) {
+                const ipKey = ipRightMap[selectedIPRight] || 'uncertain';
+                const situationKey = situationMap[selectedSituation] || '';
+                presetKey = `${ipKey}-${situationKey}`;
+            } else if (selectedSituation) {
+                const situationKey = situationMap[selectedSituation] || '';
+                presetKey = `any-${situationKey}`;
+            } else if (selectedIPRight) {
+                return accordionPresets.default || accordionPresets['default'];
+            }
+            
+            const layout = accordionPresets[presetKey];
+            
+            if (layout) {
+                return layout;
+            } else {
+                return accordionPresets.default || accordionPresets['default'];
+            }
+        }
+
+        function renderAccordions() {
+            accordionContainer.innerHTML = '';
+            
+            const layout = getAccordionLayout();
+            const accordions = layout.accordions || {};
+            const topFilters = layout.topFilters || [];
+
+            function isFilterActive(filterKey, optionIndex) {
+                return activeFilters.some(f => f.key === filterKey && f.optionIndex === optionIndex);
+            }
+
+            function hasActiveFilterInGroup(filterKeys) {
+                return filterKeys.some(key => 
+                    activeFilters.some(f => f.key === key)
+                );
+            }
+
+            if (topFilters.length > 0) {
+                const topFiltersKey = 'topfilters';
+                const hasActiveTopFilter = hasActiveFilterInGroup(topFilters);
+                
+                const topHeader = document.createElement('div');
+                topHeader.className = 'accordion-header';
+                const activeText = hasActiveTopFilter ? ' ✓' : '';
+                
+                topHeader.innerHTML = `
+                    <span style="display:inline-block; transition: transform 0.3s ease; transform: ${accordionState[topFiltersKey] ? 'rotate(90deg)' : 'rotate(0deg)'};">▶</span>
+                    Additional Filters${activeText}
+                `;
+                
+                topHeader.onclick = () => {
+                    accordionState[topFiltersKey] = !accordionState[topFiltersKey];
+                    renderAccordions();
+                };
+                
+                accordionContainer.appendChild(topHeader);
+
+                if (accordionState[topFiltersKey]) {
+                    const topContent = document.createElement('div');
+                    topContent.className = 'accordion-content';
+                    
+                    topFilters.forEach(filterKey => {
+                        const filterConfig = filterOptions[filterKey];
+                        if (!filterConfig) return;
+
+                        const group = document.createElement('div');
+                        group.style.marginBottom = '20px';
+
+                        const label = document.createElement('div');
+                        label.className = 'filter-label';
+                        label.textContent = filterConfig.label;
+                        group.appendChild(label);
+
+                        const radioGroup = document.createElement('div');
+                        radioGroup.className = 'radio-group';
+
+                        filterConfig.options.forEach((option, index) => {
+                            const radio = document.createElement('div');
+                            radio.className = 'radio-button';
+                            
+                            if (isFilterActive(filterKey, index)) {
+                                radio.classList.add('radio-selected');
+                            }
+                            
+                            radio.textContent = option.label;
+                            radio.onclick = () => {
+                                const newFilter = {
+                                    key: filterKey,
+                                    optionIndex: index,
+                                    config: filterConfig,
+                                    option: option
+                                };
+                                
+                                const existingIndex = activeFilters.findIndex(
+                                    f => f.key === filterKey && f.optionIndex === index
+                                );
+                                
+                                if (existingIndex !== -1) {
+                                    activeFilters.splice(existingIndex, 1);
+                                } else {
+                                    activeFilters = activeFilters.filter(f => f.key !== filterKey);
+                                    activeFilters.push(newFilter);
+                                }
+                                
+                                clearSessionState();
+                                applyFilters();
+                                renderAccordions();
+                            };
+                            radioGroup.appendChild(radio);
+                        });
+
+                        group.appendChild(radioGroup);
+                        topContent.appendChild(group);
+                    });
+                    
+                    accordionContainer.appendChild(topContent);
+                }
+            }
+
+            Object.entries(accordions).forEach(([accordionTitle, filterKeys]) => {
+                const accordionKey = accordionTitle.toLowerCase().replace(/\s+/g, '');
+                const hasActiveFilter = hasActiveFilterInGroup(filterKeys);
+                
+                const header = document.createElement('div');
+                header.className = 'accordion-header';
+                const activeText = hasActiveFilter ? ' ✓' : '';
+                
+                header.innerHTML = `
+                    <span style="display:inline-block; transition: transform 0.3s ease; transform: ${accordionState[accordionKey] ? 'rotate(90deg)' : 'rotate(0deg)'};">▶</span>
+                    ${accordionTitle}${activeText}
+                `;
+                
+                header.onclick = () => {
+                    accordionState[accordionKey] = !accordionState[accordionKey];
+                    renderAccordions();
+                };
+                
+                accordionContainer.appendChild(header);
+
+                if (accordionState[accordionKey]) {
+                    const content = document.createElement('div');
+                    content.className = 'accordion-content';
+
+                    filterKeys.forEach(filterKey => {
+                        const filterConfig = filterOptions[filterKey];
+                        if (!filterConfig) return;
+
+                        const group = document.createElement('div');
+                        group.style.marginBottom = '16px';
+
+                        const label = document.createElement('div');
+                        label.className = 'filter-label';
+                        label.textContent = filterConfig.label;
+                        group.appendChild(label);
+
+                        const radioGroup = document.createElement('div');
+                        radioGroup.className = 'radio-group';
+
+                        filterConfig.options.forEach((option, index) => {
+                            const radio = document.createElement('div');
+                            radio.className = 'radio-button';
+                            
+                            if (isFilterActive(filterKey, index)) {
+                                radio.classList.add('radio-selected');
+                            }
+                            
+                            radio.textContent = option.label;
+                            radio.onclick = () => {
+                                const newFilter = {
+                                    key: filterKey,
+                                    optionIndex: index,
+                                    config: filterConfig,
+                                    option: option
+                                };
+                                
+                                const existingIndex = activeFilters.findIndex(
+                                    f => f.key === filterKey && f.optionIndex === index
+                                );
+                                
+                                if (existingIndex !== -1) {
+                                    activeFilters.splice(existingIndex, 1);
+                                } else {
+                                    activeFilters = activeFilters.filter(f => f.key !== filterKey);
+                                    activeFilters.push(newFilter);
+                                }
+                                
+                                clearSessionState();
+                                applyFilters();
+                                renderAccordions();
+                            };
+                            radioGroup.appendChild(radio);
+                        });
+
+                        group.appendChild(radioGroup);
+                        content.appendChild(group);
+                    });
+
+                    accordionContainer.appendChild(content);
+                }
+            });
+        }
+
+        function clearSessionState() {
+            pendingChanges = {};
+            submittedChanges.clear();
+        }
+
+        function applyFilters() {
+            const selectedSituation = situationFilter.value;
+            const selectedIPRight = ipRightsFilter.value;
+
+            filteredStrategies = allStrategies.filter(strategy => {
+                if (selectedSituation && strategy.responseType) {
+                    if (!strategy.responseType.includes(selectedSituation)) {
+                        return false;
+                    }
+                }
+
+                if (selectedIPRight && strategy.ipTypeTags) {
+                    if (!strategy.ipTypeTags.includes(selectedIPRight) && 
+                        !strategy.ipTypeTags.includes('Any dispute')) {
+                        return false;
+                    }
+                }
+
+                return true;
+            });
+
+            filteredStrategies = filteredStrategies.map(strategy => {
+                let score = 1.0;
+                
+                activeFilters.forEach(filter => {
+                    if (filterOptions[filter.key]) {
+                        const option = filter.option;
+                        if (option && option.scoringValues && strategy.id <= option.scoringValues.length) {
+                            const filterScore = option.scoringValues[strategy.id - 1] || 1.0;
+                            score *= filterScore;
+                        }
+                    }
+                });
+                
+                const roundedScore = Math.round(score * 10) / 10;
+                
+                // Store original score
+                originalScores[strategy.id] = roundedScore;
+                
+                return {
+                    ...strategy,
+                    calculatedScore: roundedScore
+                };
+            });
+
+            updateActiveFilterDisplay();
+            updateResultsCount();
+            validateRankDistribution();
+            renderStrategiesByRank();
+        }
+
+        function updateActiveFilterDisplay() {
+            activeFilterPill.innerHTML = '';
+
+            if (activeFilters.length > 0) {
+                activeFilters.forEach((filter, index) => {
+                    const config = filter.config;
+                    const option = filter.option;
+                    
+                    let pillText = config.pillTemplate || `${config.label}: ${option.label}`;
+                    pillText = pillText.replace('{optionLabel}', option.pillLabel || option.label);
+
+                    const pill = document.createElement('div');
+                    pill.className = 'active-filter-pill';
+                    pill.style.marginRight = '8px';
+                    pill.style.marginBottom = '8px';
+                    pill.innerHTML = `
+                        <span>${pillText}</span>
+                        <button onclick="clearSpecificFilter(${index})">×</button>
+                    `;
+                    activeFilterPill.appendChild(pill);
+                });
+            }
+        }
+
+        function clearSpecificFilter(index) {
+            activeFilters.splice(index, 1);
+            clearSessionState();
+            applyFilters();
+            renderAccordions();
+        }
+
+        function clearAllFilters() {
+            situationFilter.value = '';
+            ipRightsFilter.value = '';
+            activeFilters = [];
+            accordionState = {};
+            clearSessionState();
+            applyFilters();
+            renderAccordions();
+        }
+
+        function updateResultsCount() {
+            resultsCount.textContent = `${filteredStrategies.length} strategies`;
+        }
+
+        // ========================================
+        // RENDERING
+        // ========================================
+        function getRankLabel(score, isSingleFilter) {
+            if (isSingleFilter) {
+                if (score === 0) return { label: 'Not Applicable', subtitle: 'This strategy is fundamentally not applicable based on the filter applied', cssClass: 'not-applicable' };
+                if (score < 1.0) return { label: 'Relevance: Less Likely', subtitle: 'Based on the filter applied', cssClass: 'less-likely' };
+                if (score === 1.0) return { label: 'Relevance: No Effect', subtitle: 'Irrelevant to filter applied', cssClass: 'no-effect' };
+                if (score > 1.0) return { label: 'Relevance: More Likely', subtitle: 'Based on the filter applied', cssClass: 'more-likely' };
+            } else {
+                // Multiple filters - use percentage-based bands
+                if (score === 0) return { label: 'Not Applicable', subtitle: 'Based on filters applied', cssClass: 'not-applicable' };
+                if (score < 0.8) return { label: 'Unlikely Relevant', subtitle: 'Based on filters applied', cssClass: 'less-likely' };
+                if (score < 1.0) return { label: 'Possibly Relevant', subtitle: 'Based on filters applied', cssClass: 'less-likely' };
+                if (score === 1.0) return { label: 'Neutral', subtitle: 'Based on filters applied', cssClass: 'no-effect' };
+                if (score < 1.3) return { label: 'Likely Relevant', subtitle: 'Based on filters applied', cssClass: 'more-likely' };
+                return { label: 'Highly Likely Relevant', subtitle: 'Based on filters applied', cssClass: 'more-likely' };
+            }
+        }
+
+        function renderStrategiesByRank() {
+            if (filteredStrategies.length === 0) {
+                strategiesContainer.innerHTML = `
+                    <div class="no-results">
+                        <h3>No strategies found</h3>
+                        <p>Try adjusting your filters</p>
+                    </div>
+                `;
+                return;
+            }
+
+            const isSingleFilter = activeFilters.length === 1;
+
+            // Group by score
+            const scoreGroups = {};
+            filteredStrategies.forEach(strategy => {
+                const score = strategy.calculatedScore;
+                if (!scoreGroups[score]) {
+                    scoreGroups[score] = [];
+                }
+                scoreGroups[score].push(strategy);
+            });
+
+            const sortedScores = Object.keys(scoreGroups).map(s => parseFloat(s)).sort((a, b) => b - a);
+
+            strategiesContainer.innerHTML = '';
+
+            sortedScores.forEach(score => {
+                const strategies = scoreGroups[score];
+                const rankInfo = getRankLabel(score, isSingleFilter);
+                
+                const rankGroup = document.createElement('div');
+                rankGroup.className = 'rank-group';
+
+                const rankHeader = document.createElement('div');
+                rankHeader.className = 'rank-header';
+                
+                rankHeader.innerHTML = `
+                    <div class="rank-title">
+                        <span class="rank-badge ${rankInfo.cssClass}">${rankInfo.label}</span>
+                        <span style="font-size: 13px; color: #6b7280;">${rankInfo.subtitle}</span>
+                    </div>
+                    <span class="rank-count">${strategies.length} strateg${strategies.length === 1 ? 'y' : 'ies'} • Score: ${score}</span>
+                `;
+                rankGroup.appendChild(rankHeader);
+
+                const strategiesRow = document.createElement('div');
+                strategiesRow.className = 'strategies-row';
+
+                strategies.forEach(strategy => {
+                    const card = createStrategyCard(strategy);
+                    strategiesRow.appendChild(card);
+                });
+
+                rankGroup.appendChild(strategiesRow);
+                strategiesContainer.appendChild(rankGroup);
+            });
+        }
+
+        function createStrategyCard(strategy) {
+            const card = document.createElement('div');
+            card.className = 'strategy-card';
+
+            const isNA = strategy.calculatedScore === 0;
+            const pending = pendingChanges[strategy.id];
+            const isSubmitted = submittedChanges.has(strategy.id);
+            const hasChanged = originalScores[strategy.id] !== strategy.calculatedScore;
+
+            let statusBadge = '';
+            if (isSubmitted) {
+                statusBadge = '<div class="status-badge submitted">✓ Submitted</div>';
+            } else if (hasChanged && pending && !pending.reason.trim()) {
+                statusBadge = '<div class="status-badge pending">⏳ Reason Required</div>';
+            }
+
+            // Generate link to actual strategy page (placeholder - adjust URL as needed)
+            const strategyLink = `https://ipnavigator.com.au/strategy/${strategy.id}`;
+
+            card.innerHTML = `
+                ${statusBadge}
+                <div class="card-header">
+                    ${strategy.overtitle ? `<div class="card-overtitle">${strategy.overtitle}</div>` : ''}
+                    <div class="card-title">${strategy.title}</div>
+                    <div class="card-description">${strategy.description}</div>
+                    <a href="${strategyLink}" target="_blank" class="card-link">View full strategy →</a>
+                </div>
+                <div class="card-controls">
+                    <div class="score-control">
+                        <input type="number" 
+                               class="score-input" 
+                               value="${isNA ? '0' : strategy.calculatedScore}" 
+                               min="0" 
+                               max="3" 
+                               step="0.1" 
+                               onchange="setScore(${strategy.id}, this.value)"
+                               title="Enter score (0-3.0)">
+                        <div class="score-buttons">
+                            <button class="score-btn" onclick="adjustScore(${strategy.id}, 0.1)" title="Increase score" ${isNA ? 'disabled' : ''}>▲</button>
+                            <button class="score-btn" onclick="adjustScore(${strategy.id}, -0.1)" title="Decrease score" ${isNA ? 'disabled' : ''}>▼</button>
+                            <button class="na-btn ${isNA ? 'active' : ''}" onclick="toggleNA(${strategy.id})" title="Mark as Not Applicable">N/A</button>
+                        </div>
+                    </div>
+                    ${hasChanged && !isSubmitted ? `
+                        <textarea 
+                            class="reason-input" 
+                            placeholder="Why are you changing this score? (required)"
+                            onchange="updateReason(${strategy.id}, this.value)"
+                        >${pending ? pending.reason : ''}</textarea>
+                        <button class="submit-reason-btn" 
+                                onclick="submitStrategyChange(${strategy.id})"
+                                ${!pending || !pending.reason.trim() ? 'disabled' : ''}>
+                            Submit Change
+                        </button>
+                        <button class="undo-btn" onclick="undoToOriginal(${strategy.id})">
+                            Undo to Original
+                        </button>
+                    ` : ''}
+                    ${isSubmitted ? `
+                        <button class="undo-btn" onclick="undoToOriginal(${strategy.id})">
+                            Undo to Original
+                        </button>
+                    ` : ''}
+                </div>
+            `;
+
+            return card;
+        }
+
+        function updateReason(strategyId, reason) {
+            if (pendingChanges[strategyId]) {
+                pendingChanges[strategyId].reason = reason;
+                renderStrategiesByRank();
+            }
+        }
+
+        // ========================================
+        // EVENT LISTENERS
+        // ========================================
+        function setupEventListeners() {
+            situationFilter.addEventListener('change', () => {
+                clearSessionState();
+                applyFilters();
+                renderAccordions();
+            });
+            ipRightsFilter.addEventListener('change', () => {
+                clearSessionState();
+                applyFilters();
+                renderAccordions();
+            });
+            clearFilters.addEventListener('click', clearAllFilters);
+        }
+
+        // Make functions globally available
+        window.adjustScore = adjustScore;
+        window.setScore = setScore;
+        window.toggleNA = toggleNA;
+        window.clearSpecificFilter = clearSpecificFilter;
+        window.checkPassword = checkPassword;
+        window.undoToOriginal = undoToOriginal;
+        window.submitStrategyChange = submitStrategyChange;
+        window.updateReason = updateReason;
+
+        // ========================================
+        // INITIALIZATION
+        // ========================================
+        async function init() {
+            const dataLoaded = await loadData();
+            
+            if (!dataLoaded) {
+                strategiesContainer.innerHTML = `
+                    <div class="no-results">
+                        <h3>Failed to load data</h3>
+                        <p>Please check that all data is available</p>
+                    </div>
+                `;
+                return;
+            }
+
+            setupEventListeners();
+            renderAccordions();
+            applyFilters();
+        }
+
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>

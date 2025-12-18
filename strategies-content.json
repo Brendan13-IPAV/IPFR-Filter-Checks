@@ -9,27 +9,22 @@
     "overtitle": "Patent opposition",
     "title": "Challenge a new or amended patent",
     "description": "Initiate a challenge to the validity of a new patent with IP Australia",
-    "costText": "$5000-$50,000+, plus legal fees (often significant)",
-    "effortText": "Months to years",
-    "resolutionText": "<1% of patents are opposed"
+      "contentCardUrl": "https://ipnavigator.com.au/content-card/strategy-1"
+
   },
   {
     "id": 2,
     "overtitle": "Online brand registry",
     "title": "Make sure online platforms are aware of your IP rights.",
     "description": "Register your trade mark with platforms to unlock extra enforcement tools.",
-    "costText": "-",
-    "effortText": "-",
-    "resolutionText": "-"
+      "contentCardUrl": "https://ipnavigator.com.au/content-card/strategy-1"
   },
   {
     "id": 3,
     "overtitle": "Letter of demand",
     "title": "Receiving a letter of demand",
     "description": "B1000 - Understanding what you can do when you receive a letter of demand / cease and desist.",
-    "costText": "-",
-    "effortText": "-",
-    "resolutionText": "-"
+      "contentCardUrl": "https://ipnavigator.com.au/content-card/strategy-1"
   },
   {
     "id": 4,

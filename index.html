@@ -771,7 +771,7 @@
                     <div class="results-count" id="resultsCount">Loading...</div>
                     <div class="control-buttons">
                         <button class="btn btn-secondary" id="clearFilters">🗑️ Clear</button>
-                        <button class="btn btn-primary" id="bulkNoChanges">✓ Mark All as Reviewed</button>
+                        <button class="btn btn-primary" id="bulkNoChanges">✓ All Correct, No Changes</button>
 
                     </div>
                 </div>
@@ -785,6 +785,9 @@
 
             <div class="content-area">
                 <div id="activeFilterPill"></div>
+                <div id="pendingChangesWarning" style="display: none;" class="validation-error">
+    ⚠️ You have unsubmitted changes. Find any cards you moved and submit them.
+</div>
                 <div id="validationError" class="validation-error" style="display: none;"></div>
                 <div id="strategiesContainer">
                     <div class="loading">Loading strategy data...</div>
@@ -1241,21 +1244,31 @@
 
 function updateBulkButtonState() {
     const bulkBtn = document.getElementById('bulkNoChanges');
-    if (!bulkBtn) return;
+    const warningBanner = document.getElementById('pendingChangesWarning');
+    
+    if (!bulkBtn || !warningBanner) return;
     
     const hasAnyChanges = Object.keys(pendingChanges).length > 0 || submittedChanges.size > 0;
+    const hasPendingWithoutReason = Object.values(pendingChanges).some(change => !change.reason.trim());
+    
+    // Show warning if there are pending changes without reasons
+    if (hasPendingWithoutReason) {
+        warningBanner.style.display = 'block';
+    } else {
+        warningBanner.style.display = 'none';
+    }
     
     if (hasAnyChanges) {
         bulkBtn.disabled = true;
         bulkBtn.title = "Cannot mark as reviewed when changes are pending or submitted";
     } else {
         bulkBtn.disabled = false;
-        bulkBtn.title = `Mark all ${filteredStrategies.length} visible strategies as reviewed`;
+        bulkBtn.title = `Mark all ${filteredStrategies.length} visible strategies as correct`;
     }
 }
 
 async function bulkSubmitNoChanges() {
-    if (!confirm(`Mark all ${filteredStrategies.length} visible strategies as reviewed with no changes?`)) {
+if (!confirm(`Confirm all ${filteredStrategies.length} visible options are correctly placed with no changes needed?`)) {
         return;
     }
     
@@ -1276,7 +1289,7 @@ async function bulkSubmitNoChanges() {
     bulkBtn.textContent = '✓ Mark All as Reviewed';
     updateBulkButtonState();
     
-    alert(`Successfully marked ${successCount} strategies as reviewed.`);
+    alert(`Successfully confirmed ${successCount} strategies as correct.`);
 }
 
         async function submitStrategyChange(strategyId) {
@@ -1401,93 +1414,90 @@ async function bulkSubmitNoChanges() {
                 );
             }
 
-            if (topFilters.length > 0) {
-                const topFiltersKey = 'topfilters';
-                const hasActiveTopFilter = hasActiveFilterInGroup(topFilters);
-                
-                const topHeader = document.createElement('div');
-                topHeader.className = 'accordion-header';
-                const activeText = hasActiveTopFilter ? ' ✓' : '';
-                
-                topHeader.innerHTML = `
-                    <span style="display:inline-block; transition: transform 0.3s ease; transform: ${accordionState[topFiltersKey] ? 'rotate(90deg)' : 'rotate(0deg)'};">▶</span>
-                    Additional Filters${activeText}
-                `;
-                
-                topHeader.onclick = () => {
-                    accordionState[topFiltersKey] = !accordionState[topFiltersKey];
-                    renderAccordions();
+ // Render top filters OUTSIDE accordions
+if (topFilters.length > 0) {
+    const topFiltersContainer = document.createElement('div');
+    topFiltersContainer.style.marginBottom = '24px';
+    
+    const topTitle = document.createElement('div');
+    topTitle.style.fontWeight = '700';
+    topTitle.style.fontSize = '16px';
+    topTitle.style.color = '#374151';
+    topTitle.style.marginBottom = '12px';
+    topTitle.style.textTransform = 'uppercase';
+    topTitle.style.letterSpacing = '0.5px';
+    topTitle.textContent = 'Sort Options';
+    topFiltersContainer.appendChild(topTitle);
+    
+    topFilters.forEach(filterKey => {
+        const filterConfig = filterOptions[filterKey];
+        if (!filterConfig) return;
+
+        const group = document.createElement('div');
+        group.style.marginBottom = '20px';
+
+        const label = document.createElement('div');
+        label.className = 'filter-label';
+        label.textContent = filterConfig.label;
+        group.appendChild(label);
+
+        const radioGroup = document.createElement('div');
+        radioGroup.className = 'radio-group';
+
+        filterConfig.options.forEach((option, index) => {
+            const radio = document.createElement('div');
+            radio.className = 'radio-button';
+            
+            if (isFilterActive(filterKey, index)) {
+                radio.classList.add('radio-selected');
+            }
+            
+            const reviewStatus = getFilterReviewStatus(filterKey, option.label);
+            let statusBadge = '';
+            if (reviewStatus) {
+                statusBadge = `<span class="review-status-badge ${reviewStatus.class}">${reviewStatus.text}</span>`;
+            }
+            
+            radio.innerHTML = `${option.label}${statusBadge}`;
+            radio.onclick = () => {
+                const newFilter = {
+                    key: filterKey,
+                    optionIndex: index,
+                    config: filterConfig,
+                    option: option
                 };
                 
-                accordionContainer.appendChild(topHeader);
-
-                if (accordionState[topFiltersKey]) {
-                    const topContent = document.createElement('div');
-                    topContent.className = 'accordion-content';
-                    
-                    topFilters.forEach(filterKey => {
-                        const filterConfig = filterOptions[filterKey];
-                        if (!filterConfig) return;
-
-                        const group = document.createElement('div');
-                        group.style.marginBottom = '20px';
-
-                        const label = document.createElement('div');
-                        label.className = 'filter-label';
-                        label.textContent = filterConfig.label;
-                        group.appendChild(label);
-
-                        const radioGroup = document.createElement('div');
-                        radioGroup.className = 'radio-group';
-
-                        filterConfig.options.forEach((option, index) => {
-                            const radio = document.createElement('div');
-                            radio.className = 'radio-button';
-                            
-                            if (isFilterActive(filterKey, index)) {
-                                radio.classList.add('radio-selected');
-                            }
-                            
-                            const reviewStatus = getFilterReviewStatus(filterKey, option.label);
-                            let statusBadge = '';
-                            if (reviewStatus) {
-                                statusBadge = `<span class="review-status-badge ${reviewStatus.class}">${reviewStatus.text}</span>`;
-                            }
-                            
-                            radio.innerHTML = `${option.label}${statusBadge}`;
-                            radio.onclick = () => {
-                                const newFilter = {
-                                    key: filterKey,
-                                    optionIndex: index,
-                                    config: filterConfig,
-                                    option: option
-                                };
-                                
-                                const existingIndex = activeFilters.findIndex(
-                                    f => f.key === filterKey && f.optionIndex === index
-                                );
-                                
-                                if (existingIndex !== -1) {
-                                    activeFilters.splice(existingIndex, 1);
-                                } else {
-                                    activeFilters = activeFilters.filter(f => f.key !== filterKey);
-                                    activeFilters.push(newFilter);
-                                }
-                                
-                                clearSessionState();
-                                applyFilters();
-                                renderAccordions();
-                            };
-                            radioGroup.appendChild(radio);
-                        });
-
-                        group.appendChild(radioGroup);
-                        topContent.appendChild(group);
-                    });
-                    
-                    accordionContainer.appendChild(topContent);
+                const existingIndex = activeFilters.findIndex(
+                    f => f.key === filterKey && f.optionIndex === index
+                );
+                
+                if (existingIndex !== -1) {
+                    activeFilters.splice(existingIndex, 1);
+                } else {
+                    activeFilters = activeFilters.filter(f => f.key !== filterKey);
+                    activeFilters.push(newFilter);
                 }
-            }
+                
+                clearSessionState();
+                applyFilters();
+                renderAccordions();
+            };
+            radioGroup.appendChild(radio);
+        });
+
+        group.appendChild(radioGroup);
+        topFiltersContainer.appendChild(group);
+    });
+    
+    accordionContainer.appendChild(topFiltersContainer);
+    
+    // Add a divider before accordion sections
+    const divider = document.createElement('div');
+    divider.style.borderTop = '2px solid #e9ecef';
+    divider.style.marginTop = '24px';
+    divider.style.marginBottom = '24px';
+    accordionContainer.appendChild(divider);
+}
 
             Object.entries(accordions).forEach(([accordionTitle, filterKeys]) => {
                 const accordionKey = accordionTitle.toLowerCase().replace(/\s+/g, '');

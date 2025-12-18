@@ -1867,8 +1867,9 @@ strategies.forEach(strategy => {
         strategiesContainer.appendChild(rankGroup);
     });
 }
+        }
 
- function createStrategyCard(strategy, isSingleFilter = true) {
+         function createStrategyCard(strategy, isSingleFilter = true) {
     const card = document.createElement('div');
     card.className = 'strategy-card';
 
@@ -1940,6 +1941,7 @@ strategies.forEach(strategy => {
 
             return card;
         }
+
 function updateReason(strategyId, reason) {
     if (pendingChanges[strategyId]) {
         pendingChanges[strategyId].reason = reason;

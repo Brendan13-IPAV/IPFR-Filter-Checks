@@ -747,7 +747,7 @@
                             <option value="">All Situations</option>
                             <option value="Enforcement">I believe my IP has been infringed</option>
                             <option value="Accused">I've been accused of infringement</option>
-                            <option value="Disagree">I want help on IP processes</option>
+                            <option value="Disagree">I want to understand how IP works</option>
                             <option value="Proactive">I want to prevent future IP headaches</option>
                         </select>
                     </div>
@@ -757,10 +757,12 @@
                             <option value="">All IP Rights</option>
                             <option value="Patent">Patents</option>
                             <option value="Trade mark">Trade marks</option>
+                             <option value="Unregistered-tm">Unegistered trade marks</option>
                             <option value="Design">Design rights</option>
                             <option value="PBR">Plant breeder's rights</option>
                             <option value="Copyright">Copyright</option>
                             <option value="Any dispute">Any IP right</option>
+                            <option value="OtherRights">Other rights</option>
                         </select>
                     </div>
                 </div>
@@ -1685,9 +1687,11 @@ async function bulkSubmitNoChanges() {
         function getRankLabel(score, isSingleFilter, percentile = null) {
             if (isSingleFilter) {
                 if (score === 0) return { label: 'Not Applicable', subtitle: 'This strategy is fundamentally not applicable based on the filter applied', cssClass: 'not-applicable' };
-                if (score < 1.0) return { label: 'Relevance: Less Likely', subtitle: 'Based on the filter applied', cssClass: 'less-likely' };
-                if (score === 1.0) return { label: 'Relevance: No Effect', subtitle: 'Irrelevant to filter applied', cssClass: 'no-effect' };
-                if (score > 1.0) return { label: 'Relevance: More Likely', subtitle: 'Based on the filter applied', cssClass: 'more-likely' };
+                if (score < 0.9) return { label: 'Relevance is unlikely', subtitle: 'Based on the filter applied', cssClass: 'less-likely' };
+                if (score < 1.0) return { label: 'Relevance is less likely', subtitle: 'Based on the filter applied', cssClass: 'less-likely' };
+                if (score === 1.0) return { label: 'Relevance is uneffected', subtitle: 'Irrelevant to filter applied', cssClass: 'no-effect' };
+                if (score > 1.0) return { label: 'Relevance is more likely', subtitle: 'Based on the filter applied', cssClass: 'more-likely' };
+                if (score > 1.2) return { label: 'Relevance is highly likely', subtitle: 'Based on the filter applied', cssClass: 'more-likely' };
             } else {
                 // Multiple filters - use percentile-based bands
                 if (score === 0) return { label: 'Not Applicable', subtitle: 'Based on filters applied', cssClass: 'not-applicable' };
@@ -1697,7 +1701,7 @@ async function bulkSubmitNoChanges() {
                     if (percentile <= 0.20) return { label: 'Relevance: Highly Likely', subtitle: 'Top 20% based on filters applied', cssClass: 'more-likely' };
                     if (percentile <= 0.40) return { label: 'Relevance: Likely', subtitle: 'Top 40% based on filters applied', cssClass: 'more-likely' };
                     if (percentile <= 0.60) return { label: 'Relevance: Possible', subtitle: 'Middle 20% based on filters applied', cssClass: 'no-effect' };
-                    if (percentile <= 0.80) return { label: 'Relevance: Less Likely', subtitle: 'Bottom 40% based on filters applied', cssClass: 'less-likely' };
+                    if (percentile <= 0.80) return { label: 'Relevance: Unlikely', subtitle: 'Bottom 40% based on filters applied', cssClass: 'less-likely' };
                     return { label: 'Relevance: Unlikely', subtitle: 'Bottom 20% based on filters applied', cssClass: 'less-likely' };
                 }
                 

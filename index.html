@@ -1203,7 +1203,8 @@
             return {
                 situationFilter: situationFilter.value || 'All Situations',
                 ipRightsFilter: ipRightsFilter.value || 'All IP Rights',
-                accordionFilters: JSON.stringify(accordionFiltersArray)
+                accordionFilters: JSON.stringify(accordionFiltersArray),
+                filterMode: filterMode // Key returned here
             };
         }
 

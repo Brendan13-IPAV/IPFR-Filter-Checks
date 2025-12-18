@@ -1752,26 +1752,24 @@ if (!isSingleFilter) {
     });
 }
 
-            // Group by score
-            const scoreGroups = {};
-            filteredStrategies.forEach(strategy => {
-                const score = strategy.calculatedScore;
-                if (!scoreGroups[score]) {
-                    scoreGroups[score] = [];
-                }
-                scoreGroups[score].push(strategy);
-            });
+  strategiesContainer.innerHTML = '';
 
-            const sortedScores = Object.keys(scoreGroups).map(s => parseFloat(s)).sort((a, b) => b - a);
+if (isSingleFilter) {
+    // SINGLE FILTER: Group by exact score
+    const scoreGroups = {};
+    filteredStrategies.forEach(strategy => {
+        const score = strategy.calculatedScore;
+        if (!scoreGroups[score]) {
+            scoreGroups[score] = [];
+        }
+        scoreGroups[score].push(strategy);
+    });
 
-            strategiesContainer.innerHTML = '';
+    const sortedScores = Object.keys(scoreGroups).map(s => parseFloat(s)).sort((a, b) => b - a);
 
-            sortedScores.forEach(score => {
-                const strategies = scoreGroups[score];
-                
-                // For multiple filters, use the percentile of the first strategy in this score group
-                const percentile = isSingleFilter ? null : (percentileMap[strategies[0].id] || null);
-                const rankInfo = getRankLabel(score, isSingleFilter, percentile);
+    sortedScores.forEach(score => {
+        const strategies = scoreGroups[score];
+        const rankInfo = getRankLabel(score, true, null);
                 
                 const rankGroup = document.createElement('div');
                 rankGroup.className = 'rank-group';
@@ -1791,53 +1789,125 @@ if (!isSingleFilter) {
                 const strategiesRow = document.createElement('div');
                 strategiesRow.className = 'strategies-row';
 
-                strategies.forEach(strategy => {
-                    const card = createStrategyCard(strategy);
-                    strategiesRow.appendChild(card);
-                });
+strategies.forEach(strategy => {
+    const card = createStrategyCard(strategy, true); // Pass true for isSingleFilter
+    strategiesRow.appendChild(card);
+});
 
                 rankGroup.appendChild(strategiesRow);
                 strategiesContainer.appendChild(rankGroup);
             });
-        }
+     } else {
+    // MULTIPLE FILTERS: Group by percentile band
+    const bands = {
+        'top20': { strategies: [], label: 'Relevance: Highly Likely', subtitle: 'Top 20% based on filters applied', cssClass: 'more-likely' },
+        'top40': { strategies: [], label: 'Relevance: Likely', subtitle: 'Top 40% based on filters applied', cssClass: 'more-likely' },
+        'mid60': { strategies: [], label: 'Relevance: Possible', subtitle: 'Middle 20% based on filters applied', cssClass: 'no-effect' },
+        'bot80': { strategies: [], label: 'Relevance: Unlikely', subtitle: 'Bottom 40% based on filters applied', cssClass: 'less-likely' },
+        'bot100': { strategies: [], label: 'Relevance: Unlikely', subtitle: 'Bottom 20% based on filters applied', cssClass: 'less-likely' },
+        'na': { strategies: [], label: 'Not Applicable', subtitle: 'Based on filters applied', cssClass: 'not-applicable' }
+    };
 
-        function createStrategyCard(strategy) {
-            const card = document.createElement('div');
-            card.className = 'strategy-card';
-
-            const isNA = strategy.calculatedScore === 0;
-            const pending = pendingChanges[strategy.id];
-            const isSubmitted = submittedChanges.has(strategy.id);
-            const hasChanged = originalScores[strategy.id] !== strategy.calculatedScore;
-
-            let statusBadge = '';
-            if (isSubmitted) {
-                statusBadge = '<div class="status-badge submitted">✓ Submitted</div>';
-            } else if (hasChanged && pending && !pending.reason.trim()) {
-                statusBadge = '<div class="status-badge pending">⏳ Reason Required</div>';
+    // Assign each strategy to a band
+    filteredStrategies.forEach(strategy => {
+        if (strategy.calculatedScore === 0) {
+            bands['na'].strategies.push(strategy);
+        } else {
+            const percentile = percentileMap[strategy.id];
+            if (percentile <= 0.20) {
+                bands['top20'].strategies.push(strategy);
+            } else if (percentile <= 0.40) {
+                bands['top40'].strategies.push(strategy);
+            } else if (percentile <= 0.60) {
+                bands['mid60'].strategies.push(strategy);
+            } else if (percentile <= 0.80) {
+                bands['bot80'].strategies.push(strategy);
+            } else {
+                bands['bot100'].strategies.push(strategy);
             }
+        }
+    });
 
-            // Use contentCardUrl from JSON data, fallback to placeholder if not present
-            const strategyLink = strategy.contentCardUrl || `https://ipnavigator.com.au/strategy/${strategy.id}`;
+    // Render each band that has strategies
+    const bandOrder = ['top20', 'top40', 'mid60', 'bot80', 'bot100', 'na'];
+    bandOrder.forEach(bandKey => {
+        const band = bands[bandKey];
+        if (band.strategies.length === 0) return;
 
-            card.innerHTML = `
-                ${statusBadge}
-                <div class="card-header">
-                    ${strategy.overtitle ? `<div class="card-overtitle">${strategy.overtitle}</div>` : ''}
-                    <div class="card-title">${strategy.title}</div>
-                    <div class="card-description">${strategy.description}</div>
-                    <a href="${strategyLink}" target="_blank" class="card-link">Review content card →</a>
-                </div>
-                <div class="card-controls">
-                    <div class="score-control">
-                        <input type="number" 
-                               class="score-input" 
-                               value="${isNA ? '0' : strategy.calculatedScore}" 
-                               min="0" 
-                               max="3" 
-                               step="0.1" 
-                               onchange="setScore(${strategy.id}, this.value)"
-                               title="Enter score (0-3.0)">
+        // Calculate score range for this band
+        const scores = band.strategies.map(s => s.calculatedScore);
+        const minScore = Math.min(...scores).toFixed(2);
+        const maxScore = Math.max(...scores).toFixed(2);
+        const scoreRange = minScore === maxScore ? minScore : `${minScore} - ${maxScore}`;
+
+        const rankGroup = document.createElement('div');
+        rankGroup.className = 'rank-group';
+
+        const rankHeader = document.createElement('div');
+        rankHeader.className = 'rank-header';
+        
+        rankHeader.innerHTML = `
+            <div class="rank-title">
+                <span class="rank-badge ${band.cssClass}">${band.label}</span>
+                <span style="font-size: 13px; color: #6b7280;">${band.subtitle}</span>
+            </div>
+            <span class="rank-count">${band.strategies.length} strateg${band.strategies.length === 1 ? 'y' : 'ies'} • Score range: ${scoreRange}</span>
+        `;
+        rankGroup.appendChild(rankHeader);
+
+        const strategiesRow = document.createElement('div');
+        strategiesRow.className = 'strategies-row';
+
+        band.strategies.forEach(strategy => {
+            const card = createStrategyCard(strategy, false); // Pass false for isSingleFilter
+            strategiesRow.appendChild(card);
+        });
+
+        rankGroup.appendChild(strategiesRow);
+        strategiesContainer.appendChild(rankGroup);
+    });
+}
+
+ function createStrategyCard(strategy, isSingleFilter = true) {
+    const card = document.createElement('div');
+    card.className = 'strategy-card';
+
+    const isNA = strategy.calculatedScore === 0;
+    const pending = pendingChanges[strategy.id];
+    const isSubmitted = submittedChanges.has(strategy.id);
+    const hasChanged = originalScores[strategy.id] !== strategy.calculatedScore;
+
+    // Display score with appropriate decimal places
+    const displayScore = isSingleFilter ? strategy.calculatedScore : strategy.calculatedScore.toFixed(2);
+
+    let statusBadge = '';
+    if (isSubmitted) {
+        statusBadge = '<div class="status-badge submitted">✓ Submitted</div>';
+    } else if (hasChanged && pending && !pending.reason.trim()) {
+        statusBadge = '<div class="status-badge pending">⏳ Reason Required</div>';
+    }
+
+    // Use contentCardUrl from JSON data, fallback to placeholder if not present
+    const strategyLink = strategy.contentCardUrl || `https://ipnavigator.com.au/strategy/${strategy.id}`;
+
+    card.innerHTML = `
+        ${statusBadge}
+        <div class="card-header">
+            ${strategy.overtitle ? `<div class="card-overtitle">${strategy.overtitle}</div>` : ''}
+            <div class="card-title">${strategy.title}</div>
+            <div class="card-description">${strategy.description}</div>
+            <a href="${strategyLink}" target="_blank" class="card-link">Review content card →</a>
+        </div>
+        <div class="card-controls">
+            <div class="score-control">
+                <input type="number" 
+                       class="score-input" 
+                       value="${isNA ? '0' : displayScore}" 
+                       min="0" 
+                       max="3" 
+                       step="0.1" 
+                       onchange="setScore(${strategy.id}, this.value)"
+                       title="Enter score (0-3.0)">
                         <div class="score-buttons">
                             <button class="score-btn" onclick="adjustScore(${strategy.id}, 0.1)" title="Increase score" ${isNA ? 'disabled' : ''}>▲</button>
                             <button class="score-btn" onclick="adjustScore(${strategy.id}, -0.1)" title="Decrease score" ${isNA ? 'disabled' : ''}>▼</button>

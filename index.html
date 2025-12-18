@@ -1690,8 +1690,9 @@ async function bulkSubmitNoChanges() {
                 if (score < 0.9) return { label: 'Relevance is unlikely', subtitle: 'Based on the filter applied', cssClass: 'less-likely' };
                 if (score < 1.0) return { label: 'Relevance is less likely', subtitle: 'Based on the filter applied', cssClass: 'less-likely' };
                 if (score === 1.0) return { label: 'Relevance is uneffected', subtitle: 'Irrelevant to filter applied', cssClass: 'no-effect' };
-                if (score > 1.0) return { label: 'Relevance is more likely', subtitle: 'Based on the filter applied', cssClass: 'more-likely' };
                 if (score > 1.2) return { label: 'Relevance is highly likely', subtitle: 'Based on the filter applied', cssClass: 'more-likely' };
+                if (score > 1.0) return { label: 'Relevance is more likely', subtitle: 'Based on the filter applied', cssClass: 'more-likely' };
+
             } else {
                 // Multiple filters - use percentile-based bands
                 if (score === 0) return { label: 'Not Applicable', subtitle: 'Based on filters applied', cssClass: 'not-applicable' };

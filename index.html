@@ -1195,6 +1195,9 @@
                 key: filter.key,
                 option: filter.option.label
             }));
+
+            // Determine if we are in single or multiple filter mode
+    const filterMode = activeFilters.length > 1 ? 'Multiple' : 'Single';
             
             return {
                 situationFilter: situationFilter.value || 'All Situations',
@@ -1218,6 +1221,7 @@
                 accordionFilters: filterState.accordionFilters,
                 strategyId: strategy.id,
                 strategyTitle: strategy.title,
+                filterMode: filterState.filterMode, // ADD THIS LINE
                 oldScore: String(originalScore),
                 newScore: String(originalScore),
                 reason: 'NO CHANGES NEEDED - Reviewed and agreed with calculated score',
@@ -1320,6 +1324,7 @@ if (!confirm(`Confirm all ${filteredStrategies.length} visible options are corre
                 accordionFilters: filterState.accordionFilters,
                 strategyId: strategy.id,
                 strategyTitle: strategy.title,
+                filterMode: filterState.filterMode,
                 oldScore: String(change.oldScore),            //this captures zeros
                 newScore: String(change.newScore),             //this captures zeros
                 reason: change.reason,

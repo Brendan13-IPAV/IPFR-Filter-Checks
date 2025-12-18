@@ -262,6 +262,32 @@
             box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
         }
 
+        .review-status-badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: 600;
+            margin-left: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .review-status-badge.not-reviewed {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .review-status-badge.few-reviews {
+            background: #fed7aa;
+            color: #7c2d12;
+        }
+
+        .review-status-badge.many-reviews {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
         /* RANK-BASED LAYOUT */
         .rank-group {
             margin-bottom: 32px;
@@ -565,6 +591,24 @@
             background: #d97706;
         }
 
+        .no-changes-btn {
+            width: 100%;
+            margin-top: 8px;
+            padding: 6px 12px;
+            background: #6b7280;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+
+        .no-changes-btn:hover {
+            background: #4b5563;
+        }
+
         .validation-error {
             background: #fef2f2;
             border: 2px solid #fca5a5;
@@ -759,6 +803,7 @@
         let accordionState = {};
         let filterOptions = {};
         let accordionPresets = {};
+        let filterReviewStatus = {}; // Track which filters have been reviewed
         let currentUserName = '';
         let currentUserType = '';
         let originalScores = {}; // Store original calculated scores
@@ -770,6 +815,7 @@
             strategiesMetadata: null,
             filterOptions: null,
             accordionPresets: null,
+            filterReviewStatus: null,
             loadTimestamp: null
         };
 
@@ -807,7 +853,8 @@
                         Strategies: ${dataVersions.strategiesContent} | 
                         Metadata: ${dataVersions.strategiesMetadata} | 
                         Filters: ${dataVersions.filterOptions} | 
-                        Presets: ${dataVersions.accordionPresets}
+                        Presets: ${dataVersions.accordionPresets} | 
+                        Reviews: ${dataVersions.filterReviewStatus}
                     </div>
                 `;
             }
@@ -912,17 +959,19 @@
         // ========================================
         async function loadData() {
             try {
-                const [strategiesContentData, strategiesMetadataData, filterOptionsData, accordionPresetsData] = await Promise.all([
+                const [strategiesContentData, strategiesMetadataData, filterOptionsData, accordionPresetsData, filterReviewData] = await Promise.all([
                     fetch('strategies-content.json').then(res => res.json()),
                     fetch('strategies-metadata.json').then(res => res.json()),
                     fetch('filterOptions.json').then(res => res.json()),
-                    fetch('accordionPresets.json').then(res => res.json())
+                    fetch('accordionPresets.json').then(res => res.json()),
+                    fetch('filter-review-status.json').then(res => res.json()).catch(() => ({ filters: {} })) // Optional file
                 ]);
 
                 dataVersions.strategiesContent = strategiesContentData.version || 'unversioned';
                 dataVersions.strategiesMetadata = strategiesMetadataData.version || 'unversioned';
                 dataVersions.filterOptions = filterOptionsData.version || 'unversioned';
                 dataVersions.accordionPresets = accordionPresetsData.version || 'unversioned';
+                dataVersions.filterReviewStatus = filterReviewData.version || 'unversioned';
                 dataVersions.loadTimestamp = new Date().toISOString();
 
                 const strategiesContent = strategiesContentData.strategies || strategiesContentData;
@@ -943,6 +992,9 @@
                     }
                 });
 
+                // Load filter review status
+                filterReviewStatus = filterReviewData.filters || {};
+
                 allStrategies = strategiesContent.map(content => {
                     const metadata = strategiesMetadata.find(meta => meta.id === content.id);
                     return { ...content, ...metadata };
@@ -959,6 +1011,26 @@
             } catch (error) {
                 console.error('Error loading data:', error);
                 return false;
+            }
+        }
+
+        // ========================================
+        // FILTER REVIEW STATUS
+        // ========================================
+        function getFilterReviewStatus(filterKey, optionLabel) {
+            if (!filterReviewStatus[filterKey]) return null;
+            
+            const optionStatus = filterReviewStatus[filterKey][optionLabel];
+            if (!optionStatus) return null;
+            
+            const count = optionStatus.review_count || 0;
+            
+            if (count === 0) {
+                return { text: 'Not reviewed yet', class: 'not-reviewed', count: 0 };
+            } else if (count <= 2) {
+                return { text: `Reviewed ${count} time${count > 1 ? 's' : ''}`, class: 'few-reviews', count: count };
+            } else {
+                return { text: `Reviewed ${count} times`, class: 'many-reviews', count: count };
             }
         }
 
@@ -1043,7 +1115,15 @@
         }
 
         function undoToOriginal(strategyId) {
+            const strategy = filteredStrategies.find(s => s.id === strategyId);
             const originalScore = originalScores[strategyId];
+            const currentScore = strategy ? strategy.calculatedScore : originalScore;
+            
+            // Log the undo if the score had been changed
+            if (submittedChanges.has(strategyId) && currentScore !== originalScore) {
+                logUndoAction(strategyId, currentScore, originalScore);
+            }
+            
             setScore(strategyId, originalScore);
             
             // Remove from pending and submitted
@@ -1051,6 +1131,45 @@
             submittedChanges.delete(strategyId);
             
             renderStrategiesByRank();
+        }
+
+        async function logUndoAction(strategyId, fromScore, toScore) {
+            const strategy = filteredStrategies.find(s => s.id === strategyId);
+            if (!strategy) return;
+
+            const filterState = collectFilterState();
+            
+            const payload = {
+                userName: currentUserName,
+                userType: currentUserType,
+                situationFilter: filterState.situationFilter,
+                ipRightsFilter: filterState.ipRightsFilter,
+                accordionFilters: filterState.accordionFilters,
+                strategyId: strategy.id,
+                strategyTitle: strategy.title,
+                oldScore: fromScore,
+                newScore: toScore,
+                reason: 'UNDO TO ORIGINAL POSITION - User reverted their previous change',
+                sessionId: TELEMETRY_CONFIG.sessionId,
+                strategiesVersion: dataVersions.strategiesContent,
+                metadataVersion: dataVersions.strategiesMetadata,
+                filtersVersion: dataVersions.filterOptions,
+                presetsVersion: dataVersions.accordionPresets,
+                dataLoadTimestamp: dataVersions.loadTimestamp
+            };
+            
+            try {
+                await fetch(TELEMETRY_CONFIG.sheetURL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(payload)
+                });
+            } catch (error) {
+                console.error('Error logging undo:', error);
+            }
         }
 
         // ========================================
@@ -1067,6 +1186,53 @@
                 ipRightsFilter: ipRightsFilter.value || 'All IP Rights',
                 accordionFilters: JSON.stringify(accordionFiltersArray)
             };
+        }
+
+        async function submitNoChangesNeeded(strategyId) {
+            const strategy = filteredStrategies.find(s => s.id === strategyId);
+            if (!strategy) return false;
+
+            const filterState = collectFilterState();
+            const originalScore = originalScores[strategyId];
+            
+            const payload = {
+                userName: currentUserName,
+                userType: currentUserType,
+                situationFilter: filterState.situationFilter,
+                ipRightsFilter: filterState.ipRightsFilter,
+                accordionFilters: filterState.accordionFilters,
+                strategyId: strategy.id,
+                strategyTitle: strategy.title,
+                oldScore: originalScore,
+                newScore: originalScore,
+                reason: 'NO CHANGES NEEDED - Reviewed and agreed with calculated score',
+                sessionId: TELEMETRY_CONFIG.sessionId,
+                strategiesVersion: dataVersions.strategiesContent,
+                metadataVersion: dataVersions.strategiesMetadata,
+                filtersVersion: dataVersions.filterOptions,
+                presetsVersion: dataVersions.accordionPresets,
+                dataLoadTimestamp: dataVersions.loadTimestamp
+            };
+            
+            try {
+                await fetch(TELEMETRY_CONFIG.sheetURL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(payload)
+                });
+                
+                submittedChanges.add(strategyId);
+                renderStrategiesByRank();
+                return true;
+                
+            } catch (error) {
+                console.error('Error sending telemetry:', error);
+                alert('Failed to submit review. Please try again.');
+                return false;
+            }
         }
 
         async function submitStrategyChange(strategyId) {
@@ -1236,7 +1402,13 @@
                                 radio.classList.add('radio-selected');
                             }
                             
-                            radio.textContent = option.label;
+                            const reviewStatus = getFilterReviewStatus(filterKey, option.label);
+                            let statusBadge = '';
+                            if (reviewStatus) {
+                                statusBadge = `<span class="review-status-badge ${reviewStatus.class}">${reviewStatus.text}</span>`;
+                            }
+                            
+                            radio.innerHTML = `${option.label}${statusBadge}`;
                             radio.onclick = () => {
                                 const newFilter = {
                                     key: filterKey,
@@ -1318,7 +1490,13 @@
                                 radio.classList.add('radio-selected');
                             }
                             
-                            radio.textContent = option.label;
+                            const reviewStatus = getFilterReviewStatus(filterKey, option.label);
+                            let statusBadge = '';
+                            if (reviewStatus) {
+                                statusBadge = `<span class="review-status-badge ${reviewStatus.class}">${reviewStatus.text}</span>`;
+                            }
+                            
+                            radio.innerHTML = `${option.label}${statusBadge}`;
                             radio.onclick = () => {
                                 const newFilter = {
                                     key: filterKey,
@@ -1458,20 +1636,27 @@
         // ========================================
         // RENDERING
         // ========================================
-        function getRankLabel(score, isSingleFilter) {
+        function getRankLabel(score, isSingleFilter, percentile = null) {
             if (isSingleFilter) {
                 if (score === 0) return { label: 'Not Applicable', subtitle: 'This strategy is fundamentally not applicable based on the filter applied', cssClass: 'not-applicable' };
                 if (score < 1.0) return { label: 'Relevance: Less Likely', subtitle: 'Based on the filter applied', cssClass: 'less-likely' };
                 if (score === 1.0) return { label: 'Relevance: No Effect', subtitle: 'Irrelevant to filter applied', cssClass: 'no-effect' };
                 if (score > 1.0) return { label: 'Relevance: More Likely', subtitle: 'Based on the filter applied', cssClass: 'more-likely' };
             } else {
-                // Multiple filters - use percentage-based bands
+                // Multiple filters - use percentile-based bands
                 if (score === 0) return { label: 'Not Applicable', subtitle: 'Based on filters applied', cssClass: 'not-applicable' };
-                if (score < 0.8) return { label: 'Unlikely Relevant', subtitle: 'Based on filters applied', cssClass: 'less-likely' };
-                if (score < 1.0) return { label: 'Possibly Relevant', subtitle: 'Based on filters applied', cssClass: 'less-likely' };
-                if (score === 1.0) return { label: 'Neutral', subtitle: 'Based on filters applied', cssClass: 'no-effect' };
-                if (score < 1.3) return { label: 'Likely Relevant', subtitle: 'Based on filters applied', cssClass: 'more-likely' };
-                return { label: 'Highly Likely Relevant', subtitle: 'Based on filters applied', cssClass: 'more-likely' };
+                
+                // Use percentile to determine band
+                if (percentile !== null) {
+                    if (percentile <= 0.20) return { label: 'Relevance: Highly Likely', subtitle: 'Top 20% based on filters applied', cssClass: 'more-likely' };
+                    if (percentile <= 0.40) return { label: 'Relevance: Likely', subtitle: 'Top 40% based on filters applied', cssClass: 'more-likely' };
+                    if (percentile <= 0.60) return { label: 'Relevance: Possible', subtitle: 'Middle 20% based on filters applied', cssClass: 'no-effect' };
+                    if (percentile <= 0.80) return { label: 'Relevance: Less Likely', subtitle: 'Bottom 40% based on filters applied', cssClass: 'less-likely' };
+                    return { label: 'Relevance: Unlikely', subtitle: 'Bottom 20% based on filters applied', cssClass: 'less-likely' };
+                }
+                
+                // Fallback if percentile not provided (shouldn't happen)
+                return { label: 'Relevance: Unknown', subtitle: 'Based on filters applied', cssClass: 'no-effect' };
             }
         }
 
@@ -1487,6 +1672,23 @@
             }
 
             const isSingleFilter = activeFilters.length === 1;
+
+            // For multiple filters, calculate percentiles
+            let percentileMap = {};
+            if (!isSingleFilter) {
+                // Separate non-zero scores and sort them
+                const nonZeroStrategies = filteredStrategies.filter(s => s.calculatedScore !== 0);
+                const sortedScores = nonZeroStrategies
+                    .map(s => s.calculatedScore)
+                    .sort((a, b) => b - a); // Descending order
+                
+                // Calculate percentile for each strategy
+                nonZeroStrategies.forEach(strategy => {
+                    const rank = sortedScores.indexOf(strategy.calculatedScore);
+                    const percentile = (rank + 1) / sortedScores.length;
+                    percentileMap[strategy.id] = percentile;
+                });
+            }
 
             // Group by score
             const scoreGroups = {};
@@ -1504,7 +1706,10 @@
 
             sortedScores.forEach(score => {
                 const strategies = scoreGroups[score];
-                const rankInfo = getRankLabel(score, isSingleFilter);
+                
+                // For multiple filters, use the percentile of the first strategy in this score group
+                const percentile = isSingleFilter ? null : (percentileMap[strategies[0].id] || null);
+                const rankInfo = getRankLabel(score, isSingleFilter, percentile);
                 
                 const rankGroup = document.createElement('div');
                 rankGroup.className = 'rank-group';
@@ -1550,8 +1755,8 @@
                 statusBadge = '<div class="status-badge pending">⏳ Reason Required</div>';
             }
 
-            // Generate link to actual strategy page (placeholder - adjust URL as needed)
-            const strategyLink = `https://ipnavigator.com.au/strategy/${strategy.id}`;
+            // Use contentCardUrl from JSON data, fallback to placeholder if not present
+            const strategyLink = strategy.contentCardUrl || `https://ipnavigator.com.au/strategy/${strategy.id}`;
 
             card.innerHTML = `
                 ${statusBadge}
@@ -1559,7 +1764,7 @@
                     ${strategy.overtitle ? `<div class="card-overtitle">${strategy.overtitle}</div>` : ''}
                     <div class="card-title">${strategy.title}</div>
                     <div class="card-description">${strategy.description}</div>
-                    <a href="${strategyLink}" target="_blank" class="card-link">View full strategy →</a>
+                    <a href="${strategyLink}" target="_blank" class="card-link">Review content card →</a>
                 </div>
                 <div class="card-controls">
                     <div class="score-control">
@@ -1581,7 +1786,7 @@
                         <textarea 
                             class="reason-input" 
                             placeholder="Why are you changing this score? (required)"
-                            onchange="updateReason(${strategy.id}, this.value)"
+                            oninput="updateReason(${strategy.id}, this.value)"
                         >${pending ? pending.reason : ''}</textarea>
                         <button class="submit-reason-btn" 
                                 onclick="submitStrategyChange(${strategy.id})"
@@ -1589,12 +1794,17 @@
                             Submit Change
                         </button>
                         <button class="undo-btn" onclick="undoToOriginal(${strategy.id})">
-                            Undo to Original
+                            Undo to Original Position
                         </button>
                     ` : ''}
                     ${isSubmitted ? `
                         <button class="undo-btn" onclick="undoToOriginal(${strategy.id})">
-                            Undo to Original
+                            Undo to Original Position
+                        </button>
+                    ` : ''}
+                    ${!hasChanged && !isSubmitted ? `
+                        <button class="no-changes-btn" onclick="submitNoChangesNeeded(${strategy.id})">
+                            No Changes Needed - Mark as Reviewed
                         </button>
                     ` : ''}
                 </div>
@@ -1635,6 +1845,7 @@
         window.checkPassword = checkPassword;
         window.undoToOriginal = undoToOriginal;
         window.submitStrategyChange = submitStrategyChange;
+        window.submitNoChangesNeeded = submitNoChangesNeeded;
         window.updateReason = updateReason;
 
         // ========================================

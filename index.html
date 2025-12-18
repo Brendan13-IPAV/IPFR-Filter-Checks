@@ -14,7 +14,8 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+           
+            background: linear-gradient(135deg, #7B93A8 0%, #2C3E50 100%);
             min-height: 100vh;
             color: #333;
         }
@@ -713,6 +714,13 @@
     cursor: not-allowed;
     transform: none;
 }
+        .header-instructions {
+    max-width: 800px; /* Prevents text from spanning the whole screen */
+    line-height: 1.5;
+    color: #4b5563;
+    font-size: 1rem;
+    margin-bottom: 20px;
+}
     </style>
 </head>
     
@@ -739,8 +747,12 @@
     <div class="container">
         <div class="header">
             <h1>IP First Response - Navigator Review Platform</h1>
-            <p>Please review and submit your proposed changes to the IP First Response navigator tool. Choose a filter a user can select and confirm or suggest changes to how relevant a content card is to that filter — either more, less, or has no effect. Submit changes for review and implementation into the live IP First Response navigator.</p>
-            <div id="versionDisplay"></div>
+<p class="header-instructions">
+        Help us fine-tune the IP First Response Navigator:<br><br>
+        1. Select a filter from the sidebar.<br>
+        2. Review the strategies and adjust their relevance (More, Less, or No Effect).<br>
+        3. Submit your changes for implementation into the live tool.
+    </p>            <div id="versionDisplay"></div>
             
             <div class="header-controls">
                 <div class="user-greeting">

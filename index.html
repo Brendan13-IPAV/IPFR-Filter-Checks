@@ -377,16 +377,15 @@
             background: linear-gradient(135deg, #667eea, #764ba2);
         }
 
-        .status-badge {
-            position: absolute;
-            top: 12px;
-            right: 12px;
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 11px;
-            font-weight: 700;
-            z-index: 10;
-        }
+.status-badge {
+    display: block;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    text-align: center;
+}
 
         .status-badge.pending {
             background: #fef3c7;
@@ -1150,8 +1149,8 @@
                 accordionFilters: filterState.accordionFilters,
                 strategyId: strategy.id,
                 strategyTitle: strategy.title,
-                oldScore: fromScore,
-                newScore: toScore,
+                oldScore: String(fromScore),
+                newScore: String(toScore),
                 reason: 'UNDO TO ORIGINAL POSITION - User reverted their previous change',
                 sessionId: TELEMETRY_CONFIG.sessionId,
                 strategiesVersion: dataVersions.strategiesContent,
@@ -1206,8 +1205,8 @@
                 accordionFilters: filterState.accordionFilters,
                 strategyId: strategy.id,
                 strategyTitle: strategy.title,
-                oldScore: originalScore,
-                newScore: originalScore,
+                oldScore: String(originalScore),
+                newScore: String(originalScore),
                 reason: 'NO CHANGES NEEDED - Reviewed and agreed with calculated score',
                 sessionId: TELEMETRY_CONFIG.sessionId,
                 strategiesVersion: dataVersions.strategiesContent,
@@ -1297,8 +1296,8 @@ async function bulkSubmitNoChanges() {
                 accordionFilters: filterState.accordionFilters,
                 strategyId: strategy.id,
                 strategyTitle: strategy.title,
-                oldScore: change.oldScore,
-                newScore: change.newScore,
+                oldScore: String(change.oldScore),            //this captures zeros
+                newScore: String(change.newScore),             //this captures zeros
                 reason: change.reason,
                 sessionId: TELEMETRY_CONFIG.sessionId,
                 strategiesVersion: dataVersions.strategiesContent,

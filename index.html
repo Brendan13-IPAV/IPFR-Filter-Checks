@@ -1051,6 +1051,7 @@
         // VALIDATION - turned off as it was previous version of tool
         // ========================================
         function validateRankDistribution() {
+            return true; // <--- Add this line to bypass the warning logic
             const scores = filteredStrategies.map(s => s.calculatedScore);
             const uniqueScoresAbove1_2 = [...new Set(scores.filter(s => s > 1.2))];
             
@@ -1606,6 +1607,16 @@ if (topFilters.length > 0) {
             const selectedSituation = situationFilter.value;
             const selectedIPRight = ipRightsFilter.value;
 
+            // ADD THIS: If either primary filter is missing, show nothing
+    if (!selectedSituation || !selectedIPRight) {
+        filteredStrategies = [];
+        updateActiveFilterDisplay();
+        updateResultsCount();
+        renderStrategiesByRank();
+        updateBulkButtonState();
+        return; 
+    }
+
             filteredStrategies = allStrategies.filter(strategy => {
                 if (selectedSituation && strategy.responseType) {
                     if (!strategy.responseType.includes(selectedSituation)) {
@@ -1739,6 +1750,23 @@ if (topFilters.length > 0) {
                 `;
                 return;
             }
+
+            // ADD THIS: If no accordion filters are selected, show a plain list
+    if (activeFilters.length === 0) {
+        strategiesContainer.innerHTML = '';
+        const plainRow = document.createElement('div');
+        plainRow.className = 'strategies-row';
+        
+        // Shuffle for randomness as requested
+        const randomList = [...filteredStrategies].sort(() => Math.random() - 0.5);
+        
+        randomList.forEach(strategy => {
+            const card = createStrategyCard(strategy, true);
+            plainRow.appendChild(card);
+        });
+        strategiesContainer.appendChild(plainRow);
+        return; 
+    }
 
             const isSingleFilter = activeFilters.length === 1;
 

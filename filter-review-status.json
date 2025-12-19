@@ -1,12 +1,11 @@
 {
   "version": "1.0.0",
-  "lastUpdated": "2024-12-18",
-  "description": "Tracks which filters have been reviewed. Update review_count manually after analysing Google Sheets submissions.",
-  
+  "lastUpdated": "2025-12-19",
+  "description": "",
   "filters": {
     "Jurisdiction": {
       "IP Australia only": {
-        "review_count": 3,
+        "review_count": 0,
         "last_reviewed": null,
         "notes": ""
       },
@@ -21,51 +20,47 @@
         "notes": ""
       }
     },
-    
     "ProcessStage": {
-      "Initial attempts": {
-        "review_count": 2,
+      "Initial Attempts": {
+        "review_count": 0,
         "last_reviewed": null,
         "notes": ""
       },
       "Ongoing attempts": {
-        "review_count": 1,
+        "review_count": 0,
         "last_reviewed": null,
         "notes": ""
       },
       "Final attempts": {
-        "review_count": 6,
+        "review_count": 0,
         "last_reviewed": null,
         "notes": ""
       }
     },
-    
     "howCommon": {
       "Commonly used": {
         "review_count": 0,
         "last_reviewed": null,
         "notes": ""
       },
-      "Specialised options": {
+      "Specialised option": {
         "review_count": 0,
         "last_reviewed": null,
         "notes": ""
       }
     },
-    
     "Adversarial": {
       "Less confrontation": {
         "review_count": 0,
         "last_reviewed": null,
         "notes": ""
       },
-      "Adversarial approaches": {
+      "Adverserial approaches": {
         "review_count": 0,
         "last_reviewed": null,
         "notes": ""
       }
     },
-    
     "businessRelationship": {
       "Ongoing relationship": {
         "review_count": 0,
@@ -83,9 +78,8 @@
         "notes": ""
       }
     },
-    
     "Negotiated": {
-      "Encourage negotiation": {
+      "Encourage negoatiation": {
         "review_count": 0,
         "last_reviewed": null,
         "notes": ""
@@ -96,7 +90,6 @@
         "notes": ""
       }
     },
-    
     "GoalsAccused": {
       "Get expert help": {
         "review_count": 0,
@@ -124,14 +117,13 @@
         "notes": ""
       }
     },
-    
     "TargetIssues": {
       "Online marketplaces": {
         "review_count": 0,
         "last_reviewed": null,
         "notes": ""
       },
-      "International issues": {
+      "International Issues": {
         "review_count": 0,
         "last_reviewed": null,
         "notes": ""
@@ -157,7 +149,6 @@
         "notes": ""
       }
     },
-    
     "LikelyHeadacheContext": {
       "Online": {
         "review_count": 0,
@@ -175,7 +166,6 @@
         "notes": ""
       }
     },
-    
     "IPGoals": {
       "Strengthen my position": {
         "review_count": 0,
@@ -203,7 +193,6 @@
         "notes": ""
       }
     },
-    
     "InfoNeeded": {
       "Consider international issues": {
         "review_count": 0,
@@ -215,35 +204,34 @@
         "last_reviewed": null,
         "notes": ""
       },
-      "Deal with problems": {
+      "Deal with IP problems": {
         "review_count": 0,
         "last_reviewed": null,
         "notes": ""
       },
-      "Understand IP Australia processes": {
+      "IPA Processes": {
         "review_count": 0,
         "last_reviewed": null,
         "notes": ""
       },
-      "Use IP in business": {
+      "Using IP in business": {
         "review_count": 0,
         "last_reviewed": null,
         "notes": ""
       },
-      "Get help with IP": {
+      "Get help": {
         "review_count": 0,
         "last_reviewed": null,
         "notes": ""
       }
     },
-    
     "YourTMStatus": {
       "Registered": {
         "review_count": 0,
         "last_reviewed": null,
         "notes": ""
       },
-      "Not registered": {
+      "Not Registered": {
         "review_count": 0,
         "last_reviewed": null,
         "notes": ""
@@ -269,14 +257,13 @@
         "notes": ""
       }
     },
-    
     "theirTMRights": {
       "Registered": {
         "review_count": 0,
         "last_reviewed": null,
         "notes": ""
       },
-      "None found": {
+      "None Found": {
         "review_count": 0,
         "last_reviewed": null,
         "notes": ""
@@ -307,9 +294,8 @@
         "notes": ""
       }
     },
-    
     "YourPatStatus": {
-      "No patent": {
+      "No Patent": {
         "review_count": 0,
         "last_reviewed": null,
         "notes": ""
@@ -345,7 +331,6 @@
         "notes": ""
       }
     },
-    
     "theirPatent": {
       "Granted": {
         "review_count": 0,
@@ -388,7 +373,6 @@
         "notes": ""
       }
     },
-    
     "YourDesStatus": {
       "Registered": {
         "review_count": 0,
@@ -421,7 +405,6 @@
         "notes": ""
       }
     },
-    
     "YourPBRStatus": {
       "Granted": {
         "review_count": 0,
@@ -455,7 +438,6 @@
       }
     }
   },
-  
   "_instructions": {
     "how_to_update": "After reviewing Google Sheets submissions, manually update the review_count for each filter option that has been reviewed.",
     "review_count": "Number of distinct review sessions (not individual strategy changes)",

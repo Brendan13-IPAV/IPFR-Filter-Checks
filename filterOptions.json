@@ -1,5 +1,5 @@
 {
-  "version": "10.0.1",
+  "version": "10.0.2",
   "lastUpdated": "2025-12-19",
   "filters": {
 
@@ -12,7 +12,7 @@
         { "label": "Both Australian and overseas IP offices", "pillLabel": "International and Australian IP", "scoringValues":[1.2,1,1.2,1.2,0,1.2,1.3,1,1,1,1,0,1,1.1,1.2,1.2,1,1,0,0,1,1,1.2,1,1,1,1,1,1.2,1.2,1.2,1,1,1,1,1.2,1.2,1,1,1,1.2,1.2,1.2,1.2,1.2,1.2,1,1.2,1.2,1.3,1.2,1,1,1.2,1,1.2,1.2,1,1.3,1.2,1.2,1.2,1.2,1,1,0,0,0,0,1,1.1,0,0.8,1.2,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1.1,1.1,1.1,1.1,1.1,1.1,0,0,0] }
       ]
     },
-    ""ProcessStage"": {
+    "ProcessStage": {
       "label": "Sort options by resolution stage",
       "pillTemplate": "Prioritising {optionLabel} resolution attempts",
       "options": [
@@ -21,7 +21,7 @@
         { "label": "Final attempts", "pillLabel": "final", "scoringValues":[1,0,0.8,0.9,0,0.9,1.4,0.8,1,1,1,0,1.2,0.9,0.9,1.2,1.2,1,0,0,0,0,0,0,1,0,0,0,0,0,1,1,1.2,0,1.2,1.2,1,1,1,1,1,1,1,1.2,0.9,0.6,0,1.1,0.9,1,1,0,0,0,0,0,1,1.1,0,1.4,1,0.8,0.9,0,0,0,0,0,0,1.1,1.1,0,0.9,1,1,0.8,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.6,0.6,0.6,0.6,0.6,0.6,0,0,0] }
       ]
     },
-    ""howCommon"": {
+    "howCommon": {
       "label": "Sort by frequency of use",
       "pillTemplate": "Prioritising {optionLabel}",
       "options": [
@@ -29,7 +29,7 @@
         { "label": "Specialised option", "pillLabel": "highly specialised strategies", "scoringValues":[1.2,1,1,1,0,1,1.2,1,1.2,1.2,1.2,0,1.2,1.2,1,1.2,1.2,1.2,0,0,1,1,1,1,1,1,1.2,0.8,1.2,1.2,1.2,1.2,1.2,1,1.2,1,1.2,1.2,1.2,1,1,1,1,1.2,1,1,1,1,1,1,1,1,1,1,1,1.2,1.2,1.2,1.3,1.2,1.2,1,1,1,1,0,0,0,0,1.2,1.2,0,1,0.9,1.2,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,0,0,0] }
       ]
     },
-    ""Adversarial"": {
+    "Adversarial": {
       "label": "Favour options that involve:",
       "pillTemplate": "Prioritising: {optionLabel}",
       "options": [
@@ -37,7 +37,7 @@
         { "label": "Adverserial approaches", "pillLabel": "More confrontational options", "scoringValues":[1.2,0,1.1,1,0,1,1.2,1,1,1,1,0,1,0.9,1,1.2,1.2,1,0,0,0,0,0,0,1,0,0,0,0,0,1.2,1,1.2,0,1.2,1,1,1,1,1,1,1,1,1.2,1.1,1,0,1,1,1,1,0,0,0,0,0,1,1,0,1.2,1,1,1,0,0,0,0,0,0,1,1,0,1,0.8,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,0,0,0] }
       ]
     },
-    ""businessRelationship"": {
+    "businessRelationship": {
       "label": "Favour options based on my relationship with other party",
       "pillTemplate": "Options suited to {optionLabel} business relationship",
       "options": [
@@ -46,7 +46,7 @@
         { "label": "No relationship", "pillLabel": "no expectation of a", "scoringValues":[1.2,0,1,1,0,1,1,1,1.2,1,1,0,1.2,1.1,1,1,1,1.2,0,0,0,0,0,0,1.2,0,0,0,0,0,1.2,1.2,1.2,0,1.2,1,1,1.2,1.2,1,1,1,1,1,1.1,1,0,1,1.2,1,1,0,0,0,0,0,1.2,1.2,0,1,1,1,1,0,0,0,0,0,0,1.1,1.1,0,1,1.2,1.2,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,0,0,0] }
       ]
     },
-    ""Negotiated"": {
+    "Negotiated": {
       "label": "Favour options that:",
       "pillTemplate": "{optionLabel}",
       "options": [
@@ -54,7 +54,7 @@
         { "label": "Avoid negotiation", "pillLabel": "Avoiding negotiation", "scoringValues":[1.1,0,1.1,1.1,0,1,1.1,1.2,1.1,1.1,1.1,0,1.1,1.2,1,1.2,1.2,1.2,0,0,0,0,0,0,1.2,0,0,0,0,0,1,1.2,1.2,0,1.2,1,1,1.1,1.2,1.2,1,1,1,1.2,1.1,1,0,1,1.2,1.1,1.2,0,0,0,0,0,1.2,1.2,0,1.1,1.1,1.2,1.2,0,0,0,0,0,0,1,1,0,1.2,1.2,1.1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,0,0,0] }
       ]
     },
-    ""GoalsAccused"": {
+    "GoalsAccused": {
       "label": "Your desired outcome",
       "pillTemplate": "Prioritising options which {optionLabel}",
       "options": [
@@ -65,7 +65,7 @@
         { "label": "Understand the issue", "pillLabel": "help you understand your position better", "scoringValues":[1,0,1.2,1.2,0,1.2,1.2,1,1,1.2,1.2,0,1,0.8,1.2,1,1,1,0,0,0,0,0,0,1,0,0,0,0,0,1,1,1,0,1,1,1,1,1,1.2,1,1,1,1,1,1,0,1,1,1.2,1,0,0,0,0,0,1,1,0,1,1,1,1,0,0,0,0,0,0,1,1,0,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1.4,1.4,1.4,1.4,1.4,1.4,0,0,0] }
       ]
     },
-    ""TargetIssues"": {
+    "TargetIssues": {
       "label": "Favour options that focus on:",
       "pillTemplate": "Options for {optionLabel}",
       "options": [
@@ -77,7 +77,7 @@
         { "label": "Unreachable parties", "pillLabel": "parties whom I can't contact", "scoringValues":[1.2,0,0,1.2,0,1,1.2,1,1.2,1.2,1.2,0,1.2,1.2,0,0,0,1.2,0,0,0,0,0,0,1.2,0,0,0,0,0,0,1.2,0,0,0,0,0,1,1.2,1.2,0,0,0,0,0,0,0,0,1.2,1,1.2,0,0,0,0,0,1.2,1.2,0,1.2,1.2,1.2,1.2,0,0,0,0,0,0,1.2,1.2,0,1.2,1.2,1.1,1.1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,0,0,0] }
       ]
     },
-    ""LikelyHeadacheContext"": {
+    "LikelyHeadacheContext": {
       "label": "Expected context to include:",
       "pillTemplate": "Options for {optionLabel}",
       "options": [
@@ -86,7 +86,7 @@
         { "label": "Importation to Australia", "pillLabel": "importation", "scoringValues":[1,1.2,0,0,0,0,0,0,1,0,0,1,0,0,0,0,0,0,0,0,1,1.2,1,1,1,1.2,1,1,1,1,0,1,0,1,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,1,1,1,1,1,0,1.2,1,0,0,0,0,1.1,1,0,0,0,0,0,0,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0] }
       ]
     },
-    ""IPGoals"": {
+    "IPGoals": {
       "label": "I'm trying to",
       "pillTemplate": "Prioritising options {optionLabel}",
       "options": [
@@ -97,7 +97,7 @@
         { "label": "Apply for IP", "pillLabel": "which help you secure formal IP protection", "scoringValues":[1,1,0,0,0,0,0,0,1,0,0,1.4,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1.4,1,1,0,1.2,0,1.2,0,0,0,0,0,1,0,0,0,0,0,0,1.2,0,0,0,0,1,1.2,1.2,1.2,1,0,1,1.1,0,0,0,0,1.1,1.2,0,0,0,0,0,0,0,1.2,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0] }
       ]
     },
-    ""InfoNeeded"": {
+    "InfoNeeded": {
       "label": "I want to",
       "pillTemplate": "I want to {optionLabel}",
       "options": [
@@ -109,7 +109,7 @@
         { "label": "Get help", "pillLabel": "get help with IP", "scoringValues":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1.2,1.1,1.2,1.1,1.2,1,1,1.2,1,1.1,1.2,1.2,1.2,1.2,1,1,1,1,1,1.2,1.1,1.1,1.1,1.1,1.1,1.1,1.1,1.1,0,0,0] }
       ]
     },
-    ""YourTMStatus"": {
+    "YourTMStatus": {
       "label": "Status of your Australian trade mark",
       "pillTemplate": "Options for {optionLabel}",
       "options": [
@@ -121,7 +121,7 @@
         { "label": "Expired or removed", "pillLabel": "unregistered trade marks", "scoringValues":[0,0,1,1,0,1,1,1,0,0,0,0,0,1,1,1,0,1,0,0,0,0,0,1,1,0,0,0,1,0,1,1,0,0,0,1,1,1,1,0,1,1,1,1,1,1,0,1,0,1,1,1,0,0,0,1,0,0,1,1,0,1,1,1,0.8,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.8,0,0,0,0,1.1,0,0,0] }
       ]
     },
-    ""theirTMRights"": {
+    "theirTMRights": {
       "label": "Status of their Australian trade mark",
       "pillTemplate": "Facing a party with {optionLabel}",
       "options": [
@@ -134,7 +134,7 @@
         { "label": "Expired or removed", "pillLabel": "an expired trade mark", "scoringValues":[0,0,1,1,0,1,1,1,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,1,1,1,0,0,0,1,1,1,1,1.2,1,0,1,1,1,1,0,0,0,0,0,1,0,0,1,1,1,1,0,0,0,0,0,0,1,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.8,0,0,0,0,1,0,0,0] }
       ]
     },
-    ""YourPatStatus"": {
+    "YourPatStatus": {
       "label": "Status of your Australian patent",
       "pillTemplate": "Options relevant to {optionLabel}",
       "options": [
@@ -147,7 +147,7 @@
         { "label": "Expired", "pillLabel": "expired patents", "scoringValues":[1,0,1,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,1,1,0,1,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.6,0,0,0,1,0,0,0,0,0,1,1,0,0,1,0,0,0,0,1,0.8,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.8,0,0,0,0,0,0,0] }
       ]
     },
-    ""theirPatent"": {
+    "theirPatent": {
       "label": "Status of their Australian patent",
       "pillTemplate": "Facing a party with {optionLabel}",
       "options": [
@@ -161,7 +161,7 @@
         { "label": "Expired", "pillLabel": "an expired or lapsed patent", "scoringValues":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1.1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.8,0,0,0,0,0,0,0] }
       ]
     },
-    ""YourDesStatus"": {
+    "YourDesStatus": {
       "label": "Status of your Australian design right",
       "pillTemplate": "Options for {optionLabel}",
       "options": [
@@ -173,7 +173,7 @@
         { "label": "No longer active", "pillLabel": "design rights which are no longer in force", "scoringValues":[0,0.8,1,1,0,1,1,0,0,0,0,1.2,0,1,1,1,0,0,0,0,0,0,0,1,0,1,0.8,0.8,1,0,0.8,0,0,0,0,1,0.8,0,0,0.8,1,1,1,1,0.8,1,0,1,0.8,1,1,0,0,1.2,0,1,1,0,1,1,1,1,0,1,0.8,0,0,0,0,0,0,0,0,0.8,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.8,1,0,0,0,0,0] }
       ]
     },
-    ""YourPBRStatus"": {
+    "YourPBRStatus": {
       "label": "Status of your Australian plant breeder's right",
       "pillTemplate": "Options for {optionLabel}",
       "options": [

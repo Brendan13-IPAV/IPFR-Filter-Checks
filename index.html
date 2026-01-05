@@ -1775,22 +1775,20 @@ radio.onclick = () => {
                 return;
             }
 
-            // ADD THIS: If no accordion filters are selected, show a plain list
-    if (activeFilters.length === 0) {
-        strategiesContainer.innerHTML = '';
-        const plainRow = document.createElement('div');
-        plainRow.className = 'strategies-row';
-        
-        // Shuffle for randomness as requested
-        const randomList = [...filteredStrategies].sort(() => Math.random() - 0.5);
-        
-        randomList.forEach(strategy => {
-            const card = createStrategyCard(strategy, true);
-            plainRow.appendChild(card);
-        });
-        strategiesContainer.appendChild(plainRow);
-        return; 
-    }
+// Check if any accordion filters are selected (not just top filters)
+const layout = getAccordionLayout();
+const topFilters = layout.topFilters || [];
+const hasAccordionFilter = activeFilters.some(f => !topFilters.includes(f.key));
+
+if (!hasAccordionFilter) {
+    strategiesContainer.innerHTML = `
+        <div class="no-results">
+            <h3>No filter selected</h3>
+            <p>Please select a filter from the sidebar to view strategies</p>
+        </div>
+    `;
+    return;
+}
 
             const isSingleFilter = activeFilters.length === 1;
 

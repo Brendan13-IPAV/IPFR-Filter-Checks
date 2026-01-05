@@ -1774,12 +1774,8 @@ radio.onclick = () => {
                 return;
             }
 
-// Check if any accordion filters are selected (not just top filters)
-const layout = getAccordionLayout();
-const topFilters = layout.topFilters || [];
-const hasAccordionFilter = activeFilters.some(f => !topFilters.includes(f.key));
-
-if (!hasAccordionFilter) {
+// Check if any filters are selected from the sidebar
+if (activeFilters.length === 0) {
     strategiesContainer.innerHTML = `
         <div class="no-results">
             <h3>No filter selected</h3>

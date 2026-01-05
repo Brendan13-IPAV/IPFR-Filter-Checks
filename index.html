@@ -1581,29 +1581,34 @@ if (topFilters.length > 0) {
                             }
                             
                             radio.innerHTML = `${option.label}${statusBadge}`;
-                            radio.onclick = () => {
-                                const newFilter = {
-                                    key: filterKey,
-                                    optionIndex: index,
-                                    config: filterConfig,
-                                    option: option
-                                };
-                                
-                                const existingIndex = activeFilters.findIndex(
-                                    f => f.key === filterKey && f.optionIndex === index
-                                );
-                                
-                                if (existingIndex !== -1) {
-                                    activeFilters.splice(existingIndex, 1);
-                                } else {
-                                    activeFilters = activeFilters.filter(f => f.key !== filterKey);
-                                    activeFilters.push(newFilter);
-                                }
-                                
-                                clearSessionState();
-                                applyFilters();
-                                renderAccordions();
-                            };
+
+radio.onclick = () => {
+    const newFilter = {
+        key: filterKey,
+        optionIndex: index,
+        config: filterConfig,
+        option: option
+    };
+    
+    const existingIndex = activeFilters.findIndex(
+        f => f.key === filterKey && f.optionIndex === index
+    );
+    
+    if (existingIndex !== -1) {
+        // Clicking the same filter again, deselect it
+        activeFilters.splice(existingIndex, 1);
+    } else {
+        // Clear all accordion filters and add only this one
+        // Keep top filters intact
+        activeFilters = activeFilters.filter(f => topFilters.includes(f.key));
+        activeFilters.push(newFilter);
+    }
+    
+    clearSessionState();
+    applyFilters();
+    renderAccordions();
+};
+                            
                             radioGroup.appendChild(radio);
                         });
 

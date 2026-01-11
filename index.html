@@ -1043,21 +1043,26 @@
         // FILTER REVIEW STATUS
         // ========================================
         function getFilterReviewStatus(filterKey, optionLabel) {
-            if (!filterReviewStatus[filterKey]) return null;
-            
-            const optionStatus = filterReviewStatus[filterKey][optionLabel];
-            if (!optionStatus) return null;
-            
-            const count = optionStatus.review_count || 0;
-            
-            if (count === 0) {
-                return { text: 'Not reviewed yet', class: 'not-reviewed', count: 0 };
-            } else if (count <= 2) {
-                return { text: `Reviewed ${count} time${count > 1 ? 's' : ''}`, class: 'few-reviews', count: count };
-            } else {
-                return { text: `Reviewed ${count} times`, class: 'many-reviews', count: count };
-            }
-        }
+    if (!filterReviewStatus[filterKey]) return null;
+    
+    const optionStatus = filterReviewStatus[filterKey][optionLabel];
+    if (!optionStatus) return null;
+    
+    // Get current IP right and build the dynamic key
+    const currentIPRight = ipRightsFilter.value;
+    if (!currentIPRight || currentIPRight === '') return null;
+    
+    const countKey = `review_count_${currentIPRight}`;
+    const count = optionStatus[countKey] || 0;
+    
+    if (count === 0) {
+        return { text: 'Not reviewed yet', class: 'not-reviewed', count: 0 };
+    } else if (count <= 2) {
+        return { text: `Reviewed ${count} time${count > 1 ? 's' : ''}`, class: 'few-reviews', count: count };
+    } else {
+        return { text: `Reviewed ${count} times`, class: 'many-reviews', count: count };
+    }
+}
 
         // ========================================
         // VALIDATION - turned off as it was previous version of tool

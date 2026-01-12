@@ -1,443 +1,737 @@
 {
-  "version": "1.0.1",
-  "lastUpdated": "2025-12-19",
-  "description": "",
+  "version": "1.0.2",
+  "lastUpdated": "2026-01-16",
+  "description": "Filter review status grouped by IP right",
   "filters": {
     "Jurisdiction": {
       "IP Australia only": {
-        "review_count": 0,
+			"review_count_Patent": 0,
+			"review_count_Trade mark": 0,
+			"review_count_Unregistered-tm": 0,
+			"review_count_Design": 0,
+			"review_count_PBR": 0,
+			"review_count_Copyright": 0,
+			"review_count_Any dispute": 0,
+			"review_count_OtherRights": 0,
         "last_reviewed": null,
         "notes": ""
       },
       "Overseas IP offices only": {
-        "review_count": 0,
+			"review_count_Patent": 0,
+			"review_count_Trade mark": 0,
+			"review_count_Unregistered-tm": 0,
+			"review_count_Design": 0,
+			"review_count_PBR": 0,
+			"review_count_Copyright": 0,
+			"review_count_Any dispute": 0,
+			"review_count_OtherRights": 0,
         "last_reviewed": null,
         "notes": ""
       },
       "Both Australian and overseas IP offices": {
-        "review_count": 0,
+			"review_count_Patent": 0,
+			"review_count_Trade mark": 0,
+			"review_count_Unregistered-tm": 0,
+			"review_count_Design": 0,
+			"review_count_PBR": 0,
+			"review_count_Copyright": 0,
+			"review_count_Any dispute": 0,
+			"review_count_OtherRights": 0,
         "last_reviewed": null,
         "notes": ""
       }
     },
     "ProcessStage": {
       "Initial Attempts": {
-        "review_count": 0,
+			"review_count_Patent": 0,
+			"review_count_Trade mark": 0,
+			"review_count_Unregistered-tm": 0,
+			"review_count_Design": 0,
+			"review_count_PBR": 0,
+			"review_count_Copyright": 0,
+			"review_count_Any dispute": 0,
+			"review_count_OtherRights": 0,
         "last_reviewed": null,
         "notes": ""
       },
       "Ongoing attempts": {
-        "review_count": 0,
+			"review_count_Patent": 0,
+			"review_count_Trade mark": 0,
+			"review_count_Unregistered-tm": 0,
+			"review_count_Design": 0,
+			"review_count_PBR": 0,
+			"review_count_Copyright": 0,
+			"review_count_Any dispute": 0,
+			"review_count_OtherRights": 0,
         "last_reviewed": null,
         "notes": ""
       },
       "Final attempts": {
-        "review_count": 0,
+ 			"review_count_Patent": 0,
+			"review_count_Trade mark": 0,
+			"review_count_Unregistered-tm": 0,
+			"review_count_Design": 0,
+			"review_count_PBR": 0,
+			"review_count_Copyright": 0,
+			"review_count_Any dispute": 0,
+			"review_count_OtherRights": 0,
         "last_reviewed": null,
         "notes": ""
       }
     },
     "howCommon": {
       "Commonly used": {
-        "review_count": 0,
+   			"review_count_Patent": 0,
+			"review_count_Trade mark": 0,
+			"review_count_Unregistered-tm": 0,
+			"review_count_Design": 0,
+			"review_count_PBR": 0,
+			"review_count_Copyright": 0,
+			"review_count_Any dispute": 0,
+			"review_count_OtherRights": 0,
         "last_reviewed": null,
         "notes": ""
       },
       "Specialised option": {
-        "review_count": 0,
+			"review_count_Patent": 0,
+			"review_count_Trade mark": 0,
+			"review_count_Unregistered-tm": 0,
+			"review_count_Design": 0,
+			"review_count_PBR": 0,
+			"review_count_Copyright": 0,
+			"review_count_Any dispute": 0,
+			"review_count_OtherRights": 0,
         "last_reviewed": null,
         "notes": ""
       }
     },
     "Adversarial": {
       "Less confrontation": {
-        "review_count": 0,
+			"review_count_Patent": 0,
+			"review_count_Trade mark": 0,
+			"review_count_Unregistered-tm": 0,
+			"review_count_Design": 0,
+			"review_count_PBR": 0,
+			"review_count_Copyright": 0,
+			"review_count_Any dispute": 0,
+			"review_count_OtherRights": 0,
         "last_reviewed": null,
         "notes": ""
       },
       "Adverserial approaches": {
-        "review_count": 0,
-        "last_reviewed": null,
+			"review_count_Patent": 0,
+			"review_count_Trade mark": 1,
+			"review_count_Unregistered-tm": 0,
+			"review_count_Design": 0,
+			"review_count_PBR": 0,
+			"review_count_Copyright": 0,
+			"review_count_Any dispute": 0,
+			"review_count_OtherRights": 0,
+        "last_reviewed": "5 Jan 2026",
         "notes": ""
       }
     },
     "businessRelationship": {
       "Ongoing relationship": {
-        "review_count": 0,
+			"review_count_Patent": 0,
+			"review_count_Trade mark": 0,
+			"review_count_Unregistered-tm": 0,
+			"review_count_Design": 0,
+			"review_count_PBR": 0,
+			"review_count_Copyright": 0,
+			"review_count_Any dispute": 0,
+			"review_count_OtherRights": 0,
         "last_reviewed": null,
         "notes": ""
       },
       "Ceased relationship": {
-        "review_count": 0,
+			"review_count_Patent": 0,
+			"review_count_Trade mark": 0,
+			"review_count_Unregistered-tm": 0,
+			"review_count_Design": 0,
+			"review_count_PBR": 0,
+			"review_count_Copyright": 0,
+			"review_count_Any dispute": 0,
+			"review_count_OtherRights": 0,
         "last_reviewed": null,
         "notes": ""
       },
       "No relationship": {
-        "review_count": 0,
+			"review_count_Patent": 0,
+			"review_count_Trade mark": 0,
+			"review_count_Unregistered-tm": 0,
+			"review_count_Design": 0,
+			"review_count_PBR": 0,
+			"review_count_Copyright": 0,
+			"review_count_Any dispute": 0,
+			"review_count_OtherRights": 0,
         "last_reviewed": null,
         "notes": ""
       }
     },
     "Negotiated": {
       "Encourage negoatiation": {
-        "review_count": 0,
-        "last_reviewed": null,
+			"review_count_Patent": 0,
+			"review_count_Trade mark": 1,
+			"review_count_Unregistered-tm": 0,
+			"review_count_Design": 0,
+			"review_count_PBR": 0,
+			"review_count_Copyright": 0,
+			"review_count_Any dispute": 0,
+			"review_count_OtherRights": 0,
+        "last_reviewed": "12 Jan 2026",
         "notes": ""
       },
       "Avoid negotiation": {
-        "review_count": 0,
+			"review_count_Patent": 0,
+			"review_count_Trade mark": 0,
+			"review_count_Unregistered-tm": 0,
+			"review_count_Design": 0,
+			"review_count_PBR": 0,
+			"review_count_Copyright": 0,
+			"review_count_Any dispute": 0,
+			"review_count_OtherRights": 0,
         "last_reviewed": null,
         "notes": ""
       }
     },
     "GoalsAccused": {
       "Get expert help": {
-        "review_count": 0,
+			"review_count_Patent": 0,
+			"review_count_Trade mark": 0,
+			"review_count_Unregistered-tm": 0,
+			"review_count_Design": 0,
+			"review_count_PBR": 0,
+			"review_count_Copyright": 0,
+			"review_count_Any dispute": 0,
+			"review_count_OtherRights": 0,
         "last_reviewed": null,
         "notes": ""
       },
       "Keep using the IP": {
-        "review_count": 0,
+			"review_count_Patent": 0,
+			"review_count_Trade mark": 0,
+			"review_count_Unregistered-tm": 0,
+			"review_count_Design": 0,
+			"review_count_PBR": 0,
+			"review_count_Copyright": 0,
+			"review_count_Any dispute": 0,
+			"review_count_OtherRights": 0,
         "last_reviewed": null,
         "notes": ""
       },
       "Dispute the claim": {
-        "review_count": 0,
+			"review_count_Patent": 0,
+			"review_count_Trade mark": 0,
+			"review_count_Unregistered-tm": 0,
+			"review_count_Design": 0,
+			"review_count_PBR": 0,
+			"review_count_Copyright": 0,
+			"review_count_Any dispute": 0,
+			"review_count_OtherRights": 0,
         "last_reviewed": null,
         "notes": ""
       },
       "Avoid escalation": {
-        "review_count": 0,
+			"review_count_Patent": 0,
+			"review_count_Trade mark": 0,
+			"review_count_Unregistered-tm": 0,
+			"review_count_Design": 0,
+			"review_count_PBR": 0,
+			"review_count_Copyright": 0,
+			"review_count_Any dispute": 0,
+			"review_count_OtherRights": 0,
         "last_reviewed": null,
         "notes": ""
       },
       "Understand the issue": {
-        "review_count": 0,
+			"review_count_Patent": 0,
+			"review_count_Trade mark": 0,
+			"review_count_Unregistered-tm": 0,
+			"review_count_Design": 0,
+			"review_count_PBR": 0,
+			"review_count_Copyright": 0,
+			"review_count_Any dispute": 0,
+			"review_count_OtherRights": 0,
         "last_reviewed": null,
         "notes": ""
       }
     },
     "TargetIssues": {
       "Online marketplaces": {
-        "review_count": 0,
+ 			"review_count_Patent": 0,
+			"review_count_Trade mark": 0,
+			"review_count_Unregistered-tm": 0,
+			"review_count_Design": 0,
+			"review_count_PBR": 0,
+			"review_count_Copyright": 0,
+			"review_count_Any dispute": 0,
+			"review_count_OtherRights": 0,
         "last_reviewed": null,
         "notes": ""
       },
       "International Issues": {
-        "review_count": 0,
+			"review_count_Patent": 0,
+			"review_count_Trade mark": 0,
+			"review_count_Unregistered-tm": 0,
+			"review_count_Design": 0,
+			"review_count_PBR": 0,
+			"review_count_Copyright": 0,
+			"review_count_Any dispute": 0,
+			"review_count_OtherRights": 0,
         "last_reviewed": null,
         "notes": ""
       },
       "Australia only": {
-        "review_count": 0,
+			"review_count_Patent": 0,
+			"review_count_Trade mark": 0,
+			"review_count_Unregistered-tm": 0,
+			"review_count_Design": 0,
+			"review_count_PBR": 0,
+			"review_count_Copyright": 0,
+			"review_count_Any dispute": 0,
+			"review_count_OtherRights": 0,
         "last_reviewed": null,
         "notes": ""
       },
       "Importing to Australia": {
-        "review_count": 0,
+			"review_count_Patent": 0,
+			"review_count_Trade mark": 0,
+			"review_count_Unregistered-tm": 0,
+			"review_count_Design": 0,
+			"review_count_PBR": 0,
+			"review_count_Copyright": 0,
+			"review_count_Any dispute": 0,
+			"review_count_OtherRights": 0,
         "last_reviewed": null,
         "notes": ""
       },
       "Domain names": {
-        "review_count": 0,
+ 			"review_count_Patent": 0,
+			"review_count_Trade mark": 0,
+			"review_count_Unregistered-tm": 0,
+			"review_count_Design": 0,
+			"review_count_PBR": 0,
+			"review_count_Copyright": 0,
+			"review_count_Any dispute": 0,
+			"review_count_OtherRights": 0,
         "last_reviewed": null,
         "notes": ""
       },
       "Unreachable parties": {
-        "review_count": 0,
+			"review_count_Patent": 0,
+			"review_count_Trade mark": 0,
+			"review_count_Unregistered-tm": 0,
+			"review_count_Design": 0,
+			"review_count_PBR": 0,
+			"review_count_Copyright": 0,
+			"review_count_Any dispute": 0,
+			"review_count_OtherRights": 0,
         "last_reviewed": null,
         "notes": ""
       }
     },
     "LikelyHeadacheContext": {
       "Online": {
-        "review_count": 0,
+			"review_count_Patent": 0,
+			"review_count_Trade mark": 0,
+			"review_count_Unregistered-tm": 0,
+			"review_count_Design": 0,
+			"review_count_PBR": 0,
+			"review_count_Copyright": 0,
+			"review_count_Any dispute": 0,
+			"review_count_OtherRights": 0,
         "last_reviewed": null,
         "notes": ""
       },
       "International markets": {
-        "review_count": 0,
+			"review_count_Patent": 0,
+			"review_count_Trade mark": 0,
+			"review_count_Unregistered-tm": 0,
+			"review_count_Design": 0,
+			"review_count_PBR": 0,
+			"review_count_Copyright": 0,
+			"review_count_Any dispute": 0,
+			"review_count_OtherRights": 0,
         "last_reviewed": null,
         "notes": ""
       },
       "Importation to Australia": {
-        "review_count": 0,
+ 			"review_count_Patent": 0,
+			"review_count_Trade mark": 0,
+			"review_count_Unregistered-tm": 0,
+			"review_count_Design": 0,
+			"review_count_PBR": 0,
+			"review_count_Copyright": 0,
+			"review_count_Any dispute": 0,
+			"review_count_OtherRights": 0,
         "last_reviewed": null,
         "notes": ""
       }
     },
     "IPGoals": {
       "Strengthen my position": {
-        "review_count": 0,
+			"review_count_Patent": 0,
+			"review_count_Trade mark": 0,
+			"review_count_Unregistered-tm": 0,
+			"review_count_Design": 0,
+			"review_count_PBR": 0,
+			"review_count_Copyright": 0,
+			"review_count_Any dispute": 0,
+			"review_count_OtherRights": 0,
         "last_reviewed": null,
         "notes": ""
       },
       "Get professional opinions": {
-        "review_count": 0,
+  			"review_count_Patent": 0,
+			"review_count_Trade mark": 0,
+			"review_count_Unregistered-tm": 0,
+			"review_count_Design": 0,
+			"review_count_PBR": 0,
+			"review_count_Copyright": 0,
+			"review_count_Any dispute": 0,
+			"review_count_OtherRights": 0,
         "last_reviewed": null,
         "notes": ""
       },
       "Check my position": {
-        "review_count": 0,
+			"review_count_Patent": 0,
+			"review_count_Trade mark": 0,
+			"review_count_Unregistered-tm": 0,
+			"review_count_Design": 0,
+			"review_count_PBR": 0,
+			"review_count_Copyright": 0,
+			"review_count_Any dispute": 0,
+			"review_count_OtherRights": 0,
         "last_reviewed": null,
         "notes": ""
       },
       "Limit future harm": {
-        "review_count": 0,
+ 			"review_count_Patent": 0,
+			"review_count_Trade mark": 0,
+			"review_count_Unregistered-tm": 0,
+			"review_count_Design": 0,
+			"review_count_PBR": 0,
+			"review_count_Copyright": 0,
+			"review_count_Any dispute": 0,
+			"review_count_OtherRights": 0,
         "last_reviewed": null,
         "notes": ""
       },
       "Apply for IP": {
-        "review_count": 0,
+			"review_count_Patent": 0,
+			"review_count_Trade mark": 0,
+			"review_count_Unregistered-tm": 0,
+			"review_count_Design": 0,
+			"review_count_PBR": 0,
+			"review_count_Copyright": 0,
+			"review_count_Any dispute": 0,
+			"review_count_OtherRights": 0,
         "last_reviewed": null,
         "notes": ""
       }
     },
     "InfoNeeded": {
       "Consider international issues": {
-        "review_count": 0,
+ 			"review_count_Patent": 0,
+			"review_count_Trade mark": 0,
+			"review_count_Unregistered-tm": 0,
+			"review_count_Design": 0,
+			"review_count_PBR": 0,
+			"review_count_Copyright": 0,
+			"review_count_Any dispute": 0,
+			"review_count_OtherRights": 0,
         "last_reviewed": null,
         "notes": ""
       },
       "Get my own IP": {
-        "review_count": 0,
+  			"review_count_Patent": 0,
+			"review_count_Trade mark": 0,
+			"review_count_Unregistered-tm": 0,
+			"review_count_Design": 0,
+			"review_count_PBR": 0,
+			"review_count_Copyright": 0,
+			"review_count_Any dispute": 0,
+			"review_count_OtherRights": 0,
         "last_reviewed": null,
         "notes": ""
       },
       "Deal with IP problems": {
-        "review_count": 0,
+			"review_count_Patent": 0,
+			"review_count_Trade mark": 0,
+			"review_count_Unregistered-tm": 0,
+			"review_count_Design": 0,
+			"review_count_PBR": 0,
+			"review_count_Copyright": 0,
+			"review_count_Any dispute": 0,
+			"review_count_OtherRights": 0,
         "last_reviewed": null,
         "notes": ""
       },
       "IPA Processes": {
-        "review_count": 0,
+   			"review_count_Patent": 0,
+			"review_count_Trade mark": 0,
+			"review_count_Unregistered-tm": 0,
+			"review_count_Design": 0,
+			"review_count_PBR": 0,
+			"review_count_Copyright": 0,
+			"review_count_Any dispute": 0,
+			"review_count_OtherRights": 0,
         "last_reviewed": null,
         "notes": ""
       },
       "Using IP in business": {
-        "review_count": 0,
+			"review_count_Patent": 0,
+			"review_count_Trade mark": 0,
+			"review_count_Unregistered-tm": 0,
+			"review_count_Design": 0,
+			"review_count_PBR": 0,
+			"review_count_Copyright": 0,
+			"review_count_Any dispute": 0,
+			"review_count_OtherRights": 0,
         "last_reviewed": null,
         "notes": ""
       },
       "Get help": {
-        "review_count": 0,
+			"review_count_Patent": 0,
+			"review_count_Trade mark": 0,
+			"review_count_Unregistered-tm": 0,
+			"review_count_Design": 0,
+			"review_count_PBR": 0,
+			"review_count_Copyright": 0,
+			"review_count_Any dispute": 0,
+			"review_count_OtherRights": 0,
         "last_reviewed": null,
         "notes": ""
       }
     },
     "YourTMStatus": {
       "Registered": {
-        "review_count": 0,
+			"review_count_Trade mark": 0,
+			"review_count_Unregistered-tm": 0,
         "last_reviewed": null,
         "notes": ""
       },
       "Not Registered": {
-        "review_count": 0,
+			"review_count_Trade mark": 0,
+			"review_count_Unregistered-tm": 0,
         "last_reviewed": null,
         "notes": ""
       },
       "Under examination": {
-        "review_count": 0,
+  			"review_count_Trade mark": 0,
+			"review_count_Unregistered-tm": 0,
         "last_reviewed": null,
         "notes": ""
       },
       "Accepted": {
-        "review_count": 0,
+			"review_count_Trade mark": 0,
+			"review_count_Unregistered-tm": 0,
         "last_reviewed": null,
         "notes": ""
       },
       "Being challenged": {
-        "review_count": 0,
+			"review_count_Trade mark": 0,
+			"review_count_Unregistered-tm": 0,
         "last_reviewed": null,
         "notes": ""
       },
       "Expired or removed": {
-        "review_count": 0,
+			"review_count_Trade mark": 0,
+			"review_count_Unregistered-tm": 0,
         "last_reviewed": null,
         "notes": ""
       }
     },
     "theirTMRights": {
       "Registered": {
-        "review_count": 0,
+  			"review_count_Trade mark": 0,
+			"review_count_Unregistered-tm": 0,
         "last_reviewed": null,
         "notes": ""
       },
       "None Found": {
-        "review_count": 0,
+   			"review_count_Trade mark": 0,
+			"review_count_Unregistered-tm": 0,
         "last_reviewed": null,
         "notes": ""
       },
       "Don't know": {
-        "review_count": 0,
+			"review_count_Trade mark": 0,
+			"review_count_Unregistered-tm": 0,
         "last_reviewed": null,
         "notes": ""
       },
       "Under examination": {
-        "review_count": 0,
+			"review_count_Trade mark": 0,
+			"review_count_Unregistered-tm": 0,
         "last_reviewed": null,
         "notes": ""
       },
       "Accepted": {
-        "review_count": 0,
+			"review_count_Trade mark": 0,
+			"review_count_Unregistered-tm": 0,
         "last_reviewed": null,
         "notes": ""
       },
       "Being challenged": {
-        "review_count": 0,
+  			"review_count_Trade mark": 0,
+			"review_count_Unregistered-tm": 0,
         "last_reviewed": null,
         "notes": ""
       },
       "Expired or removed": {
-        "review_count": 0,
+  			"review_count_Trade mark": 0,
+			"review_count_Unregistered-tm": 0,
         "last_reviewed": null,
         "notes": ""
       }
     },
     "YourPatStatus": {
       "No Patent": {
-        "review_count": 0,
+   			"review_count_Patent": 0,
         "last_reviewed": null,
         "notes": ""
       },
       "Granted": {
-        "review_count": 0,
+			"review_count_Patent": 0,
         "last_reviewed": null,
         "notes": ""
       },
       "Filed": {
-        "review_count": 0,
+  			"review_count_Patent": 0,
         "last_reviewed": null,
         "notes": ""
       },
       "Under examination": {
-        "review_count": 0,
+			"review_count_Patent": 0,
         "last_reviewed": null,
         "notes": ""
       },
       "Accepted": {
-        "review_count": 0,
+			"review_count_Patent": 0,
         "last_reviewed": null,
         "notes": ""
       },
       "Under opposition": {
-        "review_count": 0,
+			"review_count_Patent": 0,
         "last_reviewed": null,
         "notes": ""
       },
       "Expired": {
-        "review_count": 0,
+			"review_count_Patent": 0,
         "last_reviewed": null,
         "notes": ""
       }
     },
     "theirPatent": {
       "Granted": {
-        "review_count": 0,
+			"review_count_Patent": 0,
         "last_reviewed": null,
         "notes": ""
       },
       "None found": {
-        "review_count": 0,
+  			"review_count_Patent": 0,
         "last_reviewed": null,
         "notes": ""
       },
       "Don't know": {
-        "review_count": 0,
+			"review_count_Patent": 0,
         "last_reviewed": null,
         "notes": ""
       },
       "Filed": {
-        "review_count": 0,
+			"review_count_Patent": 0,
         "last_reviewed": null,
         "notes": ""
       },
       "Under examination": {
-        "review_count": 0,
+			"review_count_Patent": 0,
         "last_reviewed": null,
         "notes": ""
       },
       "Accepted": {
-        "review_count": 0,
+			"review_count_Patent": 0,
         "last_reviewed": null,
         "notes": ""
       },
       "Under opposition": {
-        "review_count": 0,
+			"review_count_Patent": 0,
         "last_reviewed": null,
         "notes": ""
       },
       "Expired": {
-        "review_count": 0,
+			"review_count_Patent": 0,
         "last_reviewed": null,
         "notes": ""
       }
     },
     "YourDesStatus": {
       "Registered": {
-        "review_count": 0,
+			"review_count_Design": 0,
         "last_reviewed": null,
         "notes": ""
       },
       "No design right": {
-        "review_count": 0,
+			"review_count_Design": 0,
         "last_reviewed": null,
         "notes": ""
       },
       "Filed": {
-        "review_count": 0,
+			"review_count_Design": 0,
         "last_reviewed": null,
         "notes": ""
       },
       "Under examination": {
-        "review_count": 0,
+			"review_count_Design": 0,
         "last_reviewed": null,
         "notes": ""
       },
       "Certified": {
-        "review_count": 0,
+			"review_count_Design": 0,
         "last_reviewed": null,
         "notes": ""
       },
       "No longer active": {
-        "review_count": 0,
+			"review_count_Design": 0,
         "last_reviewed": null,
         "notes": ""
       }
     },
     "YourPBRStatus": {
       "Granted": {
-        "review_count": 0,
+			"review_count_PBR": 0,
         "last_reviewed": null,
         "notes": ""
       },
       "No PBR": {
-        "review_count": 0,
+			"review_count_PBR": 0,
         "last_reviewed": null,
         "notes": ""
       },
       "Filed": {
-        "review_count": 0,
+			"review_count_PBR": 0,
         "last_reviewed": null,
         "notes": ""
       },
       "Under examination": {
-        "review_count": 0,
+			"review_count_PBR": 0,
         "last_reviewed": null,
         "notes": ""
       },
       "Provisional": {
-        "review_count": 0,
+			"review_count_PBR": 0,
         "last_reviewed": null,
         "notes": ""
       },
       "No longer active": {
-        "review_count": 0,
+			"review_count_PBR": 0,
         "last_reviewed": null,
         "notes": ""
       }
     }
   },
+
   "_instructions": {
     "how_to_update": "After reviewing Google Sheets submissions, manually update the review_count for each filter option that has been reviewed.",
     "review_count": "Number of distinct review sessions (not individual strategy changes)",

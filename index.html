@@ -1191,19 +1191,42 @@
                 dataLoadTimestamp: dataVersions.loadTimestamp
             };
             
-            try {
-                await fetch(TELEMETRY_CONFIG.sheetURL, {
-                    method: 'POST',
-                    mode: 'no-cors',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(payload)
-                });
-            } catch (error) {
-                console.error('Error logging undo:', error);
-            }
-        }
+        //     try {
+        //         await fetch(TELEMETRY_CONFIG.sheetURL, {
+        //             method: 'POST',
+        //             mode: 'no-cors',
+        //             headers: {
+        //                 'Content-Type': 'application/json',
+        //             },
+        //             body: JSON.stringify(payload)
+        //         });
+        //     } catch (error) {
+        //         console.error('Error logging undo:', error);
+        //     }
+        // }
+
+                                                            try {
+                                                      const res = await fetch(TELEMETRY_CONFIG.sheetURL, {
+                                                        method: 'POST',
+                                                        headers: {
+                                                          'Content-Type': 'application/json',
+                                                        },
+                                                        body: JSON.stringify(payload),
+                                                      });
+                                                    
+                                                      // Always read something back so you can debug:
+                                                      const bodyText = await res.text().catch(() => '');
+                                                    
+                                                      if (!res.ok) {
+                                                        console.error('Telemetry POST failed:', res.status, bodyText);
+                                                      } else {
+                                                        // Optional: log success during testing
+                                                        console.debug('Telemetry POST ok:', res.status, bodyText);
+                                                      }
+                                                    } catch (error) {
+                                                      // This catches network-level failures, including browser blocks
+                                                      console.error('Error logging undo (network/CORS/CSP):', error);
+                                                    }
 
         // ========================================
         // TELEMETRY
@@ -1273,6 +1296,8 @@
                 return false;
             }
         }
+
+            
 
 function updateBulkButtonState() {
     const bulkBtn = document.getElementById('bulkNoChanges');

@@ -1355,15 +1355,33 @@ if (!confirm(`Confirm all ${filteredStrategies.length} visible options are corre
                 dataLoadTimestamp: dataVersions.loadTimestamp
             };
             
-            try {
-                await fetch(TELEMETRY_CONFIG.sheetURL, {
-                    method: 'POST',
-                    mode: 'no-cors',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(payload)
-                });
+            // try {
+            //     await fetch(TELEMETRY_CONFIG.sheetURL, {
+            //         method: 'POST',
+            //         mode: 'no-cors',
+            //         headers: {
+            //             'Content-Type': 'application/json',
+            //         },
+            //         body: JSON.stringify(payload)
+            //     });
+
+                                                try {
+                                                              const res = await fetch(TELEMETRY_CONFIG.sheetURL, {
+                                                                method: 'POST',
+                                                                headers: {
+                                                                  'Content-Type': 'application/json'
+                                                                },
+                                                                body: JSON.stringify(payload)
+                                                              });
+                                                            
+                                                              // fetch only rejects on network/CSP issues; it does NOT reject on 4xx/5xx
+                                                              if (!res.ok) {
+                                                                const text = await res.text().catch(() => '');
+                                                                console.error('Telemetry POST failed:', res.status, text);
+                                                              }
+                                                            } catch (error) {
+                                                              console.error('Error logging undo (network/CSP/CORS blocked):', error);
+                                                            }
                 
                 // Mark as submitted
                 change.status = 'submitted';

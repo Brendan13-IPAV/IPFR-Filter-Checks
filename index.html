@@ -1260,60 +1260,95 @@
             };
         }
 
+                                            // async function submitNoChangesNeeded(strategyId) {
+                                            //     const strategy = filteredStrategies.find(s => s.id === strategyId);
+                                            //     if (!strategy) return false;
+                                    
+                                            //     const filterState = collectFilterState();
+                                            //     const originalScore = originalScores[strategyId];
+                                                
+                                            //     const payload = {
+                                            //         userName: currentUserName,
+                                            //         userType: currentUserType,
+                                            //         situationFilter: filterState.situationFilter,
+                                            //         ipRightsFilter: filterState.ipRightsFilter,
+                                            //         accordionFilters: filterState.accordionFilters,
+                                            //         strategyId: strategy.id,
+                                            //         strategyTitle: strategy.title,
+                                            //         filterMode: filterState.filterMode, // ADD THIS LINE
+                                            //         oldScore: String(originalScore),
+                                            //         newScore: String(originalScore),
+                                            //         reason: 'NO CHANGES NEEDED - Reviewed and agreed with calculated score',
+                                            //         sessionId: TELEMETRY_CONFIG.sessionId,
+                                            //         strategiesVersion: dataVersions.strategiesContent,
+                                            //         metadataVersion: dataVersions.strategiesMetadata,
+                                            //         filtersVersion: dataVersions.filterOptions,
+                                            //         presetsVersion: dataVersions.accordionPresets,
+                                            //         dataLoadTimestamp: dataVersions.loadTimestamp
+                                            //     };
+                                                
+                                            //     // try {
+                                            //     //     await fetch(TELEMETRY_CONFIG.sheetURL, {
+                                            //     //         method: 'POST',
+                                            //     //         //mode: 'no-cors',
+                                            //     //         headers: {
+                                            //     //             'Content-Type': 'application/json',
+                                            //     //         },
+                                            //     //         body: JSON.stringify(payload)
+                                            //     //     });
+                                                    
+                                            //     //     submittedChanges.add(strategyId);
+                                            //     //             updateBulkButtonState(); // ADD THIS LINE
+                                            //     //     renderStrategiesByRank();
+                                            //     //     return true;
+                                                    
+                                            //     // } 
+                                            //                                 const result = await sendTelemetry(payload);
+                                            //                                     if (!result.ok) {
+                                            //                                       alert('Undo applied, but the action was NOT logged. Please try again later.');
+                                            //                                     }    
+                                                
+                                            //     catch (error) {
+                                            //         console.error('Error sending telemetry:', error);
+                                            //         alert('Failed to submit review. Please try again.');
+                                            //         return false;
+                                            //     }
         async function submitNoChangesNeeded(strategyId) {
-            const strategy = filteredStrategies.find(s => s.id === strategyId);
-            if (!strategy) return false;
+  const strategy = filteredStrategies.find(s => s.id === strategyId);
+  if (!strategy) return false;
 
-            const filterState = collectFilterState();
-            const originalScore = originalScores[strategyId];
-            
-            const payload = {
-                userName: currentUserName,
-                userType: currentUserType,
-                situationFilter: filterState.situationFilter,
-                ipRightsFilter: filterState.ipRightsFilter,
-                accordionFilters: filterState.accordionFilters,
-                strategyId: strategy.id,
-                strategyTitle: strategy.title,
-                filterMode: filterState.filterMode, // ADD THIS LINE
-                oldScore: String(originalScore),
-                newScore: String(originalScore),
-                reason: 'NO CHANGES NEEDED - Reviewed and agreed with calculated score',
-                sessionId: TELEMETRY_CONFIG.sessionId,
-                strategiesVersion: dataVersions.strategiesContent,
-                metadataVersion: dataVersions.strategiesMetadata,
-                filtersVersion: dataVersions.filterOptions,
-                presetsVersion: dataVersions.accordionPresets,
-                dataLoadTimestamp: dataVersions.loadTimestamp
-            };
-            
-            // try {
-            //     await fetch(TELEMETRY_CONFIG.sheetURL, {
-            //         method: 'POST',
-            //         //mode: 'no-cors',
-            //         headers: {
-            //             'Content-Type': 'application/json',
-            //         },
-            //         body: JSON.stringify(payload)
-            //     });
-                
-            //     submittedChanges.add(strategyId);
-            //             updateBulkButtonState(); // ADD THIS LINE
-            //     renderStrategiesByRank();
-            //     return true;
-                
-            // } 
-                                        const result = await sendTelemetry(payload);
-                                            if (!result.ok) {
-                                              alert('Undo applied, but the action was NOT logged. Please try again later.');
-                                            }    
-            
-            catch (error) {
-                console.error('Error sending telemetry:', error);
-                alert('Failed to submit review. Please try again.');
-                return false;
-            }
-        }
+  const filterState = collectFilterState();
+  const originalScore = originalScores[strategyId];
+
+  const payload = {
+    userName: currentUserName,
+    userType: currentUserType,
+    situationFilter: filterState.situationFilter,
+    ipRightsFilter: filterState.ipRightsFilter,
+    accordionFilters: filterState.accordionFilters,
+    strategyId: strategy.id,
+    strategyTitle: strategy.title,
+    filterMode: filterState.filterMode,
+    oldScore: String(originalScore),
+    newScore: String(originalScore),
+    reason: 'NO CHANGES NEEDED - Reviewed and agreed with calculated score',
+    sessionId: TELEMETRY_CONFIG.sessionId,
+    strategiesVersion: dataVersions.strategiesContent,
+    metadataVersion: dataVersions.strategiesMetadata,
+    filtersVersion: dataVersions.filterOptions,
+    presetsVersion: dataVersions.accordionPresets,
+    dataLoadTimestamp: dataVersions.loadTimestamp
+  };
+
+  const result = await sendTelemetry(payload);
+  if (!result.ok) return false;
+
+  submittedChanges.add(strategyId);
+  updateBulkButtonState();
+  renderStrategiesByRank();
+  return true;
+}
+        
 
             
 
@@ -1367,91 +1402,132 @@ if (!confirm(`Confirm all ${filteredStrategies.length} visible options are corre
     alert(`Successfully confirmed ${successCount} strategies as correct.`);
 }
 
-        async function submitStrategyChange(strategyId) {
-            const strategy = filteredStrategies.find(s => s.id === strategyId);
-            const change = pendingChanges[strategyId];
+        // async function submitStrategyChange(strategyId) {
+        //     const strategy = filteredStrategies.find(s => s.id === strategyId);
+        //     const change = pendingChanges[strategyId];
             
-            if (!strategy || !change || !change.reason.trim()) {
-                alert('Please provide a reason for the change');
-                return false;
-            }
+        //     if (!strategy || !change || !change.reason.trim()) {
+        //         alert('Please provide a reason for the change');
+        //         return false;
+        //     }
 
-            const filterState = collectFilterState();
+        //     const filterState = collectFilterState();
             
-            const payload = {
-                userName: currentUserName,
-                userType: currentUserType,
-                situationFilter: filterState.situationFilter,
-                ipRightsFilter: filterState.ipRightsFilter,
-                accordionFilters: filterState.accordionFilters,
-                strategyId: strategy.id,
-                strategyTitle: strategy.title,
-                filterMode: filterState.filterMode,
-                oldScore: String(change.oldScore),            //this captures zeros
-                newScore: String(change.newScore),             //this captures zeros
-                reason: change.reason,
-                sessionId: TELEMETRY_CONFIG.sessionId,
-                strategiesVersion: dataVersions.strategiesContent,
-                metadataVersion: dataVersions.strategiesMetadata,
-                filtersVersion: dataVersions.filterOptions,
-                presetsVersion: dataVersions.accordionPresets,
-                dataLoadTimestamp: dataVersions.loadTimestamp
-            };
+        //     const payload = {
+        //         userName: currentUserName,
+        //         userType: currentUserType,
+        //         situationFilter: filterState.situationFilter,
+        //         ipRightsFilter: filterState.ipRightsFilter,
+        //         accordionFilters: filterState.accordionFilters,
+        //         strategyId: strategy.id,
+        //         strategyTitle: strategy.title,
+        //         filterMode: filterState.filterMode,
+        //         oldScore: String(change.oldScore),            //this captures zeros
+        //         newScore: String(change.newScore),             //this captures zeros
+        //         reason: change.reason,
+        //         sessionId: TELEMETRY_CONFIG.sessionId,
+        //         strategiesVersion: dataVersions.strategiesContent,
+        //         metadataVersion: dataVersions.strategiesMetadata,
+        //         filtersVersion: dataVersions.filterOptions,
+        //         presetsVersion: dataVersions.accordionPresets,
+        //         dataLoadTimestamp: dataVersions.loadTimestamp
+        //     };
             
-            // try {
-            //     await fetch(TELEMETRY_CONFIG.sheetURL, {
-            //         method: 'POST',
-            //        // mode: 'no-cors',
-            //         headers: {
-            //             'Content-Type': 'application/json',
-            //         },
-            //         body: JSON.stringify(payload)
-            //     });
+        //     // try {
+        //     //     await fetch(TELEMETRY_CONFIG.sheetURL, {
+        //     //         method: 'POST',
+        //     //        // mode: 'no-cors',
+        //     //         headers: {
+        //     //             'Content-Type': 'application/json',
+        //     //         },
+        //     //         body: JSON.stringify(payload)
+        //     //     });
 
-                                    const result = await sendTelemetry(payload);            //This replaces above to check the recording of the data
-                                        if (!result.ok) return false;
+        //                             const result = await sendTelemetry(payload);            //This replaces above to check the recording of the data
+        //                                 if (!result.ok) return false;
                                         
-                                        // ✅ Only mark submitted if confirmed saved
-                                        change.status = 'submitted';
-                                        submittedChanges.add(strategyId);
+        //                                 // ✅ Only mark submitted if confirmed saved
+        //                                 change.status = 'submitted';
+        //                                 submittedChanges.add(strategyId);
                                         
-                                        renderStrategiesByRank();
-                                        updateBulkButtonState();
-                                        return true;
+        //                                 renderStrategiesByRank();
+        //                                 updateBulkButtonState();
+        //                                 return true;
 
-                                                // try {
-                                                //               const res = await fetch(TELEMETRY_CONFIG.sheetURL, {
-                                                //                 method: 'POST',
-                                                //                 headers: {
-                                                //                   'Content-Type': 'application/json'
-                                                //                 },
-                                                //                 body: JSON.stringify(payload)
-                                                //               });
+        //                                         // try {
+        //                                         //               const res = await fetch(TELEMETRY_CONFIG.sheetURL, {
+        //                                         //                 method: 'POST',
+        //                                         //                 headers: {
+        //                                         //                   'Content-Type': 'application/json'
+        //                                         //                 },
+        //                                         //                 body: JSON.stringify(payload)
+        //                                         //               });
                                                             
-                                                //               // fetch only rejects on network/CSP issues; it does NOT reject on 4xx/5xx
-                                                //               if (!res.ok) {
-                                                //                 const text = await res.text().catch(() => '');
-                                                //                 console.error('Telemetry POST failed:', res.status, text);
-                                                //               }
-                                                //             } catch (error) {
-                                                //               console.error('Error logging undo (network/CSP/CORS blocked):', error);
-                                                //             }
+        //                                         //               // fetch only rejects on network/CSP issues; it does NOT reject on 4xx/5xx
+        //                                         //               if (!res.ok) {
+        //                                         //                 const text = await res.text().catch(() => '');
+        //                                         //                 console.error('Telemetry POST failed:', res.status, text);
+        //                                         //               }
+        //                                         //             } catch (error) {
+        //                                         //               console.error('Error logging undo (network/CSP/CORS blocked):', error);
+        //                                         //             }
                 
-                // Mark as submitted
-                change.status = 'submitted';
-                submittedChanges.add(strategyId);
+        //         // Mark as submitted
+        //         change.status = 'submitted';
+        //         submittedChanges.add(strategyId);
                 
-                renderStrategiesByRank();
-                 updateBulkButtonState(); 
+        //         renderStrategiesByRank();
+        //          updateBulkButtonState(); 
                 
-                return true;
+        //         return true;
                 
-            } catch (error) {
-                console.error('Error sending telemetry:', error);
-                alert('Failed to submit change. Please try again.');
-                return false;
-            }
-        }
+        //     } catch (error) {
+        //         console.error('Error sending telemetry:', error);
+        //         alert('Failed to submit change. Please try again.');
+        //         return false;
+        //     }
+
+        async function submitStrategyChange(strategyId) {
+  const strategy = filteredStrategies.find(s => s.id === strategyId);
+  const change = pendingChanges[strategyId];
+
+  if (!strategy || !change || !change.reason.trim()) {
+    alert('Please provide a reason for the change');
+    return false;
+  }
+
+  const filterState = collectFilterState();
+
+  const payload = {
+    userName: currentUserName,
+    userType: currentUserType,
+    situationFilter: filterState.situationFilter,
+    ipRightsFilter: filterState.ipRightsFilter,
+    accordionFilters: filterState.accordionFilters,
+    strategyId: strategy.id,
+    strategyTitle: strategy.title,
+    filterMode: filterState.filterMode,
+    oldScore: String(change.oldScore),
+    newScore: String(change.newScore),
+    reason: change.reason,
+    sessionId: TELEMETRY_CONFIG.sessionId,
+    strategiesVersion: dataVersions.strategiesContent,
+    metadataVersion: dataVersions.strategiesMetadata,
+    filtersVersion: dataVersions.filterOptions,
+    presetsVersion: dataVersions.accordionPresets,
+    dataLoadTimestamp: dataVersions.loadTimestamp
+  };
+
+  const result = await sendTelemetry(payload);
+  if (!result.ok) return false;
+
+  change.status = 'submitted';
+  submittedChanges.add(strategyId);
+
+  renderStrategiesByRank();
+  updateBulkButtonState();
+  return true;
+}
 
         // ========================================
         // FILTER MANAGEMENT

@@ -1191,17 +1191,22 @@
                 dataLoadTimestamp: dataVersions.loadTimestamp
             };
             
-            try {
-                await fetch(TELEMETRY_CONFIG.sheetURL, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(payload)
-                });
-            } catch (error) {
-                console.error('Error logging undo:', error);
-            }
+            // try {
+            //     await fetch(TELEMETRY_CONFIG.sheetURL, {
+            //         method: 'POST',
+            //         headers: {
+            //             'Content-Type': 'application/json',
+            //         },
+            //         body: JSON.stringify(payload)
+            //     });
+            // } catch (error) {
+            //     console.error('Error logging undo:', error);
+            // }
+
+                                const result = await sendTelemetry(payload);
+                                        if (!result.ok) {
+                                          alert('Undo applied, but the action was NOT logged. Please try again later.');
+                                        }
         }
 
  
@@ -1209,6 +1214,35 @@
         // ========================================
         // TELEMETRY
         // ========================================
+                                    async function sendTelemetry(payload) {                    //This section is to check that the data was recorded
+                              let res;
+                            
+                              try {
+                                res = await fetch(TELEMETRY_CONFIG.sheetURL, {
+                                  method: 'POST',
+                                  headers: { 'Content-Type': 'application/json' },
+                                  body: JSON.stringify(payload)
+                                });
+                              } catch (err) {
+                                alert('❌ Not saved: network error. Please try again.');
+                                console.error('Network error calling Power Automate:', err);
+                                return { ok: false };
+                              }
+                            
+                              const text = await res.text().catch(() => '');
+                              let data = null;
+                              try { data = text ? JSON.parse(text) : null; } catch {}
+                            
+                              if (!res.ok || data?.ok !== true) {
+                                alert('❌ Your input was NOT recorded. Please try again.');
+                                console.error('Power Automate error:', res.status, text);
+                                return { ok: false };
+                              }
+                            
+                              // ✅ Confirmed saved
+                              return { ok: true, itemId: data.itemId };
+                            }
+        
         function collectFilterState() {
             const accordionFiltersArray = activeFilters.map(filter => ({
                 key: filter.key,
@@ -1253,22 +1287,28 @@
                 dataLoadTimestamp: dataVersions.loadTimestamp
             };
             
-            try {
-                await fetch(TELEMETRY_CONFIG.sheetURL, {
-                    method: 'POST',
-                    //mode: 'no-cors',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(payload)
-                });
+            // try {
+            //     await fetch(TELEMETRY_CONFIG.sheetURL, {
+            //         method: 'POST',
+            //         //mode: 'no-cors',
+            //         headers: {
+            //             'Content-Type': 'application/json',
+            //         },
+            //         body: JSON.stringify(payload)
+            //     });
                 
-                submittedChanges.add(strategyId);
-                        updateBulkButtonState(); // ADD THIS LINE
-                renderStrategiesByRank();
-                return true;
+            //     submittedChanges.add(strategyId);
+            //             updateBulkButtonState(); // ADD THIS LINE
+            //     renderStrategiesByRank();
+            //     return true;
                 
-            } catch (error) {
+            // } 
+                                        const result = await sendTelemetry(payload);
+                                            if (!result.ok) {
+                                              alert('Undo applied, but the action was NOT logged. Please try again later.');
+                                            }    
+            
+            catch (error) {
                 console.error('Error sending telemetry:', error);
                 alert('Failed to submit review. Please try again.');
                 return false;
@@ -1358,15 +1398,26 @@ if (!confirm(`Confirm all ${filteredStrategies.length} visible options are corre
                 dataLoadTimestamp: dataVersions.loadTimestamp
             };
             
-            try {
-                await fetch(TELEMETRY_CONFIG.sheetURL, {
-                    method: 'POST',
-                   // mode: 'no-cors',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(payload)
-                });
+            // try {
+            //     await fetch(TELEMETRY_CONFIG.sheetURL, {
+            //         method: 'POST',
+            //        // mode: 'no-cors',
+            //         headers: {
+            //             'Content-Type': 'application/json',
+            //         },
+            //         body: JSON.stringify(payload)
+            //     });
+
+                                    const result = await sendTelemetry(payload);            //This replaces above to check the recording of the data
+                                        if (!result.ok) return false;
+                                        
+                                        // ✅ Only mark submitted if confirmed saved
+                                        change.status = 'submitted';
+                                        submittedChanges.add(strategyId);
+                                        
+                                        renderStrategiesByRank();
+                                        updateBulkButtonState();
+                                        return true;
 
                                                 // try {
                                                 //               const res = await fetch(TELEMETRY_CONFIG.sheetURL, {

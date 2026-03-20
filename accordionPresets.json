@@ -1,8 +1,9 @@
                   {
-                    "version": "13.0.0",
-                    "lastUpdated": "2024-12-12",
+                    "version": "14.0.0",
+                    "lastUpdated": "2026-03-20",
 
                     
+ 
   "default": {
     "topFilters": [],
     "accordions": {
@@ -111,7 +112,6 @@
     "accordions": {
       "Sort options": ["ProcessStage", "howCommon"],
       "Your preferences": ["Adversarial", "Negotiated"],
-      "About your trade mark": ["Jurisdiction", "YourTMStatus"],
       "About the other party": ["theirTMRights", "businessRelationship"]
     }
   },
@@ -184,7 +184,7 @@
   "unregistered-tm-proactive": {
     "topFilters": ["IPGoals","howCommon"],
     "accordions": {
-"About your IP right (if any)" : ["Jurisdiction", "YourTMStatus"],
+"About your IP right (if any)" : ["Jurisdiction"],
 "Business context" : [ "LikelyHeadacheContext"]
           }
   },

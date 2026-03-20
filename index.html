@@ -1773,6 +1773,17 @@ radio.onclick = () => {
             });
         }
 
+        function resetAccordionFilters() {
+  // Clear any selected accordion/top filters
+  activeFilters = [];
+
+  // Collapse all accordion sections
+  accordionState = {};
+
+  // Re-render the sidebar + active pill display
+  updateActiveFilterDisplay();
+  renderAccordions();
+}
         function clearSessionState() {
             pendingChanges = {};
             submittedChanges.clear();
@@ -2162,20 +2173,36 @@ function updateReason(strategyId, reason) {
         // ========================================
         // EVENT LISTENERS
         // ========================================
-        function setupEventListeners() {
-            situationFilter.addEventListener('change', () => {
-                clearSessionState();
-                applyFilters();
-                renderAccordions();
-            });
-            ipRightsFilter.addEventListener('change', () => {
-                clearSessionState();
-                applyFilters();
-                renderAccordions();
-            });
-            clearFilters.addEventListener('click', clearAllFilters);
-            document.getElementById('bulkNoChanges').addEventListener('click', bulkSubmitNoChanges);
-        }
+        // function setupEventListeners() {
+        //     situationFilter.addEventListener('change', () => {
+        //         clearSessionState();
+        //         applyFilters();
+        //         renderAccordions();
+        //     });
+        //     ipRightsFilter.addEventListener('change', () => {
+        //         clearSessionState();
+        //         applyFilters();
+        //         renderAccordions();
+        //     });
+        //     clearFilters.addEventListener('click', clearAllFilters);
+        //     document.getElementById('bulkNoChanges').addEventListener('click', bulkSubmitNoChanges);
+        // }
+                                function setupEventListeners() {
+                          situationFilter.addEventListener('change', () => {
+                            clearSessionState();
+                            resetAccordionFilters();  // ✅ NEW
+                            applyFilters();           // Recompute using primary filters only
+                          });
+                        
+                          ipRightsFilter.addEventListener('change', () => {
+                            clearSessionState();
+                            resetAccordionFilters();  // ✅ NEW
+                            applyFilters();
+                          });
+                        
+                          clearFilters.addEventListener('click', clearAllFilters);
+                          document.getElementById('bulkNoChanges').addEventListener('click', bulkSubmitNoChanges);
+                        }
 
         // Make functions globally available
         window.adjustScore = adjustScore;

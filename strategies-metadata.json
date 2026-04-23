@@ -9,7 +9,7 @@
  "id": 1,     "responseType": ["Enforcement", "Proactive"],    "ipTypeTags": ["Patent"]
 },
 {
- "id": 2,     "responseType": ["Proactive"],    "ipTypeTags": ["Trade mark", "Design", "Copyright"]
+ "id": 2,     "responseType": ["Proactive"],    "ipTypeTags": ["Trade mark", "Design", "PBR", "Copyright", "Patent"]
 },
 {
  "id": 3,     "responseType": ["Accused"],    "ipTypeTags": ["Any IP right"]
@@ -69,7 +69,7 @@
  "id": 21,     "responseType": ["Proactive"],    "ipTypeTags": ["Patent"]
 },
 {
- "id": 22,     "responseType": ["Proactive"],    "ipTypeTags": ["Patent"]
+ "id": 22,     "responseType": ["Proactive"],    "ipTypeTags": ["Any IP right"]
 },
 {
  "id": 23,     "responseType": ["Proactive"],    "ipTypeTags": ["Trade mark", "Unregistered-tm"]
@@ -150,7 +150,7 @@
  "id": 48,     "responseType": ["Enforcement"],    "ipTypeTags": ["Any IP right"]
 },
 {
- "id": 49,     "responseType": ["Enforcement"],    "ipTypeTags": ["Trade mark","Design","Copyright"]
+ "id": 49,     "responseType": ["Enforcement"],    "ipTypeTags": ["Trade mark", "Design", "PBR", "Copyright", "Patent"]
 },
 {
  "id": 50,     "responseType": ["Accused"],    "ipTypeTags": ["Any IP right"]

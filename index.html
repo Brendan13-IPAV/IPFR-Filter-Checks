@@ -1803,7 +1803,6 @@ radio.onclick = () => {
         updateBulkButtonState();
         return; 
     }
-
             filteredStrategies = allStrategies.filter(strategy => {
                 if (selectedSituation && strategy.responseType) {
                     if (!strategy.responseType.includes(selectedSituation)) {
@@ -1811,18 +1810,18 @@ radio.onclick = () => {
                     }
                 }
 
-                if (!strategy.ipTypeTags.includes(selectedIPRight) &&
-    // !strategy.ipTypeTags.includes('Any IP right') &&
-    // selectedIPRight !== 'Any dispute') {
-                    if (selectedIPRight && strategy.ipTypeTags) {
-                    if (!strategy.ipTypeTags.includes(selectedIPRight) && 
-                        !strategy.ipTypeTags.includes('Any dispute')) {
+                if (selectedIPRight && strategy.ipTypeTags) {
+                    if (!strategy.ipTypeTags.includes(selectedIPRight) &&
+                        !strategy.ipTypeTags.includes('Any IP right') &&
+                        selectedIPRight !== 'Any dispute') {
                         return false;
                     }
                 }
 
                 return true;
             });
+
+
 
             filteredStrategies = filteredStrategies.map(strategy => {
                 let score = 1.0;

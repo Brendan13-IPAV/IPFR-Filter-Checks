@@ -1811,7 +1811,10 @@ radio.onclick = () => {
                     }
                 }
 
-                if (selectedIPRight && strategy.ipTypeTags) {
+                if (!strategy.ipTypeTags.includes(selectedIPRight) &&
+    // !strategy.ipTypeTags.includes('Any IP right') &&
+    // selectedIPRight !== 'Any dispute') {
+                    if (selectedIPRight && strategy.ipTypeTags) {
                     if (!strategy.ipTypeTags.includes(selectedIPRight) && 
                         !strategy.ipTypeTags.includes('Any dispute')) {
                         return false;
@@ -1828,7 +1831,7 @@ radio.onclick = () => {
                     if (filterOptions[filter.key]) {
                         const option = filter.option;
                         if (option && option.scoringValues && strategy.id <= option.scoringValues.length) {
-                            const filterScore = option.scoringValues[strategy.id - 1] || 1.0;
+                            const filterScore = option.scoringValues[strategy.id - 1] ?? 1.0;  //Changed || to ?? to make these zero rather than default to 1.
                             score *= filterScore;
                         }
                     }
